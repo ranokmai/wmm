@@ -7,6 +7,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+/*
+ * A class that queries/inserts/updates for the db
+ * 
+ * db is static because there is only one database that should be used
+ * IouDBManager ctor should be called once and then queries can be used as needed
+ * 
+ * TODO: add one instance of ctor in program
+ * 
+ * TODO: inserts
+ * TODO: updates
+ * 
+ */
 public class IouDBManager {
 	
 	private static IouDB db;
@@ -15,18 +27,9 @@ public class IouDBManager {
 		db = new IouDB(context);
 	}
 	
-//	public void insertIou(Iou iou) {
-//		if (iou.can_insert_into_db()) {
-//			
-//			SQLiteDatabase qdb = db.getWritableDatabase();
-//			
-//		}
-//		else {
-//			throw new IouDB_Error("Insertion Error");
-//		}
-//	}
-	
-	private ArrayList<Iou> retrieve_ious(Cursor cursor) {
+	//Class that returns an ArrayList<Iou> of ious from cursor
+	//used by some queries
+	private static ArrayList<Iou> retrieve_ious(Cursor cursor) {
 		ArrayList<Iou> ious = new ArrayList<Iou>();
 		
 		while (cursor.moveToNext()) {
@@ -68,7 +71,8 @@ public class IouDBManager {
 		return ious;
 	}
 	
-	public ArrayList<Iou> get_unordered_ious() {
+	//retrieves all ious unordered
+	public static ArrayList<Iou> get_unordered_ious() {
 		SQLiteDatabase qdb = db.getReadableDatabase();
 		
 		Cursor cursor = qdb.rawQuery("SELECT * FROM ious", null);
@@ -76,7 +80,8 @@ public class IouDBManager {
 		return retrieve_ious(cursor);
 	}
 	
-	public ArrayList<Iou> get_ious_ordered_by_closest_due_date() {
+	//retrieves all ious in order of the shortest time to due date
+	public static ArrayList<Iou> get_ious_ordered_by_closest_due_date() {
 		SQLiteDatabase qdb = db.getReadableDatabase();
 		
 		Cursor cursor = qdb.rawQuery("SELECT * FROM ious ORDER BY date_due ASC", null);
@@ -84,7 +89,8 @@ public class IouDBManager {
 		return retrieve_ious(cursor);
 	}
 	
-	public ArrayList<Iou> get_ious_from_contact(String contact) {
+	//retrieves all ious from a specific contact
+	public static ArrayList<Iou> get_ious_from_contact(String contact) {
 		SQLiteDatabase qdb = db.getReadableDatabase();
 		
 		Cursor cursor = qdb.rawQuery("SELECT * FROM ious WHERE contact = '?'", new String[] {contact});
@@ -92,7 +98,8 @@ public class IouDBManager {
 		return retrieve_ious(cursor);
 	}
 	
-	public ArrayList<String> get_contacts() {
+	//retrieves all contacts as strings
+	public static ArrayList<String> get_contacts() {
 		SQLiteDatabase qdb = db.getReadableDatabase();
 		
 		Cursor cursor = qdb.rawQuery("SELECT DISTINCT contact FROM ious", null);
@@ -108,7 +115,8 @@ public class IouDBManager {
 		return contacts;
 	}
 	
-	public ArrayList<ContactSummary> get_contact_summaries() {
+	//retrieves ContactSummary for each contact
+	public static ArrayList<ContactSummary> get_contact_summaries() {
 		SQLiteDatabase qdb = db.getReadableDatabase();
 		
 		Cursor cursor = qdb.rawQuery("SELECT DISTINCT contact, COUNT(*) as total_items, SUM(value) as total_val "
@@ -125,4 +133,17 @@ public class IouDBManager {
 		return contact_summaries;
 	}
 
+	
+	
+//	public void insertIou(Iou iou) {
+//		if (iou.can_insert_into_db()) {
+//			
+//			SQLiteDatabase qdb = db.getWritableDatabase();
+//			
+//		}
+//		else {
+//			throw new IouDB_Error("Insertion Error");
+//		}
+//	}
+	
 }

@@ -1,5 +1,7 @@
 package models;
 
+
+//An error to be used in IouDBManager
 public class IouDB_Error extends Error {
 
 	/**
