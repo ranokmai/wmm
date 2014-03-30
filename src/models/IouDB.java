@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 //Class to create DB from createdb.sql
-//calls onCreate if db does not exist (first time)
+//calls onCreate if db does not exist (first time app is used)
 //calls onUpgrade whenever database is updated (still need to write)
 //nothing else should need to change, as IouDBManager handles queries/inserts/updates
 public class IouDB extends SQLiteOpenHelper {

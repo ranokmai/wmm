@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
  * 
  * db is static because there is only one database that should be used
  * IouDBManager ctor should be called once and then queries can be used as needed
+ * may change to only create a writeable db once
  * 
  * TODO: add one instance of ctor in program
  * 
