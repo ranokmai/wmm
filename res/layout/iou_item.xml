@@ -10,7 +10,8 @@
         android:layout_height="80dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="12dp"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true" 
+        android:padding="4dp"/>
     
     <TextView
         android:id="@+id/singleItemMoneyThumbnail"
@@ -30,6 +31,7 @@
         android:layout_width="100dp"
         android:layout_height="25dp"
         android:layout_marginLeft="12dp"
+        android:layout_marginTop="4dp"
         android:layout_alignParentTop="true"
         android:text="[Name]"
         android:textAppearance="?android:attr/textAppearanceLarge"
