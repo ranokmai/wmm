@@ -2,6 +2,7 @@ package com.example.wmm;
 
 import java.util.ArrayList;
 
+import models.Global;
 import models.Iou;
 import models.IouItem;
 import android.os.Bundle;
@@ -12,13 +13,15 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import models.*;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
@@ -37,12 +40,13 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		mTitle = "Where's My Money";
+		
 		//db setup
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
-		
-		mTitle = "Where's My Money";
 
+		// Set left drawer Titles
 		mPlanetTitles = new String[]{"one", "two", "three"};
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -70,8 +74,6 @@ public class MainActivity extends Activity {
 			public void onDrawerOpened(View drawerView) {
 				getActionBar().setTitle(mTitle);
 			}
-			
-			
 		};
 
 		// Set the drawer toggle as the DrawerListener
@@ -83,10 +85,13 @@ public class MainActivity extends Activity {
 		// Add mockup iou items
 		iouItems = new ArrayList<IouItem>();
 		mainListView = (ListView) findViewById(R.id.main_listView);
-		
-		for(int i=0; i<10; i++) {
-			IouItem temp = new IouItem(this, "dicks");
+
+		// Create sample IOU items with mockup data
+		for(int i=0; i<5; i++) {
+			IouItem temp = new IouItem(this, "Jimmy", "12/4/15 - 5 days ago", "Bag of Dicks", 420.01, false);
+			IouItem temp2 = new IouItem(this, "Jimmy", "12/4/15 - 5 days ago", "Bag of Dicks", -420.01, true);
 			iouItems.add(temp);
+			iouItems.add(temp2);
 		}
 		updateListView();
 	}
@@ -102,7 +107,7 @@ public class MainActivity extends Activity {
 		Intent open_contacts = new Intent(this, ContactsActivity.class);
 		startActivity(open_contacts);
 	}
-
+	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -110,9 +115,22 @@ public class MainActivity extends Activity {
 		mDrawerToggle.syncState();
 	}
 
+	// Update the main view with the Items in iouItems
 	private void updateListView() {
         adapter=new IouListAdapter(iouItems);
         mainListView.setAdapter(adapter);
+        
+        mainListView.setOnItemClickListener( new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				
+				((IouListAdapter)parent.getAdapter()).setSelected(position);
+				
+			}
+        });
+        
 	}
 	
 	@Override
@@ -132,7 +150,7 @@ public class MainActivity extends Activity {
 
 		return super.onOptionsItemSelected(item);
 	}
-
+	
 	/**
 	 * Swaps fragments in the main content view
 	 */

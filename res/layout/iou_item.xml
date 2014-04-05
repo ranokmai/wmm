@@ -6,20 +6,60 @@
 
     <ImageView
         android:id="@+id/singleItemThumbnail"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
-
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="12dp"
+        android:layout_alignParentTop="true" 
+        android:padding="4dp"/>
+    
+    <TextView
+        android:id="@+id/singleItemMoneyThumbnail"
+        android:layout_width="108dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="right"
+        android:paddingTop="16dp"
+        android:layout_marginRight="12dp"
+        android:text="$420.00"
+        android:textColor="#00FF00"
+        android:textSize="12pt" />
 
     <TextView
-        android:id="@+id/singleItemTitle"
-        android:layout_width="200dp"
+        android:id="@+id/singleItemName"
+        android:layout_width="100dp"
         android:layout_height="25dp"
-        android:layout_alignTop="@+id/singleItemThumbnail"
-        android:layout_toRightOf="@+id/singleItemThumbnail"
-        android:layout_alignParentRight="true"
-        android:text="[Placeholder Title]"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_alignParentTop="true"
+        android:text="[Name]"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="8pt" />
+    
+    <TextView
+        android:id="@+id/singleItemDate"
+        android:layout_width="100dp"
+        android:layout_height="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/singleItemName"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:text="[Date]"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+		android:textColor="#C5C5C5"
+        android:textSize="5pt" />
 
+    <TextView
+        android:id="@+id/singleItemAmount"
+        android:layout_width="100dp"
+        android:layout_height="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/singleItemDate"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="12dp"
+        android:text="[Amount]"
+		android:textSize="5pt"
+		android:textColor="#C5C5C5"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 </RelativeLayout>

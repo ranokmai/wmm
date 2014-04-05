@@ -12,6 +12,7 @@
 bin/
 gen/
 .metadata/
+project.properties
 
 # Gradle files
 .gradle/
