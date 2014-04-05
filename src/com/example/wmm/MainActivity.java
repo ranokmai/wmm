@@ -81,8 +81,8 @@ public class MainActivity extends Activity {
 		
 		// Create sample IOU items with mockup data
 		for(int i=0; i<5; i++) {
-			IouItem temp = new IouItem(this, "Jimmy", "12/4/15 - 5 days ago", "Bag of Dicks", true);
-			IouItem temp2 = new IouItem(this, "Jimmy", "12/4/15 - 5 days ago", "Bag of Dicks", false);
+			IouItem temp = new IouItem(this, "Jimmy", "12/4/15 - 5 days ago", "Bag of Dicks", 420.01, true);
+			IouItem temp2 = new IouItem(this, "Jimmy", "12/4/15 - 5 days ago", "Bag of Dicks", -420.01, true);
 			iouItems.add(temp);
 			iouItems.add(temp2);
 		}
