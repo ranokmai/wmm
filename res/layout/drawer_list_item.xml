@@ -8,3 +8,4 @@
 		android:paddingTop="2dip"
 		android:textColor="#EE00EE"
         android:id="@+id/textView"/>
+
