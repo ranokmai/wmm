@@ -144,7 +144,7 @@ public class IouDBManager {
 		if (iou.can_insert_into_db()) {
 			
 			SQLiteDatabase qdb = db.getWritableDatabase();
-			qdb.insert(db_name, )
+			//qdb.insert(db_name, )
 			
 		}
 		else {

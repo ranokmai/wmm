@@ -1,7 +1,11 @@
 package models;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 import android.content.ContentValues;
 
 /*Iou class
@@ -46,18 +50,21 @@ public class Iou {
 	//keys for attributes:
 	
 	//required attributes
-	private String item_name = "item_name";
-	private String contact_name = "contact";
-	private String is_a_contact = "is_contact";
+	private static String item_name = "item_name";
+	private static String contact_name = "contact";
+	private static String is_a_contact = "is_contact";
 	
 	//optional attributes
-	private String item_type = "item_type";
-	private String outbound = "outbound";
-	private String date_borrowed = "date_borrowed";
-	private String date_due = "date_due";
-	private String value = "value";
-	private String pic_loc = "picture_loc";
-	private String notes = "notes";
+	private static String item_type = "item_type";
+	private static String outbound = "outbound";
+	private static String date_borrowed = "date_borrowed";
+	private static String date_due = "date_due";
+	private static String value = "value";
+	private static String pic_loc = "picture_loc";
+	private static String notes = "notes";
+	
+	//for date formatting:
+	private static String date_format = "EEE MMM dd kk:mm:ss zzz yyyy";
 	
 	//ctors
 	public Iou() {
@@ -134,30 +141,62 @@ public class Iou {
 	
 	public String item_type() {return ITEM_TYPES.get(iou.getAsInteger(item_type));}
 	public boolean outbound() {return iou.getAsBoolean(outbound);}
-	public Date date_borrowed() {return new Date(iou.getAsString(date_borrowed));}
-	public Date date_due() {return date_due;}
-	public double value() {return value;}
-	public String pic_loc() {return pic_loc;}
-	public String notes() {return notes;}
+	
+	public Date date_borrowed() {
+		
+		DateFormat df = new SimpleDateFormat(date_format);
+		Date r = new Date();
+		
+		try {
+			r = df.parse(iou.getAsString(date_borrowed));
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return r;
+	}
+	
+	public Date date_due()  {
+		
+		DateFormat df = new SimpleDateFormat(date_format);
+		Date r = new Date(Long.MAX_VALUE);
+		
+		try {
+			r = df.parse(iou.getAsString(date_due));
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return r;
+	}
+	
+	public double value() {return iou.getAsDouble(value);}
+	public String pic_loc() {return iou.getAsString(pic_loc);}
+	public String notes() {return iou.getAsString(notes);}
 	
 	//update functions
-	public void update_item_name(String item_name_) {item_name = item_name_;}
-	public void update_contact_name(String contact_name_) {contact_name = contact_name_;}
-	public void update_is_a_contact(boolean is_a_contact_) {is_a_contact = is_a_contact_;}
+	public void update_item_name(String item_name_) {iou.remove(item_name); iou.put(item_name, item_name_);}
+	public void update_contact_name(String contact_name_) {iou.remove(contact_name); iou.put(contact_name, contact_name_);}
+	public void update_is_a_contact(boolean is_a_contact_) {iou.remove(is_a_contact); iou.put(is_a_contact, is_a_contact_);}
 	
 	public void update_item_type(String item_type_) {
+		
+		iou.remove(item_type);
+		
 		if (ITEM_TYPES.contains(item_type_)) {
-			item_type = ITEM_TYPES.indexOf(item_type_);
+			iou.put(item_type, ITEM_TYPES.indexOf(item_type_));
 		}
 		else {
-			item_type = 0;
+			iou.put(item_type, 0);
 		}
 	
 	}
-	public void update_outbound(boolean outbound_) {outbound = outbound_;}
-	public void update_date_borrowed(Date date_borrowed_) {date_borrowed = date_borrowed_;}
-	public void update_date_due(Date date_due_) {date_due = date_due_;}
-	public void update_value(double value_) {value = value_;}
-	public void update_pic_loc(String pic_loc_) {pic_loc = pic_loc_;}
-	public void update_notes(String notes_) {notes = notes_;}
+	public void update_outbound(boolean outbound_) {iou.remove(outbound); iou.put(outbound, outbound_);}
+	public void update_date_borrowed(Date date_borrowed_) {iou.remove(date_borrowed); iou.put(date_borrowed, date_borrowed_.toString());}
+	public void update_date_due(Date date_due_) {iou.remove(date_due); iou.put(date_due, date_due_.toString());}
+	public void update_value(double value_) {iou.remove(value); iou.put(value, value_);}
+	public void update_pic_loc(String pic_loc_) {iou.remove(pic_loc); iou.put(pic_loc, pic_loc_);}
+	public void update_notes(String notes_) {iou.remove(notes); iou.put(notes, notes_);}
 }
