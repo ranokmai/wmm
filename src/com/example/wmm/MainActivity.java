@@ -78,7 +78,7 @@ public class MainActivity extends Activity {
 		mainListView = (ListView) findViewById(R.id.main_listView);
 		
 		for(int i=0; i<10; i++) {
-			IouItem temp = new IouItem(this, "dicks");
+			IouItem temp = new IouItem(this, "Jimmy", "12/4/15", "Bag of Dicks");
 			iouItems.add(temp);
 		}
 		updateListView();
