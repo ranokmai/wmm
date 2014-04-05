@@ -4,11 +4,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.content.Context;
 
 public class Global {
 	public static IouDBManager iou_db_mgr;
+	
+	public static Date DATE_MAX = new Date(Long.MAX_VALUE);
 	
 	public static int JAN = 0;
 	public static int FEB = 1;
@@ -32,7 +35,7 @@ public class Global {
 	
 	public static Date str_to_date(String s)  {
 		
-		DateFormat df = new SimpleDateFormat(date_format);
+		DateFormat df = new SimpleDateFormat(date_format, Locale.US);
 		Date r = new Date();
 		
 		try {
@@ -46,7 +49,7 @@ public class Global {
 	}
 	
 	public static String date_to_str(Date d) {
-		return new SimpleDateFormat(date_format).format(d);
+		return new SimpleDateFormat(date_format, Locale.US).format(d);
 	}
 	
 }

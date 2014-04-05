@@ -63,6 +63,7 @@ public class IouDBManager {
 	private static IouDB db;
 	private static SQLiteDatabase sqldb;
 	private static String db_table_name = "ious";
+	private static String archive_table_name = "archived_ious";
 	
 	public IouDBManager(Context context) {
 		db = new IouDB(context);
@@ -121,6 +122,10 @@ public class IouDBManager {
 		return ious;
 	}
 	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//BASIC DB QUERIES FOR ACTIVE IOUS
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	//retrieves all ious unordered
 	public ArrayList<Iou> get_ious_unordered() {
 		
@@ -158,6 +163,10 @@ public class IouDBManager {
 		
 		return retrieve_ious(cursor);
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//DB QUERIES FOR SPECIFIC CONTACT IOUS
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//retrieves all ious, unordered from a specific contact
 	public ArrayList<Iou> get_contact_ious_unordered (String contact) {
@@ -191,11 +200,15 @@ public class IouDBManager {
 	}
 	
 	//retrieves all ious in order of lowest to highest value
-	public ArrayList<Iou> get_ious_contact_ordered_by_value_asc(String contact) {
+	public ArrayList<Iou> get_contact_ious_ordered_by_value_asc(String contact) {
 		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE contact = ? ORDER BY value ASC", new String[] {contact});
 		
 		return retrieve_ious(cursor);
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//OTHER DB QUERIES
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//retrieves all contacts as strings
 	public ArrayList<String> get_contacts() {
@@ -214,7 +227,7 @@ public class IouDBManager {
 	}
 	
 	//retrieves ContactSummary for each contact
-	public static ArrayList<ContactSummary> get_contact_summaries() {
+	public ArrayList<ContactSummary> get_contact_summaries() {
 
 		Cursor cursor = sqldb.rawQuery("SELECT DISTINCT contact, COUNT(*) as total_items, SUM(value) as total_val "
 				+ "FROM ious ORDER BY contact DESC", null);
@@ -229,6 +242,119 @@ public class IouDBManager {
 		
 		return contact_summaries;
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//MOVE IOU BETWEEN ACTIVE AND ARCHIVED TABLES
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public void add_iou_to_archive(Iou iou) {
+				
+		sqldb.delete(db_table_name, "item_id = ?", new String[] {iou.getDb_row_id().toString()});
+		
+		iou.update_date_completed(new Date());
+		
+		iou.setDb_row_id(sqldb.insert(archive_table_name, null, iou.iou));
+		
+	}
+	
+	public void remove_iou_from_archive(Iou iou) {
+		
+		sqldb.delete(archive_table_name, "item_id = ?", new String[] {iou.getDb_row_id().toString()});
+		
+		iou.update_date_completed(Global.DATE_MAX);
+		
+		iou.setDb_row_id(sqldb.insert(db_table_name, null, iou.iou));
+		
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//BASIC DB QUERIES FOR ALL ARCHIVE IOUS
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//retrieves archrived ious unordered
+	public ArrayList<Iou> get_archived_ious_unordered() {
+		
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves archived ious in chronological order of completion
+	public ArrayList<Iou> get_archived_ious_ordered_by_completion() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious ORDER BY date_completed ASC", null);
+		
+		return retrieve_ious(cursor);
+		
+	}
+	
+	//retrieves archived ious in order of the loan date
+	public ArrayList<Iou> get_archived_ious_ordered_by_loan_date() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious ORDER BY date_borrowed ASC", null);
+		
+		return retrieve_ious(cursor);
+	}	
+	
+	//retrieves archived ious in order of highest to lowest value
+	public ArrayList<Iou> get_archived_ious_ordered_by_value_desc() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious ORDER BY value DESC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all archived in order of lowest to highest value
+	public ArrayList<Iou> get_archived_ious_ordered_by_value_asc() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious ORDER BY value ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//BASIC DB QUERIES FOR CONTACT ARCHIVE IOUS
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//retrieves archive ious, unordered from a specific contact
+	public ArrayList<Iou> get_archived_contact_ious_unordered (String contact) {
+		
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious WHERE contact = ?", new String[] {contact});
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves archive ious in order of the shortest time to due date
+	public ArrayList<Iou> get_archived_contact_ious_ordered_by_completion_date(String contact) {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious WHERE contact = ? ORDER BY date_due ASC", new String[] {contact});
+		
+		return retrieve_ious(cursor);
+	}	
+	
+	//retrieves archive ious in order of chronological time
+	public ArrayList<Iou> get_archived_contact_ious_ordered_by_earliest_loan_date(String contact) {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious WHERE contact = ? ORDER BY date_borrowed ASC", new String[] {contact});
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves archive ious in order of highest to lowest value
+	public ArrayList<Iou> get_archived_contact_ious_ordered_by_value_desc(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious WHERE contact = ? ORDER BY value DESC", new String[] {contact});
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves archive ious in order of lowest to highest value
+	public ArrayList<Iou> get_archived_contact_ious_ordered_by_value_asc(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious WHERE contact = ? ORDER BY value ASC", new String[] {contact});
+		
+		return retrieve_ious(cursor);
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//IOU INSERT UPDATE DELETE
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public void insertIou(Iou iou) {
 		if (iou.can_insert_into_db()) {
@@ -251,5 +377,24 @@ public class IouDBManager {
 			throw new IouDB_Error("Update Error: not in db");
 		}
 	}
+	
+	public void deleteIou(Iou iou) {
+		sqldb.delete(db_table_name, "item_id = ?", new String[] {iou.getDb_row_id().toString()});
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//ARCHIVE DELETE
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//deletes all archived ious of a specific contact
+	public void delete_archived_contact_ious(String contact) {
+		sqldb.delete(archive_table_name, "contact = ?", new String[] {contact});
+	}
+	
+	//deletes all archived ious
+	public void delete_archive() {
+		db.reset_archive(sqldb);
+	}
+	
 	
 }

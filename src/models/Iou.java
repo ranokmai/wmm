@@ -5,18 +5,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import android.content.ContentValues;
 import android.util.Log;
 
 /*Iou class
  * contains basic information about an exchange 
- * 
- * PROGRAM SHOULD CALL init_item_types() ONCE AT THE BEGINNING OF THE PROGRAM
- * THIS WILL ALLOW IOU TO FUNCTION PROPERLY
- * 
- * TODO: above all-caps item
  * 
  * required attributes are always:
  * the name of the item 
@@ -76,6 +71,7 @@ public class Iou {
 	private static String outbound = "outbound";
 	private static String date_borrowed = "date_borrowed";
 	private static String date_due = "date_due";
+	private static String date_completed = "date_completed";
 	private static String value = "value";
 	private static String pic_loc = "picture_loc";
 	private static String notes = "notes";
@@ -113,6 +109,7 @@ public class Iou {
 		iou.put(outbound, outbound_);
 		iou.put(date_borrowed, Global.date_to_str(date_borrowed_));
 		iou.put(date_due, Global.date_to_str(date_due_));
+		iou.put(date_completed, Global.date_to_str(Global.DATE_MAX));
 		iou.put(value, value_);
 		iou.put(pic_loc, pic_loc_);
 		iou.put(notes, notes_);
@@ -130,7 +127,8 @@ public class Iou {
 		iou.put(item_type, 0);
 		iou.put(outbound, false);
 		iou.put(date_borrowed, Global.date_to_str(new Date()));
-		iou.put(date_due, Global.date_to_str(new Date(Long.MAX_VALUE)));
+		iou.put(date_due, Global.date_to_str(Global.DATE_MAX));
+		iou.put(date_completed, Global.date_to_str(Global.DATE_MAX));
 		iou.put(value, 0.0);
 		iou.put(pic_loc, new String());
 		iou.put(notes, new String());
@@ -160,7 +158,7 @@ public class Iou {
 	
 	public Date date_borrowed() {
 		
-		DateFormat df = new SimpleDateFormat(Global.date_format);
+		DateFormat df = new SimpleDateFormat(Global.date_format, Locale.US);
 		Date r = new Date();
 		
 		try {
@@ -175,8 +173,8 @@ public class Iou {
 	
 	public Date date_due()  {
 		
-		DateFormat df = new SimpleDateFormat(Global.date_format);
-		Date r = new Date(Long.MAX_VALUE);
+		DateFormat df = new SimpleDateFormat(Global.date_format, Locale.US);
+		Date r = Global.DATE_MAX;
 		
 		try {
 			r = df.parse(iou.getAsString(date_due));
@@ -186,6 +184,22 @@ public class Iou {
 		}
 
 		return r;
+	}
+	
+	public Date date_completed() {
+		
+		DateFormat df = new SimpleDateFormat(Global.date_format, Locale.US);
+		Date r = Global.DATE_MAX;
+		
+		try {
+			r = df.parse(iou.getAsString(date_completed));
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		return r;
+		
 	}
 	
 	public Double value() {return iou.getAsDouble(value);}
@@ -210,8 +224,9 @@ public class Iou {
 	
 	}
 	public void update_outbound(boolean outbound_) {iou.remove(outbound); iou.put(outbound, outbound_);}
-	public void update_date_borrowed(GregorianCalendar date_borrowed_) {iou.remove(date_borrowed); iou.put(date_borrowed, date_borrowed_.toString());}
-	public void update_date_due(GregorianCalendar date_due_) {iou.remove(date_due); iou.put(date_due, date_due_.toString());}
+	public void update_date_borrowed(Date date_borrowed_) {iou.remove(date_borrowed); iou.put(date_borrowed, Global.date_to_str(date_borrowed_));}
+	public void update_date_due(Date date_due_) {iou.remove(date_due); iou.put(date_due, Global.date_to_str(date_due_));}
+	public void update_date_completed(Date date_completed_) {iou.remove(date_completed); iou.put(date_completed, Global.date_to_str(date_completed_));}
 	public void update_value(double value_) {iou.remove(value); iou.put(value, value_);}
 	public void update_pic_loc(String pic_loc_) {iou.remove(pic_loc); iou.put(pic_loc, pic_loc_);}
 	public void update_notes(String notes_) {iou.remove(notes); iou.put(notes, notes_);}
@@ -228,6 +243,7 @@ public class Iou {
 		s += "Outbound?: " + outbound() + ",  ";
 		s += "Date borrowed: " + Global.date_to_str(date_borrowed()) + ",  ";
 		s += "Date due: " + Global.date_to_str(date_due()) + ",  ";
+		s += "Date completed: " + Global.date_to_str(date_completed()) + ",  ";
 		s += "Value: " + value() + ",  ";
 		s += "Picture location: " + pic_loc() + ",  ";
 		s += "Notes: " + notes();
