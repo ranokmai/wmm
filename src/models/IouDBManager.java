@@ -1,11 +1,7 @@
 package models;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -104,9 +100,6 @@ public class IouDBManager {
 				is_o = true;
 			}
 			
-
-			DateFormat df = new SimpleDateFormat(Global.date_format);
-			
 			String date_s = cursor.getString(6);
 			Date b = Global.str_to_date(date_s);
 			
@@ -129,7 +122,7 @@ public class IouDBManager {
 	}
 	
 	//retrieves all ious unordered
-	public static ArrayList<Iou> get_unordered_ious() {
+	public ArrayList<Iou> get_ious_unordered() {
 		
 		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious", null);
 		
@@ -137,25 +130,75 @@ public class IouDBManager {
 	}
 	
 	//retrieves all ious in order of the shortest time to due date
-	public static ArrayList<Iou> get_ious_ordered_by_closest_due_date() {
+	public ArrayList<Iou> get_ious_ordered_by_closest_due_date() {
 
 		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious ORDER BY date_due ASC", null);
 		
 		return retrieve_ious(cursor);
+	}	
+	
+	//retrieves all ious in order of chronological time
+	public ArrayList<Iou> get_ious_ordered_by_earliest_loan_date() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious ORDER BY date_borrowed ASC", null);
+		
+		return retrieve_ious(cursor);
 	}
 	
-	//retrieves all ious from a specific contact
-	public static ArrayList<Iou> get_ious_from_contact(String contact) {
-
-		//Cursor cursor = sqldb.query(true, db_table_name, null, "contact = " + contact, null, groupBy, having, orderBy, limit, cancellationSignal)
+	//retrieves all ious in order of highest to lowest value
+	public ArrayList<Iou> get_ious_ordered_by_value_desc() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious ORDER BY value DESC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of lowest to highest value
+	public ArrayList<Iou> get_ious_ordered_by_value_asc() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious ORDER BY value ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious, unordered from a specific contact
+	public ArrayList<Iou> get_contact_ious_unordered (String contact) {
 		
 		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE contact = ?", new String[] {contact});
 		
 		return retrieve_ious(cursor);
 	}
 	
+	//retrieves all ious in order of the shortest time to due date
+	public ArrayList<Iou> get_contact_ious_ordered_by_closest_due_date(String contact) {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE contact = ? ORDER BY date_due ASC", new String[] {contact});
+		
+		return retrieve_ious(cursor);
+	}	
+	
+	//retrieves all ious in order of chronological time
+	public ArrayList<Iou> get_contact_ious_ordered_by_earliest_loan_date(String contact) {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE contact = ? ORDER BY date_borrowed ASC", new String[] {contact});
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of highest to lowest value
+	public ArrayList<Iou> get_contact_ious_ordered_by_value_desc(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE contact = ? ORDER BY value DESC", new String[] {contact});
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of lowest to highest value
+	public ArrayList<Iou> get_ious_contact_ordered_by_value_asc(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE contact = ? ORDER BY value ASC", new String[] {contact});
+		
+		return retrieve_ious(cursor);
+	}
+	
 	//retrieves all contacts as strings
-	public static ArrayList<String> get_contacts() {
+	public ArrayList<String> get_contacts() {
 
 		Cursor cursor = sqldb.rawQuery("SELECT DISTINCT contact FROM ious", null);
 		
