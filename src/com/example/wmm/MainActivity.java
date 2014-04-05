@@ -36,8 +36,10 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		// Set title
 		mTitle = "Where's My Money";
 
+		// Set left drawer Titles
 		mPlanetTitles = new String[]{"one", "two", "three"};
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -77,9 +79,12 @@ public class MainActivity extends Activity {
 		iouItems = new ArrayList<IouItem>();
 		mainListView = (ListView) findViewById(R.id.main_listView);
 		
-		for(int i=0; i<10; i++) {
-			IouItem temp = new IouItem(this, "dicks");
+		// Create sample IOU items with mockup data
+		for(int i=0; i<5; i++) {
+			IouItem temp = new IouItem(this, "Jimmy", "12/4/15 - 5 days ago", "Bag of Dicks", true);
+			IouItem temp2 = new IouItem(this, "Jimmy", "12/4/15 - 5 days ago", "Bag of Dicks", false);
 			iouItems.add(temp);
+			iouItems.add(temp2);
 		}
 		updateListView();
 	}
@@ -103,6 +108,7 @@ public class MainActivity extends Activity {
 		mDrawerToggle.syncState();
 	}
 
+	// Update the main view with the Items in iouItems
 	private void updateListView() {
         adapter=new IouListAdapter(iouItems);
         mainListView.setAdapter(adapter);
