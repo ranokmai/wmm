@@ -3,10 +3,10 @@ CREATE TABLE ious (
 	item_name TEXT NOT NULL,
 	contact TEXT NOT NULL,
 	is_contact INTEGER NOT NULL,
-	item_type TEXT,
+	item_type INTEGER,
 	outbound INTEGER,
-	date_borrowed INTEGER,
-	date_due INTEGER,
+	date_borrowed TEXT,
+	date_due TEXT,
 	value REAL,
 	picture_loc TEXT,
 	notes TEXT);

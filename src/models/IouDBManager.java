@@ -20,12 +20,16 @@ import android.database.sqlite.SQLiteDatabase;
  * TODO: updates
  * 
  */
+
 public class IouDBManager {
 	
 	private static IouDB db;
+	//private static SQLiteDatabase sqldb;
+	private String db_name = "ious";
 	
 	public IouDBManager(Context context) {
 		db = new IouDB(context);
+		//sqldb = db.getWritableDatabase();
 	}
 	
 	//Class that returns an ArrayList<Iou> of ious from cursor
@@ -136,15 +140,16 @@ public class IouDBManager {
 
 	
 	
-//	public void insertIou(Iou iou) {
-//		if (iou.can_insert_into_db()) {
-//			
-//			SQLiteDatabase qdb = db.getWritableDatabase();
-//			
-//		}
-//		else {
-//			throw new IouDB_Error("Insertion Error");
-//		}
-//	}
+	public void insertIou(Iou iou) {
+		if (iou.can_insert_into_db()) {
+			
+			SQLiteDatabase qdb = db.getWritableDatabase();
+			qdb.insert(db_name, )
+			
+		}
+		else {
+			throw new IouDB_Error("Insertion Error");
+		}
+	}
 	
 }

@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Date;
+import android.content.ContentValues;
 
 /*Iou class
  * contains basic information about an exchange 
@@ -30,7 +31,7 @@ import java.util.Date;
  * 
  */
 public class Iou {
-
+	
 	public static ArrayList<String> ITEM_TYPES;
 	
 	public static void init_item_types() {
@@ -40,19 +41,23 @@ public class Iou {
 		ITEM_TYPES.add("Item");
 	}
 	
+	private ContentValues iou;
+	
+	//keys for attributes:
+	
 	//required attributes
-	String item_name;
-	String contact_name;
-	boolean is_a_contact;
+	private String item_name = "item_name";
+	private String contact_name = "contact";
+	private String is_a_contact = "is_contact";
 	
 	//optional attributes
-	int item_type;
-	boolean outbound;
-	Date date_borrowed;
-	Date date_due;
-	double value;
-	String pic_loc;
-	String notes;
+	private String item_type = "item_type";
+	private String outbound = "outbound";
+	private String date_borrowed = "date_borrowed";
+	private String date_due = "date_due";
+	private String value = "value";
+	private String pic_loc = "picture_loc";
+	private String notes = "notes";
 	
 	//ctors
 	public Iou() {
@@ -62,54 +67,59 @@ public class Iou {
 	public Iou(String item_name_, String contact_name_, boolean is_a_contact_) {
 		Iou_blank_init();
 		
-		item_name = item_name_;
-		contact_name = contact_name_;
-		is_a_contact = is_a_contact_;
+		iou.put(item_name, item_name_);
+		iou.put(contact_name,contact_name_);
+		iou.put(is_a_contact,is_a_contact_);
 	}
 	
 	public Iou(String item_name_, String contact_name_, boolean is_a_contact_, 
 			String item_type_, boolean outbound_, Date date_borrowed_, Date date_due_,
 			double value_, String pic_loc_, String notes_) {
 		
-		item_name = item_name_;
-		contact_name = contact_name_;
-		is_a_contact = is_a_contact_;
+		iou.put(item_name, item_name_);
+		iou.put(contact_name,contact_name_);
+		iou.put(is_a_contact,is_a_contact_);
 		
 		if (ITEM_TYPES.contains(item_type_)) {
-			item_type = ITEM_TYPES.indexOf(item_type_);
+			iou.put(item_type, ITEM_TYPES.indexOf(item_type_));
 		}
 		else {
-			item_type = 0;
+			iou.put(item_type, 0);
 		}
 		
-		outbound = outbound_;
-		date_borrowed = date_borrowed_;
-		date_due = date_due_;
-		value = value_;
-		pic_loc = pic_loc_;
-		notes = notes_;
+		iou.put(outbound, outbound_);
+		iou.put(date_borrowed, date_borrowed_.toString());
+		iou.put(date_due, date_due_.toString());
+		iou.put(value, value_);
+		iou.put(pic_loc, pic_loc_);
+		iou.put(notes, notes_);
 		
 	}
 	
 	//ctor helper
 	private void Iou_blank_init() {
-		item_name = new String();
-		contact_name = new String();
-		is_a_contact = false;
-		item_type = 0;
-		outbound = false;
-		date_borrowed = new Date();
-		date_due = new Date(Long.MAX_VALUE);
-		value = 0.0;
-		pic_loc = new String();
-		notes = new String();
+		
+		iou = new ContentValues();
+		
+		iou.put(item_name, new String());
+		iou.put(contact_name, new String());
+		iou.put(is_a_contact, false);
+		iou.put(item_type, 0);
+		iou.put(outbound, false);
+		iou.put(date_borrowed, new Date().toString());
+		iou.put(date_due, new Date(Long.MAX_VALUE).toString());
+		iou.put(value, 0.0);
+		iou.put(pic_loc, new String());
+		iou.put(notes, new String());
+		
 	}
 	
 	//actually contains required variables
 	//currently only needed if iou is created empty and does not obtain required variables
-	@SuppressWarnings("unused")
-	private boolean can_insert_into_db() {
-		if (!(item_name.length() == 0) && !(contact_name.length() == 0) && (is_a_contact == false || is_a_contact == true) ) {
+	public boolean can_insert_into_db() {
+		if (!(iou.getAsString(item_name).length() == 0) 
+				&& !(iou.getAsString(contact_name).length() == 0) 
+				&& (iou.getAsBoolean(is_a_contact) == false || iou.getAsBoolean(is_a_contact) == true) ) {
 			return true;
 		}
 		else {
@@ -118,13 +128,13 @@ public class Iou {
 	}
 	
 	//access functions
-	public String item_name() {return item_name;}
-	public String contact_name() {return contact_name;}
-	public 	boolean is_a_contact() {return is_a_contact;}
+	public String item_name() {return iou.getAsString(item_name);}
+	public String contact_name() {return iou.getAsString(contact_name);}
+	public 	boolean is_a_contact() {return iou.getAsBoolean(is_a_contact);}
 	
-	public String item_type() {return ITEM_TYPES.get(item_type);}
-	public boolean outbound() {return outbound;}
-	public Date date_borrowed() {return date_borrowed;}
+	public String item_type() {return ITEM_TYPES.get(iou.getAsInteger(item_type));}
+	public boolean outbound() {return iou.getAsBoolean(outbound);}
+	public Date date_borrowed() {return new Date(iou.getAsString(date_borrowed));}
 	public Date date_due() {return date_due;}
 	public double value() {return value;}
 	public String pic_loc() {return pic_loc;}
