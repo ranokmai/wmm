@@ -24,12 +24,12 @@ import android.database.sqlite.SQLiteDatabase;
 public class IouDBManager {
 	
 	private static IouDB db;
-	//private static SQLiteDatabase sqldb;
-	private String db_name = "ious";
+	private static SQLiteDatabase sqldb;
+	private String db_table_name = "ious";
 	
 	public IouDBManager(Context context) {
 		db = new IouDB(context);
-		//sqldb = db.getWritableDatabase();
+		sqldb = db.getWritableDatabase();
 	}
 	
 	//Class that returns an ArrayList<Iou> of ious from cursor
@@ -78,36 +78,32 @@ public class IouDBManager {
 	
 	//retrieves all ious unordered
 	public static ArrayList<Iou> get_unordered_ious() {
-		SQLiteDatabase qdb = db.getReadableDatabase();
 		
-		Cursor cursor = qdb.rawQuery("SELECT * FROM ious", null);
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious", null);
 		
 		return retrieve_ious(cursor);
 	}
 	
 	//retrieves all ious in order of the shortest time to due date
 	public static ArrayList<Iou> get_ious_ordered_by_closest_due_date() {
-		SQLiteDatabase qdb = db.getReadableDatabase();
-		
-		Cursor cursor = qdb.rawQuery("SELECT * FROM ious ORDER BY date_due ASC", null);
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious ORDER BY date_due ASC", null);
 		
 		return retrieve_ious(cursor);
 	}
 	
 	//retrieves all ious from a specific contact
 	public static ArrayList<Iou> get_ious_from_contact(String contact) {
-		SQLiteDatabase qdb = db.getReadableDatabase();
-		
-		Cursor cursor = qdb.rawQuery("SELECT * FROM ious WHERE contact = '?'", new String[] {contact});
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE contact = '?'", new String[] {contact});
 		
 		return retrieve_ious(cursor);
 	}
 	
 	//retrieves all contacts as strings
 	public static ArrayList<String> get_contacts() {
-		SQLiteDatabase qdb = db.getReadableDatabase();
-		
-		Cursor cursor = qdb.rawQuery("SELECT DISTINCT contact FROM ious", null);
+
+		Cursor cursor = sqldb.rawQuery("SELECT DISTINCT contact FROM ious", null);
 		
 		ArrayList<String> contacts = new ArrayList<String>();
 		
@@ -122,9 +118,8 @@ public class IouDBManager {
 	
 	//retrieves ContactSummary for each contact
 	public static ArrayList<ContactSummary> get_contact_summaries() {
-		SQLiteDatabase qdb = db.getReadableDatabase();
-		
-		Cursor cursor = qdb.rawQuery("SELECT DISTINCT contact, COUNT(*) as total_items, SUM(value) as total_val "
+
+		Cursor cursor = sqldb.rawQuery("SELECT DISTINCT contact, COUNT(*) as total_items, SUM(value) as total_val "
 				+ "FROM ious ORDER BY contact DESC", null);
 		
 		ArrayList<ContactSummary> contact_summaries = new ArrayList<ContactSummary>();
@@ -143,12 +138,22 @@ public class IouDBManager {
 	public void insertIou(Iou iou) {
 		if (iou.can_insert_into_db()) {
 			
-			SQLiteDatabase qdb = db.getWritableDatabase();
-			//qdb.insert(db_name, )
+			iou.setDb_row_id(sqldb.insert(db_table_name, null, iou.iou));
 			
 		}
 		else {
 			throw new IouDB_Error("Insertion Error");
+		}
+	}
+	
+	public void updateIou(Iou iou) {
+		if (iou.getDb_row_id() > 0) {
+			
+			sqldb.update(db_table_name, iou.iou, "iou_id = ?", new String[] {iou.getDb_row_id().toString()});
+			
+		}
+		else {
+			throw new IouDB_Error("Update Error: not in db");
 		}
 	}
 	

@@ -38,6 +38,20 @@ public class Iou {
 	
 	public static ArrayList<String> ITEM_TYPES;
 	
+	/**
+	 * @return the db_row_id
+	 */
+	public Long getDb_row_id() {
+		return db_row_id;
+	}
+
+	/**
+	 * @param db_row_id the db_row_id to set
+	 */
+	public void setDb_row_id(long db_row_id) {
+		this.db_row_id = db_row_id;
+	}
+
 	public static void init_item_types() {
 		ITEM_TYPES = new ArrayList<String>();
 		ITEM_TYPES.add("None");
@@ -45,7 +59,8 @@ public class Iou {
 		ITEM_TYPES.add("Item");
 	}
 	
-	private ContentValues iou;
+	public ContentValues iou;
+	private long db_row_id = -1;
 	
 	//keys for attributes:
 	
@@ -199,4 +214,5 @@ public class Iou {
 	public void update_value(double value_) {iou.remove(value); iou.put(value, value_);}
 	public void update_pic_loc(String pic_loc_) {iou.remove(pic_loc); iou.put(pic_loc, pic_loc_);}
 	public void update_notes(String notes_) {iou.remove(notes); iou.put(notes, notes_);}
+	
 }
