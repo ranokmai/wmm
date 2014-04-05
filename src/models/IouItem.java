@@ -28,7 +28,7 @@ public class IouItem {
 			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setVisibility(View.GONE);
 		}
 		else {
-			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setImageResource(R.drawable.ic_launcher);
+			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setImageResource(R.drawable.ic_bat);
 			((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setVisibility(View.GONE);
 		}
 		
