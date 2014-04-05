@@ -1,18 +1,23 @@
 package com.example.wmm;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import models.IouItem;
+import models.Global;
+import models.Iou;
 
  
 public class IouListAdapter extends BaseAdapter {
 	private ArrayList<IouItem> data;
  
     public IouListAdapter(ArrayList<IouItem> inArrayList) {
-        data=inArrayList;
+        data=inArrayList;		
     }
  
     public int getCount() {

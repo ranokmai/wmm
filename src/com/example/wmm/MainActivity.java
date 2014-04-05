@@ -2,8 +2,8 @@ package com.example.wmm;
 
 import java.util.ArrayList;
 
+import models.Iou;
 import models.IouItem;
-
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import models.*;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
@@ -36,6 +37,10 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		//db setup
+		Global.setup_db_mgr(getApplicationContext());
+		Iou.init_item_types();
+		
 		mTitle = "Where's My Money";
 
 		mPlanetTitles = new String[]{"one", "two", "three"};
@@ -65,6 +70,8 @@ public class MainActivity extends Activity {
 			public void onDrawerOpened(View drawerView) {
 				getActionBar().setTitle(mTitle);
 			}
+			
+			
 		};
 
 		// Set the drawer toggle as the DrawerListener
