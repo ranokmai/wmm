@@ -11,14 +11,14 @@ import android.widget.TextView;
 
 public class IouItem {
 	private RelativeLayout layout;
-	private String name, date, desc;
+	private String contact, date, item_name;
 	int amount;
 	private Iou iou;
 	
 	public IouItem(Context context, String inName, String inDate, String inDesc, double inAmount, boolean money) {
-		name = inName;
+		contact = inName;
 		date = inDate;
-		desc = inDesc;
+		item_name = inDesc;
 		if(inAmount < 0)
 			amount = (int) Math.floor(inAmount);
 		else
@@ -28,9 +28,9 @@ public class IouItem {
 		layout = (RelativeLayout) inflater.inflate(R.layout.iou_item, null);
 		
 		// Set the name, date, and desc
-		((TextView) layout.findViewById(R.id.singleItemName)).setText(name);
+		((TextView) layout.findViewById(R.id.singleItemName)).setText(contact);
 		((TextView) layout.findViewById(R.id.singleItemDate)).setText(date);
-		((TextView) layout.findViewById(R.id.singleItemAmount)).setText(desc);
+		((TextView) layout.findViewById(R.id.singleItemAmount)).setText(item_name);
 		
 		// If this IOU is money or not money, use an Image for not money, and text for money
 		if(money) {
@@ -56,9 +56,9 @@ public class IouItem {
 	}
 	
 	public IouItem(Context context, Iou iou) {
-		name = iou.item_name();
+		contact = iou.contact_name();
 		date = Global.date_to_str(iou.date_due());
-		desc = iou.notes();
+		item_name = iou.item_name();
 		
 		this.iou = iou;
 		
@@ -71,9 +71,9 @@ public class IouItem {
 		layout = (RelativeLayout) inflater.inflate(R.layout.iou_item, null);
 		
 		// Set the name, date, and desc
-		((TextView) layout.findViewById(R.id.singleItemName)).setText(name);
+		((TextView) layout.findViewById(R.id.singleItemName)).setText(contact);
 		((TextView) layout.findViewById(R.id.singleItemDate)).setText(date);
-		((TextView) layout.findViewById(R.id.singleItemAmount)).setText(desc);
+		((TextView) layout.findViewById(R.id.singleItemAmount)).setText(item_name);
 		
 		// If this IOU is money or not money, use an Image for not money, and text for money
 		if(iou.item_type().equals(Iou.ITEM_TYPES.get(Iou.item_types_e.MONEY.get_val()))) {
