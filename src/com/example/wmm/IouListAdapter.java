@@ -12,7 +12,6 @@ import models.IouItem;
  
 public class IouListAdapter extends BaseAdapter {
 	private ArrayList<IouItem> data;
-	private ArrayList<Iou> ious;
 	
 	int selected = -1;
  
@@ -47,7 +46,9 @@ public class IouListAdapter extends BaseAdapter {
 		}	
 		// new item
 		else {
-			if( selected != -1 ) data.get(selected).getView().setBackgroundColor( Color.TRANSPARENT);
+			if( selected != -1 ) 
+				data.get(selected).getView().setBackgroundColor( Color.TRANSPARENT);
+			
 			data.get(select).getView().setBackgroundColor( Color.parseColor( "#0000cc") );
 			selected = select; 
 		}
