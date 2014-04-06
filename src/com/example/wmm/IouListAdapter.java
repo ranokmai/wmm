@@ -6,11 +6,13 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import models.Iou;
 import models.IouItem;
 
  
 public class IouListAdapter extends BaseAdapter {
 	private ArrayList<IouItem> data;
+	private ArrayList<Iou> ious;
 	
 	int selected = -1;
  
