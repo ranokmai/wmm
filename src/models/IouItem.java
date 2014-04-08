@@ -9,6 +9,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+/**
+ * IOUItem represents one IOU which appears on the main screen
+ * Contains information like name, date, description, amount, and image
+ * @author Galen
+ *
+ */
 public class IouItem {
 	private RelativeLayout layout;
 	private String contact, date, item_name;
