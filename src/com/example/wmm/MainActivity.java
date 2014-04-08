@@ -97,18 +97,7 @@ public class MainActivity extends Activity {
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
 		
-		// Add mockup iou items
-		iouItems = new ArrayList<IouItem>();
-		
-		//add current iou items
-		ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
-		
 		mainListView = (ListView) findViewById(R.id.main_listView);
-
-		// Fill IOU items with db data
-		for (int i = 0; i < ious.size(); i++) {
-			iouItems.add(new IouItem(this, ious.get(i)));
-		}
 		
 		updateListView();
 	}
@@ -142,7 +131,19 @@ public class MainActivity extends Activity {
 
 	// Update the main view with the Items in iouItems
 	private void updateListView() {
-        adapter=new IouListAdapter(iouItems);
+		
+		//make sure initialized
+		iouItems = new ArrayList<IouItem>();
+		
+		//add current iou items
+		ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
+		
+		// Fill iouItems with db data
+		for (int i = 0; i < ious.size(); i++) {
+			iouItems.add(new IouItem(this, ious.get(i)));
+		}
+		
+        adapter = new IouListAdapter(iouItems);
         mainListView.setAdapter(adapter);
         
         mainListView.setOnItemClickListener( new OnItemClickListener() {
