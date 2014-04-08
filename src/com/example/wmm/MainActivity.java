@@ -1,6 +1,7 @@
 package com.example.wmm;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import models.Global;
 import models.Iou;
@@ -46,7 +47,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.navigation_drawer);
 		app_title = "Where's My Money";
 		navigation_title = app_title;
-		
+				
 		// Setup the navigation drawer
 		navigation_titles = getResources().getStringArray(R.array.nav_drawer_items);
 		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
@@ -128,6 +129,9 @@ public class MainActivity extends Activity {
     }
 	
 	public void open_contacts(View view){
+		
+		getFragmentManager().beginTransaction().replace( android.R.id.content, new ContactsFragment()).commit();
+		
 	}
 	
 	@Override
