@@ -1,11 +1,14 @@
 package com.example.wmm;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import models.Global;
+import models.Iou;
 import models.IouItem;
 
  
@@ -45,7 +48,9 @@ public class IouListAdapter extends BaseAdapter {
 		}	
 		// new item
 		else {
-			if( selected != -1 ) data.get(selected).getView().setBackgroundColor( Color.TRANSPARENT);
+			if( selected != -1 ) 
+				data.get(selected).getView().setBackgroundColor( Color.TRANSPARENT);
+			
 			data.get(select).getView().setBackgroundColor( Color.parseColor( "#0000cc") );
 			selected = select; 
 		}

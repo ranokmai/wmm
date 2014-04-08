@@ -37,6 +37,15 @@ public class IouDB extends SQLiteOpenHelper {
 
 	}
 	
+	public void clear_db(SQLiteDatabase database) {
+		executeSQLScript(database, "dropdb.sql");
+		executeSQLScript(database, "createdb.sql");
+	}
+	
+	public void reset_archive(SQLiteDatabase database) {
+		executeSQLScript(database, "reset_archive.sql");
+	}
+	
 	private void executeSQLScript(SQLiteDatabase database, String sql_file) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    byte buf[] = new byte[1024];
