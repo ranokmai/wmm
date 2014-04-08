@@ -4,31 +4,24 @@ import java.util.ArrayList;
 
 import models.Global;
 import models.Iou;
-import models.IouItem;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
-import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
 	private CharSequence app_title;
-	private ArrayList<IouItem> iouItems;
-	private ArrayList<Iou> ious;
-	private ListView mainListView;
-	private IouListAdapter adapter;
 	
 	// Navigation drawer variables
 	private CharSequence navigation_title;
@@ -75,6 +68,7 @@ public class MainActivity extends Activity {
 		navigation_adapter = new NavigationDrawerAdapter(getApplicationContext(),
 			navigation_items);
 		navigation_list.setAdapter(navigation_adapter);
+		navigation_list.setOnItemClickListener(new NavigationClickListener());
         navigation_toggle = new ActionBarDrawerToggle(this, navigation_layout,
         		R.drawable.ic_drawer,
                 R.string.app_name,
@@ -92,24 +86,14 @@ public class MainActivity extends Activity {
         };
         navigation_layout.setDrawerListener(navigation_toggle);
 		
+        if (savedInstanceState == null) {
+            // on first time display view for first nav item
+            display_fragment(0);
+        }
+        
 		// Database setup
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
-		
-		// Add mockup iou items
-		iouItems = new ArrayList<IouItem>();
-		
-		//add current iou items
-		ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
-		
-		mainListView = (ListView) findViewById(R.id.main_listView);
-
-		// Fill IOU items with db data
-		for (int i = 0; i < ious.size(); i++) {
-			iouItems.add(new IouItem(this, ious.get(i)));
-		}
-		
-		updateListView();
 	}
 
 	@Override
@@ -127,32 +111,11 @@ public class MainActivity extends Activity {
         return super.onPrepareOptionsMenu(menu);
     }
 	
-	public void open_contacts(View view){
-	}
-	
 	@Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         navigation_toggle.syncState();
     }
-
-	// Update the main view with the Items in iouItems
-	private void updateListView() {
-        adapter=new IouListAdapter(iouItems);
-        mainListView.setAdapter(adapter);
-        
-        mainListView.setOnItemClickListener( new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				
-				((IouListAdapter)parent.getAdapter()).setSelected(position);
-				
-			}
-        });
-        
-	}
 	
 	@Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -179,5 +142,43 @@ public class MainActivity extends Activity {
     public void setTitle(CharSequence title) {
         app_title = title;
         getActionBar().setTitle(app_title);
+    }
+	
+	private class NavigationClickListener implements ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+		        long id) {
+		    // display view for selected nav drawer item
+		    display_fragment(position);
+		}
+	}
+	
+	private void display_fragment(int position) {
+        // update the main content by replacing fragments
+        Fragment fragment = null;
+        switch (position) {
+        case 0:
+            fragment = new IouListFragment();
+            break;
+        case 1:
+            fragment = new ContactsFragment();
+            break;
+ 
+        default:
+            break;
+        }
+ 
+        if (fragment != null) {
+            FragmentManager fragment_manager = getFragmentManager();
+            fragment_manager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+ 
+            // Update title and close drawer
+            navigation_list.setItemChecked(position, true);
+            navigation_list.setSelection(position);
+            setTitle(navigation_titles[position]);
+            navigation_layout.closeDrawer(navigation_list);
+        } else {
+        	// Error creating fragment
+        }
     }
 }
