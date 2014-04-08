@@ -9,14 +9,13 @@ import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -25,62 +24,76 @@ import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
-
-	private String[] mPlanetTitles;
-	private DrawerLayout mDrawerLayout;
-	private ListView mDrawerList;
-	private CharSequence mTitle;
-	private ActionBarDrawerToggle mDrawerToggle;
+	private CharSequence app_title;
 	private ArrayList<IouItem> iouItems;
 	private ListView mainListView;
 	private IouListAdapter adapter;
+	
+	// Navigation drawer variables
+	private CharSequence navigation_title;
+	private String[] navigation_titles;
+	private TypedArray navigation_icons;
+	private DrawerLayout navigation_layout;
+	private ListView navigation_list;
+	private NavigationDrawerAdapter navigation_adapter;
+	private ArrayList<models.NavigationItem> navigation_items;
+	private ActionBarDrawerToggle navigation_toggle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-
-		mTitle = "Where's My Money";
+		setContentView(R.layout.navigation_drawer);
+		app_title = "Where's My Money";
+		navigation_title = app_title;
 		
-		//db setup
+		// Setup the navigation drawer
+		navigation_titles = getResources().getStringArray(R.array.nav_drawer_items);
+		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
+		navigation_layout = (DrawerLayout)findViewById(R.id.drawer_layout);
+		navigation_list = (ListView)findViewById(R.id.nav_drawer);
+		navigation_items = new ArrayList<models.NavigationItem>();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+		
+		// Add navigation links
+		navigation_items.add(new models.NavigationItem(navigation_titles[0],
+			navigation_icons.getResourceId(0, -1)));
+		navigation_items.add(new models.NavigationItem(navigation_titles[1],
+			navigation_icons.getResourceId(1, -1)));
+		navigation_items.add(new models.NavigationItem(navigation_titles[2],
+			navigation_icons.getResourceId(2, -1)));
+		navigation_items.add(new models.NavigationItem(navigation_titles[3],
+			navigation_icons.getResourceId(3, -1)));
+		navigation_items.add(new models.NavigationItem(navigation_titles[4],
+			navigation_icons.getResourceId(4, -1)));
+		navigation_items.add(new models.NavigationItem(navigation_titles[5],
+			navigation_icons.getResourceId(5, -1)));
+		navigation_icons.recycle();
+		
+		// Populate navigation drawer
+		navigation_adapter = new NavigationDrawerAdapter(getApplicationContext(),
+			navigation_items);
+		navigation_list.setAdapter(navigation_adapter);
+        navigation_toggle = new ActionBarDrawerToggle(this, navigation_layout,
+        		R.drawable.ic_drawer,
+                R.string.app_name,
+                R.string.app_name
+        		){
+            public void onDrawerClosed(View view) {
+                getActionBar().setTitle(app_title);
+                invalidateOptionsMenu();
+            }
+ 
+            public void onDrawerOpened(View drawerView) {
+                getActionBar().setTitle(navigation_title);
+                invalidateOptionsMenu();
+            }
+        };
+        navigation_layout.setDrawerListener(navigation_toggle);
+		
+		// Database setup
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
-
-		// Set left drawer Titles
-		mPlanetTitles = new String[]{"one", "two", "three"};
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-		// Set the adapter for the list view
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, mPlanetTitles));
-		// Set the list's click listener
-		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-		mDrawerToggle = new ActionBarDrawerToggle(
-				this,                  /* host Activity */
-				mDrawerLayout,         /* DrawerLayout object */
-				R.drawable.ic_drawer,  /* nav drawer icon to replace 'Up' caret */
-				R.string.drawer_open,  /* "open drawer" description */
-				R.string.drawer_close  /* "close drawer" description */
-				) {
-
-			/** Called when a drawer has settled in a completely closed state. */
-			public void onDrawerClosed(View view) {
-				getActionBar().setTitle(mTitle);
-			}
-
-			/** Called when a drawer has settled in a completely open state. */
-			public void onDrawerOpened(View drawerView) {
-				getActionBar().setTitle(mTitle);
-			}
-		};
-
-		// Set the drawer toggle as the DrawerListener
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
 		
 		// Add mockup iou items
 		iouItems = new ArrayList<IouItem>();
@@ -88,8 +101,8 @@ public class MainActivity extends Activity {
 
 		// Create sample IOU items with mockup data
 		for(int i=0; i<5; i++) {
-			IouItem temp = new IouItem(this, "Jimmy", "12/4/15 - 5 days ago", "Bag of Dicks", 420.01, false);
-			IouItem temp2 = new IouItem(this, "Jimmy", "12/4/15 - 5 days ago", "Bag of Dicks", -420.01, true);
+			IouItem temp = new IouItem(this, "Jimmy", "12/4/15 - 12 days ago", "October Rent", 530.00, false);
+			IouItem temp2 = new IouItem(this, "Jimmy", "12/4/15 - 3 days ago", "Halo 5", -420.01, true);
 			iouItems.add(temp);
 			iouItems.add(temp2);
 		}
@@ -103,17 +116,22 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	@Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // if nav drawer is opened, hide the action items
+        boolean drawerOpen = navigation_layout.isDrawerOpen(navigation_list);
+        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
+    }
+	
 	public void open_contacts(View view){
-		Intent open_contacts = new Intent(this, ContactsActivity.class);
-		startActivity(open_contacts);
 	}
 	
 	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		// Sync the toggle state after onRestoreInstanceState has occurred.
-		mDrawerToggle.syncState();
-	}
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        navigation_toggle.syncState();
+    }
 
 	// Update the main view with the Items in iouItems
 	private void updateListView() {
@@ -134,46 +152,29 @@ public class MainActivity extends Activity {
 	}
 	
 	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		mDrawerToggle.onConfigurationChanged(newConfig);
-	}
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        navigation_toggle.onConfigurationChanged(newConfig);
+    }
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Pass the event to ActionBarDrawerToggle, if it returns
-		// true, then it has handled the app icon touch event
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
+		if (navigation_toggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		// Handle your other action bar items...
-
-		return super.onOptionsItemSelected(item);
-	}
-	
-	/**
-	 * Swaps fragments in the main content view
-	 */
-	private void selectItem(int position) {
-		Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
-
-		// Highlight the selected item, update the title, and close the drawer
-		mDrawerList.setItemChecked(position, true);
-		setTitle(mPlanetTitles[position]);
-		mDrawerLayout.closeDrawer(mDrawerList);
+		
+		// Handle action bar actions click
+        switch (item.getItemId()) {
+        case R.id.action_settings:
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
 	}
 
 	@Override
-	public void setTitle(CharSequence title) {
-		mTitle = title;
-		getActionBar().setTitle(mTitle);
-	}
-
-	@SuppressWarnings("rawtypes")
-	private class DrawerItemClickListener implements ListView.OnItemClickListener {
-		@Override
-		public void onItemClick(AdapterView parent, View view, int position, long id) {
-			selectItem(position);
-		}
-	}
+    public void setTitle(CharSequence title) {
+        app_title = title;
+        getActionBar().setTitle(app_title);
+    }
 }

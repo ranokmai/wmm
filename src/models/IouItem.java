@@ -48,7 +48,7 @@ public class IouItem {
 		}
 		// Set image to be the launcher and hide the MoneyThumbnail
 		else {
-			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setImageResource(R.drawable.ic_bat);
+			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setImageResource(R.drawable.ic_logo);
 			((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setVisibility(View.GONE);
 		}
 		

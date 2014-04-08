@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">WheresMyMoney</string>
+    <string name="app_name">Where\'s My Money?</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_contacts">ContactsActivity</string>
-    <string name="drawer_open">Open</string>
-	<string name="drawer_close">Close</string>
-
+    <string name="drawer_open">Open Navigation</string>
+	<string name="drawer_close">Close Navigation</string>
+	
+	<!-- Navigation header text -->
+	<string-array name="nav_drawer_headers">
+	    <item>Your Money</item>
+	    <item>Application</item>
+	</string-array>
+	
+	<!-- Navigation drawer text -->
+    <string-array name="nav_drawer_items">
+        <item >Loans</item>
+        <item >Contacts</item>
+        <item >Reminders</item>
+        <item >Statistics</item>
+        <item >Settings</item>
+        <item >About</item>
+    </string-array>
+    
+    <!-- Navigation drawer icons -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_loans</item>
+        <item>@drawable/ic_contacts</item>
+        <item>@drawable/ic_reminders</item>
+        <item>@drawable/ic_statistics</item>
+        <item>@drawable/ic_settings</item>
+        <item>@drawable/ic_about</item>
+    </array>
+    <string name="desc_list_item_icon">Item Icon</string>
 </resources>
