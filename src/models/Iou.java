@@ -7,8 +7,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import com.example.wmm.R;
+
 import android.content.ContentValues;
+import android.content.Context;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /*Iou class
  * contains basic information about an exchange 
@@ -34,6 +40,22 @@ import android.util.Log;
 public class Iou {
 	
 	public static ArrayList<String> ITEM_TYPES;
+
+	
+	public static enum item_types_e {
+		NONE(0), MONEY(1), ITEM(2);
+		
+		private final int value;
+		private item_types_e(int v) {
+			value = v;
+		}
+		
+		public int get_val() {
+			return value;
+		}
+	
+	};
+	
 	
 	/**
 	 * @return the db_row_id
@@ -87,6 +109,7 @@ public class Iou {
 		iou.put(item_name, item_name_);
 		iou.put(contact_name,contact_name_);
 		iou.put(is_a_contact,is_a_contact_);
+		
 	}
 	
 	public Iou(String item_name_, String contact_name_, boolean is_a_contact_, 

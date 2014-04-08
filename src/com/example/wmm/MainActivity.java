@@ -26,6 +26,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 	private CharSequence app_title;
 	private ArrayList<IouItem> iouItems;
+	private ArrayList<Iou> ious;
 	private ListView mainListView;
 	private IouListAdapter adapter;
 	
@@ -97,15 +98,17 @@ public class MainActivity extends Activity {
 		
 		// Add mockup iou items
 		iouItems = new ArrayList<IouItem>();
+		
+		//add current iou items
+		ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
+		
 		mainListView = (ListView) findViewById(R.id.main_listView);
 
-		// Create sample IOU items with mockup data
-		for(int i=0; i<5; i++) {
-			IouItem temp = new IouItem(this, "Jimmy", "12/4/15 - 12 days ago", "October Rent", 530.00, false);
-			IouItem temp2 = new IouItem(this, "Jimmy", "12/4/15 - 3 days ago", "Halo 5", -420.01, true);
-			iouItems.add(temp);
-			iouItems.add(temp2);
+		// Fill IOU items with db data
+		for (int i = 0; i < ious.size(); i++) {
+			iouItems.add(new IouItem(this, ious.get(i)));
 		}
+		
 		updateListView();
 	}
 
