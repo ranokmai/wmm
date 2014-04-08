@@ -6,33 +6,27 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
     <!-- The main content view -->
-    <RelativeLayout
+    <LinearLayout
        android:id="@+id/content_frame"
        android:layout_width="match_parent"
-       android:layout_height="match_parent">
+       android:layout_height="match_parent"
+       android:orientation="vertical">
 		<ListView
 			android:id="@+id/main_listView"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content" 
-			android:layout_alignParentTop="true">
+			android:layout_height="0dp"
+			android:layout_weight="1">
 		</ListView>
-		  
-		<RelativeLayout 
-        	android:id="@+id/inner_relative_layout"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentBottom="true" >
 	    
-		    <Button 
-	            android:text="Add New IOU" 
-	            android:id="@+id/add_new_button" 
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content">
-        	</Button>
-		    
-		</RelativeLayout>
-		  
-    </RelativeLayout>
+	    <Button 
+            android:text="Add New IOU" 
+            android:id="@+id/add_new_button" 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0">
+       	</Button>
+	    
+    </LinearLayout>
     
     <!-- The navigation drawer -->
     <ListView
