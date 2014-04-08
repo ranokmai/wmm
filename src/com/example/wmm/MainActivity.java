@@ -1,8 +1,8 @@
 package com.example.wmm;
 
 import java.util.ArrayList;
-import models.IouItem;
 
+import models.IouItem;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
 	private String[] mPlanetTitles;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
-	private CharSequence mTitle;
+	private String mTitle;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private ArrayList<IouItem> iouItems;
 	private ListView mainListView;
@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		mTitle = "Where's My Money";
+		mTitle = ((Integer)R.string.app_name).toString();
 
 		// Set left drawer Titles
 		mPlanetTitles = new String[]{"one", "two", "three"};
@@ -102,6 +102,7 @@ public class MainActivity extends Activity {
 		startActivity(open_contacts);
 	}
 	
+	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -122,6 +123,8 @@ public class MainActivity extends Activity {
 				
 				((IouListAdapter)parent.getAdapter()).setSelected(position);
 				
+				Intent open_addiou = new Intent( MainActivity.this , AddIouActivity.class);
+				startActivity(open_addiou);
 			}
         });
         
@@ -159,7 +162,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	public void setTitle(CharSequence title) {
-		mTitle = title;
+		mTitle = title.toString();
 		getActionBar().setTitle(mTitle);
 	}
 

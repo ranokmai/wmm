@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView1"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/relativeView1"
+        android:layout_width="wrap_content"
+        android:layout_height="430dp" >
+
+        <TextView
+            android:id="@+id/addIouIouTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="12dp"
+            android:text="@string/new_iou_title"
+            android:textSize="16sp" />
+        
+         <EditText
+             android:id="@+id/addIouTitleField"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:layout_alignBottom="@+id/addIouIouTitle"
+             android:layout_alignParentRight="true"
+             android:layout_toRightOf="@+id/addIouIouTitle"
+             android:layout_marginLeft="50dp"
+             android:ems="10"
+             android:focusable="true"
+             android:hint="@string/new_iou_title_hint"
+             android:padding="10dp" >
+
+            <requestFocus />
+        </EditText>
+
+        <Spinner
+            android:id="@+id/addIouTypes"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/addIouTitleField"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/addIouTitleField" />
+
+        <TextView
+            android:id="@+id/addIouType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/addIouTypes"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="14dp"
+            android:text="@string/new_iou_type"
+            android:textSize="16sp" />
+        
+        <TextView
+            android:id="@+id/addIouValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addIouType"
+            android:layout_alignParentLeft="true"
+            android:text="@string/new_iou_value"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/addIouValueField"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/addIouValue"
+            android:layout_alignLeft="@+id/addIouTypes"
+            android:layout_toLeftOf="@+id/addIouValue$"
+            android:ems="10"
+            android:focusable="true"
+            android:inputType="numberDecimal"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/addIouValue$"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/addIouTypes"
+            android:text="@string/new_iou_value_$"
+            android:textSize="16sp" />
+        
+        <Spinner
+            android:id="@+id/addIouDirections"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/addIouValue"
+            android:layout_toLeftOf="@+id/addIouValueField" />
+        
+        <Spinner
+            android:id="@+id/addIouContacts"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/addIouValueField"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/addIouDirections" />
+         <!--  android:layout_marginLeft="20dp" -->
+		
+		<TextView
+		    android:id="@+id/addIouHeader"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignTop="@+id/addIouSeparator"
+		    android:layout_marginTop="3dp"
+		    android:text="@string/new_iou_details"
+		    android:textSize="16sp" />
+
+		<View
+		    android:id="@+id/addIouSeparator"
+		    android:layout_width="fill_parent"
+		    android:layout_height="1dp"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/addIouDirections"
+		    android:layout_marginTop="3dp"
+		    android:background="@android:color/darker_gray"
+		    android:paddingTop="50dp" />
+        
+		
+		<Spinner
+		    android:id="@+id/addIouPicture"
+		    android:layout_width="150dp"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/addIouHeader" />
+		
+		<TextView
+		    android:id="@+id/addIouDateLoaned"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/addIouPicture"
+		    android:layout_marginTop="20dp"
+		    android:text="@string/new_iou_date_loaned"
+		    android:textSize="16sp" />
+		
+		<DatePicker
+		    android:id="@+id/addIouDatePicker1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentRight="true"
+		    android:layout_below="@+id/addIouDateLoaned"
+		    android:calendarViewShown="false" />
+		
+		<TextView
+		    android:id="@+id/addIouDateDue"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/addIouDatePicker1"
+		    android:text="@string/new_iou_date_due"
+		    android:textSize="16sp" />
+		
+		<DatePicker
+		    android:id="@+id/addIouDatePicker2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentRight="true"
+		    android:layout_below="@+id/addIouDateDue"
+		    android:calendarViewShown="false" />
+		
+		<View
+		    android:id="@+id/addIouSeparator2"
+		    android:layout_width="fill_parent"
+		    android:layout_height="1dp"
+		    android:layout_below="@+id/addIouDatePicker2"
+		    android:layout_marginTop="21dp"
+		    android:background="@android:color/darker_gray"
+		    android:paddingTop="30dp" />
+		
+		<TextView
+		    android:id="@+id/addIouHeader2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@+id/addIouSeparator2"
+		    android:text="@string/new_iou_reminders"
+		    android:textSize="16sp" />
+		
+		<View
+		    android:id="@+id/addIouSeparator3"
+		    android:layout_width="fill_parent"
+		    android:layout_height="1dp"
+		    android:layout_below="@+id/addIouHeader2"
+		    android:layout_marginTop="21dp"
+		    android:background="@android:color/darker_gray"
+		    android:paddingTop="30dp" />
+		
+		<TextView
+		    android:id="@+id/addIouHeader3"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@+id/addIouSeparator3"
+		    android:text="@string/new_iou_notes"
+		    android:textSize="16sp" />
+		
+		<EditText
+		    android:id="@+id/addIouNotes"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentRight="true"
+		    android:layout_below="@+id/addIouHeader3"
+		    android:hint="@string/new_iou_notes_hint"
+		    android:lines="8"
+		    android:minLines="6"
+		    android:scrollbars="vertical" />
+
+		<ImageView
+		    android:id="@+id/addIouPictureViewer"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignTop="@+id/addIouPicture"
+		    android:layout_marginTop="14dp"
+		    android:layout_toLeftOf="@+id/addIouValue$"
+		    android:layout_marginRight="14dp"
+		    android:scaleType="center"
+		    android:src="@drawable/ic_bat" />
+         
+    </RelativeLayout>
+
+</ScrollView>
