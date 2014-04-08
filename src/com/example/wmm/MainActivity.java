@@ -1,6 +1,7 @@
 package com.example.wmm;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import models.Global;
 import models.Iou;
@@ -39,7 +40,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.navigation_drawer);
 		app_title = "Where's My Money";
 		navigation_title = app_title;
-		
+				
 		// Setup the navigation drawer
 		navigation_titles = getResources().getStringArray(R.array.nav_drawer_items);
 		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
@@ -86,10 +87,10 @@ public class MainActivity extends Activity {
         };
         navigation_layout.setDrawerListener(navigation_toggle);
 		
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             // on first time display view for first nav item
             display_fragment(0);
-        }
+        }*/
         
 		// Database setup
 		Global.setup_db_mgr(getApplicationContext());

@@ -7,6 +7,7 @@ CREATE TABLE ious (
 	outbound INTEGER,
 	date_borrowed TEXT,
 	date_due TEXT,
+	date_completed TEXT,
 	value REAL,
 	picture_loc TEXT,
 	notes TEXT);
