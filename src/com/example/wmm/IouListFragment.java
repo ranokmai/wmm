@@ -7,12 +7,15 @@ import models.Iou;
 import models.IouItem;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
  
@@ -34,6 +37,18 @@ public class IouListFragment extends Fragment{
 		iou_list = (ListView) rootView.findViewById(R.id.iou_list);
 		
 		updateListView();
+		
+		Button b = (Button)(rootView.findViewById(R.id.add_new_button));
+		b.setOnClickListener( new OnClickListener() {
+
+			public void onClick(View view) {
+				
+				 // Display the fragment as the main content.
+				Intent intent = new Intent( getActivity(), NewIouActivity.class);
+			    startActivity(intent);
+			}
+
+		});
 		
         return rootView;
     }

@@ -21,9 +21,11 @@ import android.view.Menu;
 import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -113,24 +115,8 @@ public class MainActivity extends Activity {
 			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
 			
 			Global.iou_db_mgr.insertIou(test1);
-		}
-		
-		mainListView = (ListView) findViewById(R.id.main_list_view);
-		
-		updateListView();
-		
-		Button b = (Button)findViewById(R.id.add_new_button);
-		b.setOnClickListener( new OnClickListener() {
+		}		
 
-			@Override
-			public void onClick(View view) {
-				
-				 // Display the fragment as the main content.
-				Intent intent = new Intent( MainActivity.this, NewIouActivity.class);
-			    startActivity(intent);
-			}
-			
-		});
 	}
 	
 	private class SlideMenuClickListener implements ListView.OnItemClickListener {
@@ -191,6 +177,7 @@ public class MainActivity extends Activity {
         super.onPostCreate(savedInstanceState);
         navigation_toggle.syncState();
     }
+	
 	
 	@Override
     public void onConfigurationChanged(Configuration newConfig) {
