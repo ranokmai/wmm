@@ -114,6 +114,23 @@ public class MainActivity extends Activity {
 			
 			Global.iou_db_mgr.insertIou(test1);
 		}
+		
+		mainListView = (ListView) findViewById(R.id.main_list_view);
+		
+		updateListView();
+		
+		Button b = (Button)findViewById(R.id.add_new_button);
+		b.setOnClickListener( new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				
+				 // Display the fragment as the main content.
+				Intent intent = new Intent( MainActivity.this, NewIouActivity.class);
+			    startActivity(intent);
+			}
+			
+		});
 	}
 	
 	private class SlideMenuClickListener implements ListView.OnItemClickListener {
@@ -195,7 +212,7 @@ public class MainActivity extends Activity {
             return super.onOptionsItemSelected(item);
         }
 	}
-
+	
 	@Override
     public void setTitle(CharSequence title) {
         app_title = title;
