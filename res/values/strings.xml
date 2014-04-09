@@ -23,8 +23,8 @@
 	<string name="new_iou_value_$">$</string>
 	
 	<string-array name="new_iou_direction">
-        <item>Loaned To:</item>
-        <item>Borrowed From:</item>
+        <item>To:</item>
+        <item>From:</item>
     </string-array>
 	<string-array name="new_iou_subjects">
         <item>Add from Contacts</item>
