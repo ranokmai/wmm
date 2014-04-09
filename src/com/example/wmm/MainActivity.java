@@ -99,19 +99,20 @@ public class MainActivity extends Activity {
         navigation_layout.setDrawerListener(navigation_toggle);
 		
 		// Database setup
+        
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
-		
+
 		if (savedInstanceState == null) {
             // on first time display view for first nav item
             display_fragment(0);
         }
 		
-		for(int i=0; i<5; i++) {
-			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
-			
-			Global.iou_db_mgr.insertIou(test1);
-		}
+//		for(int i=0; i<5; i++) {
+//			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
+//			
+//			Global.iou_db_mgr.insertIou(test1);
+//		}
 	}
 	
 	private class SlideMenuClickListener implements ListView.OnItemClickListener {

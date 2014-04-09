@@ -82,7 +82,10 @@ public class IouItem {
 		((TextView) layout.findViewById(R.id.singleItemAmount)).setText(item_name);
 		
 		// If this IOU is money or not money, use an Image for not money, and text for money
-		if(iou.item_type().equals(Iou.ITEM_TYPES.get(Iou.item_types_e.MONEY.get_val()))) {
+		
+		String temp = iou.item_type();
+		
+		if(temp.equals("Money")) {
 			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setVisibility(View.GONE);
 			
 			// Set color to red if amount is negative
