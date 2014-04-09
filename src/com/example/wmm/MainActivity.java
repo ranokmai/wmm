@@ -94,8 +94,11 @@ public class MainActivity extends Activity {
         navigation_layout.setDrawerListener(navigation_toggle);
 		
 		// Database setup
+        
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
+		
+		Global.iou_db_mgr.reset_db();
 		
 		for(int i=0; i<5; i++) {
 			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");

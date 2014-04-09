@@ -40,22 +40,6 @@ import android.widget.TextView;
 public class Iou {
 	
 	public static ArrayList<String> ITEM_TYPES;
-
-	
-	public static enum item_types_e {
-		NONE(0), MONEY(1), ITEM(2);
-		
-		private final int value;
-		private item_types_e(int v) {
-			value = v;
-		}
-		
-		public int get_val() {
-			return value;
-		}
-	
-	};
-	
 	
 	/**
 	 * @return the db_row_id
@@ -114,7 +98,7 @@ public class Iou {
 	
 	public Iou(String item_name_, String contact_name_, boolean is_a_contact_, 
 			String item_type_, boolean outbound_, Date date_borrowed_, Date date_due_,
-			double value_, String pic_loc_, String notes_) {
+			Double value_, String pic_loc_, String notes_) {
 		
 		iou = new ContentValues();
 		
@@ -123,17 +107,17 @@ public class Iou {
 		iou.put(is_a_contact,is_a_contact_);
 		
 		if (ITEM_TYPES.contains(item_type_)) {
-			iou.put(item_type, ITEM_TYPES.indexOf(item_type_));
+			iou.put(item_type, item_type_);
 		}
 		else {
-			iou.put(item_type, 0);
+			iou.put(item_type, "None");
 		}
 		
 		iou.put(outbound, outbound_);
 		iou.put(date_borrowed, Global.date_to_str(date_borrowed_));
 		iou.put(date_due, Global.date_to_str(date_due_));
 		iou.put(date_completed, Global.date_to_str(Global.DATE_MAX));
-		iou.put(value, value_);
+		iou.put(value, value_.toString());
 		iou.put(pic_loc, pic_loc_);
 		iou.put(notes, notes_);
 		
@@ -147,12 +131,12 @@ public class Iou {
 		iou.put(item_name, new String());
 		iou.put(contact_name, new String());
 		iou.put(is_a_contact, false);
-		iou.put(item_type, 0);
+		iou.put(item_type, "None");
 		iou.put(outbound, false);
 		iou.put(date_borrowed, Global.date_to_str(new Date()));
 		iou.put(date_due, Global.date_to_str(Global.DATE_MAX));
 		iou.put(date_completed, Global.date_to_str(Global.DATE_MAX));
-		iou.put(value, 0.0);
+		iou.put(value, "0.0");
 		iou.put(pic_loc, new String());
 		iou.put(notes, new String());
 		
@@ -176,7 +160,7 @@ public class Iou {
 	public String contact_name() {return iou.getAsString(contact_name);}
 	public Boolean is_a_contact() {return iou.getAsBoolean(is_a_contact);}
 	
-	public String item_type() {return ITEM_TYPES.get(iou.getAsInteger(item_type));}
+	public String item_type() {return iou.getAsString(item_type);}
 	public Boolean outbound() {return iou.getAsBoolean(outbound);}
 	
 	public Date date_borrowed() {
@@ -225,7 +209,7 @@ public class Iou {
 		
 	}
 	
-	public Double value() {return iou.getAsDouble(value);}
+	public Double value() {return Double.parseDouble(iou.getAsString(value));}
 	public String pic_loc() {return iou.getAsString(pic_loc);}
 	public String notes() {return iou.getAsString(notes);}
 	
@@ -239,10 +223,10 @@ public class Iou {
 		iou.remove(item_type);
 		
 		if (ITEM_TYPES.contains(item_type_)) {
-			iou.put(item_type, ITEM_TYPES.indexOf(item_type_));
+			iou.put(item_type, item_type_);
 		}
 		else {
-			iou.put(item_type, 0);
+			iou.put(item_type, "None");
 		}
 	
 	}
@@ -250,7 +234,7 @@ public class Iou {
 	public void update_date_borrowed(Date date_borrowed_) {iou.remove(date_borrowed); iou.put(date_borrowed, Global.date_to_str(date_borrowed_));}
 	public void update_date_due(Date date_due_) {iou.remove(date_due); iou.put(date_due, Global.date_to_str(date_due_));}
 	public void update_date_completed(Date date_completed_) {iou.remove(date_completed); iou.put(date_completed, Global.date_to_str(date_completed_));}
-	public void update_value(double value_) {iou.remove(value); iou.put(value, value_);}
+	public void update_value(Double value_) {iou.remove(value); iou.put(value, value_.toString());}
 	public void update_pic_loc(String pic_loc_) {iou.remove(pic_loc); iou.put(pic_loc, pic_loc_);}
 	public void update_notes(String notes_) {iou.remove(notes); iou.put(notes, notes_);}
 	

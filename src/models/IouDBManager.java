@@ -107,9 +107,9 @@ public class IouDBManager {
 			date_s = cursor.getString(7);
 			Date d = Global.str_to_date(date_s);
 			
-			double val = cursor.getDouble(8);
-			String pic = cursor.getString(9);
-			String notes = cursor.getString(10);
+			Double val = Double.parseDouble(cursor.getString(9));
+			String pic = cursor.getString(10);
+			String notes = cursor.getString(11);
 			
 			Iou temp = new Iou(i_name, c, is_c, i_type, is_o, b, d, val, pic, notes);
 			temp.setDb_row_id(cursor.getLong(0));
