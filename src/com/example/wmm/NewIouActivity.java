@@ -34,7 +34,7 @@ public class NewIouActivity extends Activity {
         
         Intent intent = getIntent();
         
-        setContentView(R.layout.fragment_new_iou);
+        setContentView(R.layout.activity_new_iou);
         getActionBar().setTitle(R.string.app_add_iou);
      
          //Initialize the page with values now
