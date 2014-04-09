@@ -48,18 +48,29 @@ public class IouListFragment extends Fragment{
     
     // Update the main view with the Items in iouItems
  	private void updateListView() {
-         adapter=new IouListAdapter(iouItems);
-         iou_list.setAdapter(adapter);
-         
-         iou_list.setOnItemClickListener( new OnItemClickListener() {
+ 		//make sure initialized
+		iouItems = new ArrayList<IouItem>();
+		
+		//add current iou items
+		ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
+		
+		// Fill iouItems with db data
+		for (int i = 0; i < ious.size(); i++) {
+			iouItems.add(new IouItem(getActivity(), ious.get(i)));
+		}
+		
+        adapter = new IouListAdapter(iouItems);
+        iou_list.setAdapter(adapter);
+        
+        iou_list.setOnItemClickListener( new OnItemClickListener() {
 
- 			@Override
- 			public void onItemClick(AdapterView<?> parent, View view, int position,
- 					long id) {
- 				
- 				((IouListAdapter)parent.getAdapter()).setSelected(position);
- 				
- 			}
-         });
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				
+				((IouListAdapter)parent.getAdapter()).setSelected(position);
+				
+			}
+        });
  	}
 }

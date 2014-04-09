@@ -5,14 +5,18 @@ import java.util.GregorianCalendar;
 
 import models.Global;
 import models.Iou;
+import models.IouDBManager;
 import models.IouItem;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.content.Intent;
 import android.view.MenuItem;
@@ -76,6 +80,7 @@ public class MainActivity extends Activity {
 		navigation_adapter = new NavigationDrawerAdapter(getApplicationContext(),
 			navigation_items);
 		navigation_list.setAdapter(navigation_adapter);
+		navigation_list.setOnItemClickListener(new SlideMenuClickListener());
         navigation_toggle = new ActionBarDrawerToggle(this, navigation_layout,
         		R.drawable.ic_drawer,
                 R.string.app_name,
@@ -97,16 +102,55 @@ public class MainActivity extends Activity {
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
 		
+		if (savedInstanceState == null) {
+            // on first time display view for first nav item
+            display_fragment(0);
+        }
+		
 		for(int i=0; i<5; i++) {
 			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
 			
 			Global.iou_db_mgr.insertIou(test1);
 		}
-		
-		mainListView = (ListView) findViewById(R.id.main_list_view);
-		
-		updateListView();
 	}
+	
+	private class SlideMenuClickListener implements ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			// display view for selected nav drawer item
+			display_fragment(position);
+		}
+	}
+	
+	private void display_fragment(int position) {
+        // update the main content by replacing fragments
+        Fragment fragment = null;
+        switch (position) {
+        case 0:
+            fragment = new IouListFragment();
+            break;
+        case 1:
+            fragment = new ContactsFragment();
+            break;
+ 
+        default:
+            break;
+        }
+ 
+        if (fragment != null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+ 
+            // Update the title and close the drawer
+            navigation_list.setItemChecked(position, true);
+            navigation_list.setSelection(position);
+            setTitle(navigation_titles[position]);
+            navigation_layout.closeDrawer(navigation_list);
+        } else {
+            // error in creating fragment
+            Log.e("MainActivity", "Error creating fragment from navigation drawer.");
+        }
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -117,53 +161,17 @@ public class MainActivity extends Activity {
 	
 	@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // if nav drawer is opened, hide the action items
+        // If nav drawer is opened, hide the action items
         boolean drawerOpen = navigation_layout.isDrawerOpen(navigation_list);
         menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
-	
-	public void open_contacts(View view){
-		
-		getFragmentManager().beginTransaction().replace( android.R.id.content, new ContactsFragment()).commit();
-		
-	}
 	
 	@Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         navigation_toggle.syncState();
     }
-
-	// Update the main view with the Items in iouItems
-	private void updateListView() {
-		
-		//make sure initialized
-		iouItems = new ArrayList<IouItem>();
-		
-		//add current iou items
-		ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
-		
-		// Fill iouItems with db data
-		for (int i = 0; i < ious.size(); i++) {
-			iouItems.add(new IouItem(this, ious.get(i)));
-		}
-		
-        adapter = new IouListAdapter(iouItems);
-        mainListView.setAdapter(adapter);
-        
-        mainListView.setOnItemClickListener( new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				
-				((IouListAdapter)parent.getAdapter()).setSelected(position);
-				
-			}
-        });
-        
-	}
 	
 	@Override
     public void onConfigurationChanged(Configuration newConfig) {
