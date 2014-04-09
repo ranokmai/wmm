@@ -31,7 +31,7 @@ public class Global {
 	}
 
 	//for date formatting:
-	public static String date_format = "yyyy-MM-dd HH:mm:ss.S";
+	public static String date_format = "yyyy-MM-dd";
 	
 	public static Date str_to_date(String s)  {
 		
