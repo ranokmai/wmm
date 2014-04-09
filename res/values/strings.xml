@@ -33,8 +33,7 @@
 
 	<string-array name="new_iou_pictures">
         <item>Picture...</item>
-        <item>Take New</item>
-        <item>Choose Existing</item>
+        <item>Add Picture</item>
         
     </string-array>
 	

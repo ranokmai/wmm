@@ -68,11 +68,7 @@ public class NewIouActivity extends Activity {
 
 			@Override
 			public void onClick(View view) {
-				
-				if( spinner4.getSelectedItemId() == 0 ){
-					// code to get picture from lib
-				}
-				else {
+				if (spinner4.getSelectedItemPosition() == 1){
 					// code to take new picture
 				}
 			}

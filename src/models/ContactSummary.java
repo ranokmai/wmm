@@ -1,5 +1,7 @@
 package models;
 
+import android.util.Log;
+
 //A small data class for things to be displayed on contact summary page
 //has the name, the total number of items exchanged, and the total value of all items
 //can be split up into outbound/inbound trades later
@@ -18,5 +20,16 @@ public class ContactSummary {
 	public String contact() {return contact;}
 	public int items_exchanged() {return items_exchanged;}
 	public double total_val() {return total_val;}
+	
+	public void print() {
+		
+		String s = new String();
+		
+		s += "Name: " + contact();
+		s += "Items exchanged: " + items_exchanged();
+		s += "Total value: " + total_val();
+		
+		Log.i("contact_summary_output", s);
+	}
 	
 }

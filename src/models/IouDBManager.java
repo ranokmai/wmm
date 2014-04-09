@@ -230,12 +230,12 @@ public class IouDBManager {
 	public ArrayList<ContactSummary> get_contact_summaries() {
 
 		Cursor cursor = sqldb.rawQuery("SELECT DISTINCT contact, COUNT(*) as total_items, SUM(value) as total_val "
-				+ "FROM ious ORDER BY contact DESC", null);
+				+ "FROM ious GROUP BY contact ORDER BY contact DESC", null);
 		
 		ArrayList<ContactSummary> contact_summaries = new ArrayList<ContactSummary>();
 		
 		while (cursor.moveToNext()) {
-			contact_summaries.add(new ContactSummary(cursor.getString(1), cursor.getInt(2), cursor.getDouble(3)));
+			contact_summaries.add(new ContactSummary(cursor.getString(0), cursor.getInt(1), cursor.getDouble(2)));
 		}
 		
 		cursor.close();
