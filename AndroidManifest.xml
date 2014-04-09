@@ -22,6 +22,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+                
+        <activity
+	        android:name="com.example.wmm.NewIouActivity"
+	        android:label="@string/app_add_iou"
+	        android:parentActivityName="com.example.wmm.MainActivity" >
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="com.example.wmm.MainActivity" />
+    	</activity>
     </application>
 
 </manifest>

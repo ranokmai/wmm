@@ -3,6 +3,7 @@ package com.example.wmm;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,13 +16,25 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class AddIouActivity extends Activity {
+@SuppressLint("NewApi")
+public class NewIouActivity extends Activity {
 
-    @SuppressLint("NewApi")
+	public NewIouActivity() {
+	
+	}
+	
+    public NewIouActivity(MainActivity parent,
+			Class<NewIouActivity> class1) {
+	}
+
+	@SuppressLint("NewApi")
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_iou_item);
+        
+        Intent intent = getIntent();
+        
+        setContentView(R.layout.fragment_new_iou);
         getActionBar().setTitle(R.string.app_add_iou);
      
          //Initialize the page with values now
@@ -38,24 +51,17 @@ public class AddIouActivity extends Activity {
 		 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		 spinner2.setAdapter(adapter);
 		 
-		 Button b = (Button) findViewById(R.id.addIouDirections);
-		 b.setOnClickListener( new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				
-				if( ((TextView)view).getText() == "@string/new_iou_direction_to" )
-					((TextView)view).setText( "@string/new_iou_date_direction_from");
-				else
-					((TextView)view).setText( "@string/new_iou_date_direction_to");
-			}
-		 });
+		 Spinner spinner3 = (Spinner) findViewById(R.id.addIouDirections);
+		 adapter = ArrayAdapter.createFromResource(this,
+		         R.array.new_iou_direction, android.R.layout.simple_spinner_item);
+		 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		 spinner3.setAdapter(adapter);
 		 
-		 final Spinner spinner3 = (Spinner) findViewById(R.id.addIouPicture);
+		 final Spinner spinner4 = (Spinner) findViewById(R.id.addIouPicture);
 		 adapter = ArrayAdapter.createFromResource(this,
 		         R.array.new_iou_pictures, android.R.layout.simple_spinner_item);
 		 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		 spinner3.setAdapter(adapter);
+		 spinner4.setAdapter(adapter);
 		 
 		 ImageView iv = (ImageView) findViewById(R.id.addIouPictureViewer);
 		 iv.setOnClickListener( new OnClickListener() {
@@ -63,7 +69,7 @@ public class AddIouActivity extends Activity {
 			@Override
 			public void onClick(View view) {
 				
-				if( spinner3.getSelectedItemId() == 0 ){
+				if( spinner4.getSelectedItemId() == 0 ){
 					// code to get picture from lib
 				}
 				else {
@@ -100,7 +106,7 @@ public class AddIouActivity extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                   Bundle savedInstanceState) {
-              View rootView = inflater.inflate(R.layout.fragment_display_contacts,
+              View rootView = inflater.inflate(R.layout.fragment_contacts,
                       container, false);
               return rootView;
         }

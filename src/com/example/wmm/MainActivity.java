@@ -6,25 +6,22 @@ import java.util.GregorianCalendar;
 import models.Global;
 import models.Iou;
 import models.IouItem;
-import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
+import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
-import android.content.Intent;
-import android.graphics.Color;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
@@ -109,6 +106,23 @@ public class MainActivity extends Activity {
 		mainListView = (ListView) findViewById(R.id.main_list_view);
 		
 		updateListView();
+		
+		
+		Button b = (Button)findViewById(R.id.add_new_button);
+		
+		b.setOnClickListener( new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				
+				 // Display the fragment as the main content.
+				Intent intent = new Intent( MainActivity.this, NewIouActivity.class);
+			    startActivity(intent);
+
+				
+			}
+			
+		});
 	}
 
 	@Override

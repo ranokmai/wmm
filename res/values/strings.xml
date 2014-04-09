@@ -10,16 +10,16 @@
 	<string name="drawer_close">Close</string>
 
 	<!-- iou new -->
-	<string name="new_iou_title">IOU Title:</string>
+	<string name="new_iou_title">   IOU Title:</string>
 	<string name="new_iou_title_hint">ex: Books</string>
 	
-	<string name="new_iou_type">Type:</string>
+	<string name="new_iou_type">   Type:</string>
 	<string-array name="new_iou_types">
         <item>Money</item>
         <item>Item</item>
     </string-array>
     
-	<string name="new_iou_value">Value:</string>
+	<string name="new_iou_value">   Value:</string>
 	<string name="new_iou_value_$">$</string>
 	
 	<string-array name="new_iou_direction">
@@ -32,8 +32,10 @@
     </string-array>
 
 	<string-array name="new_iou_pictures">
+        <item>Picture...</item>
         <item>Take New</item>
         <item>Choose Existing</item>
+        
     </string-array>
 	
 	<string name="new_iou_date_loaned">Date Loaned: </string>
