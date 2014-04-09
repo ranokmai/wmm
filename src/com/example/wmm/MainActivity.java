@@ -107,7 +107,6 @@ public class MainActivity extends Activity {
 		
 		updateListView();
 		
-		
 		Button b = (Button)findViewById(R.id.add_new_button);
 		
 		b.setOnClickListener( new OnClickListener() {
@@ -118,8 +117,6 @@ public class MainActivity extends Activity {
 				 // Display the fragment as the main content.
 				Intent intent = new Intent( MainActivity.this, NewIouActivity.class);
 			    startActivity(intent);
-
-				
 			}
 			
 		});
