@@ -29,18 +29,10 @@ public class IouListFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
     		Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        
-	     // Add mockup IOU items
-		iouItems = new ArrayList<IouItem>();
 		
 		// Add current iou items
-		ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
 		iou_list = (ListView) rootView.findViewById(R.id.iou_list);
 		
-		// Fill IOU items with db data
-		for (int i = 0; i < ious.size(); i++) {
-			iouItems.add(new IouItem(getActivity(), ious.get(i)));
-		}
 		updateListView();
 		
         return rootView;

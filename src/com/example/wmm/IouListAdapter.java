@@ -51,7 +51,7 @@ public class IouListAdapter extends BaseAdapter {
 			if( selected != -1 ) 
 				data.get(selected).getView().setBackgroundColor( Color.TRANSPARENT);
 			
-			data.get(select).getView().setBackgroundColor( Color.parseColor( "#0000cc") );
+			data.get(select).getView().setBackgroundColor( Color.parseColor( "#4c4c4c") );
 			selected = select; 
 		}
 		
