@@ -1,13 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Where\'s My Money?</string>
+
+    <string name="app_name">Where\'s My Money</string>
+    <string name="app_add_iou">Where\'s My Money: New IOU</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_contacts">ContactsActivity</string>
-    <string name="drawer_open">Open Navigation</string>
-	<string name="drawer_close">Close Navigation</string>
+    <string name="drawer_open">Open</string>
+	<string name="drawer_close">Close</string>
+
+	<!-- iou new -->
+	<string name="new_iou_title">   IOU Title:</string>
+	<string name="new_iou_title_hint">ex: Books</string>
 	
-	<!-- Navigation header text -->
+	<string name="new_iou_type">   Type:</string>
+	<string-array name="new_iou_types">
+        <item>Money</item>
+        <item>Item</item>
+    </string-array>
+    
+	<string name="new_iou_value">   Value:</string>
+	<string name="new_iou_value_$">$</string>
+	
+	<string-array name="new_iou_direction">
+        <item>Loaned To:</item>
+        <item>Borrowed From:</item>
+    </string-array>
+	<string-array name="new_iou_subjects">
+        <item>Add from Contacts</item>
+        <item>Enter name</item>
+    </string-array>
+
+	<string-array name="new_iou_pictures">
+        <item>Picture...</item>
+        <item>Take New</item>
+        <item>Choose Existing</item>
+        
+    </string-array>
+	
+	<string name="new_iou_date_loaned">Date Loaned: </string>
+	<string name="new_iou_date_due">Date due: </string>
+	
+	<string name="new_iou_notes_hint">Click to add notes...</string>
+	
+	<string name="new_iou_details">Details</string>
+	<string name="new_iou_reminders">Reminders</string>
+	<string name="new_iou_notes">Notes</string>
+
+		<!-- Navigation header text -->
 	<string-array name="nav_drawer_headers">
 	    <item>Your Money</item>
 	    <item>Application</item>
@@ -33,4 +73,5 @@
         <item>@drawable/ic_about</item>
     </array>
     <string name="desc_list_item_icon">Item Icon</string>
+
 </resources>

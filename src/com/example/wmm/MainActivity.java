@@ -104,7 +104,8 @@ public class MainActivity extends Activity {
 			Iou test1 = new Iou("Poop and Stuff", "Jeffrey Dahmer", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
 			
 			Global.iou_db_mgr.insertIou(test1);
-		}
+		}		
+
 	}
 	
 	private class SlideMenuClickListener implements ListView.OnItemClickListener {
@@ -166,6 +167,7 @@ public class MainActivity extends Activity {
         navigation_toggle.syncState();
     }
 	
+	
 	@Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -186,7 +188,7 @@ public class MainActivity extends Activity {
             return super.onOptionsItemSelected(item);
         }
 	}
-
+	
 	@Override
     public void setTitle(CharSequence title) {
         app_title = title;
