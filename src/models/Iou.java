@@ -7,14 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import com.example.wmm.R;
-
 import android.content.ContentValues;
-import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 /*Iou class
  * contains basic information about an exchange 

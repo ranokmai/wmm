@@ -15,6 +15,7 @@ import android.widget.TextView;
  * @author Galen
  *
  */
+@SuppressWarnings("unused")
 public class IouItem {
 	private RelativeLayout layout;
 	private String contact, date, item_name;
