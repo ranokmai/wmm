@@ -108,11 +108,12 @@ public class MainActivity extends Activity {
             display_fragment(0);
         }
 		
-//		for(int i=0; i<5; i++) {
-//			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
-//			
-//			Global.iou_db_mgr.insertIou(test1);
-//		}
+		IouDBManager.reset_db();
+		for(int i=0; i<5; i++) {
+			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
+			
+			Global.iou_db_mgr.insertIou(test1);
+		}
 	}
 	
 	private class SlideMenuClickListener implements ListView.OnItemClickListener {

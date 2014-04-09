@@ -23,7 +23,7 @@
         android:paddingTop="16dp"
         android:layout_marginRight="12dp"
         android:text="$420.00"
-        android:textColor="#00FF00"
+        android:textColor="#27AE60"
         android:textSize="12pt" />
 
     <TextView
