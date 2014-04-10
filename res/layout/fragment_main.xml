@@ -12,7 +12,7 @@
 	</ListView>
 	<Button 
     	android:text="Add New IOU" 
-        android:id="@+id/add_new_button" 
+        android:id="@+id/add_new_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0">
