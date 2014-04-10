@@ -107,9 +107,9 @@ public class IouDBManager {
 			date_s = cursor.getString(7);
 			Date d = Global.str_to_date(date_s);
 			
-			double val = cursor.getDouble(8);
-			String pic = cursor.getString(9);
-			String notes = cursor.getString(10);
+			Double val = Double.parseDouble(cursor.getString(9));
+			String pic = cursor.getString(10);
+			String notes = cursor.getString(11);
 			
 			Iou temp = new Iou(i_name, c, is_c, i_type, is_o, b, d, val, pic, notes);
 			temp.setDb_row_id(cursor.getLong(0));
@@ -230,12 +230,12 @@ public class IouDBManager {
 	public ArrayList<ContactSummary> get_contact_summaries() {
 
 		Cursor cursor = sqldb.rawQuery("SELECT DISTINCT contact, COUNT(*) as total_items, SUM(value) as total_val "
-				+ "FROM ious ORDER BY contact DESC", null);
+				+ "FROM ious GROUP BY contact ORDER BY contact DESC", null);
 		
 		ArrayList<ContactSummary> contact_summaries = new ArrayList<ContactSummary>();
 		
 		while (cursor.moveToNext()) {
-			contact_summaries.add(new ContactSummary(cursor.getString(1), cursor.getInt(2), cursor.getDouble(3)));
+			contact_summaries.add(new ContactSummary(cursor.getString(0), cursor.getInt(1), cursor.getDouble(2)));
 		}
 		
 		cursor.close();

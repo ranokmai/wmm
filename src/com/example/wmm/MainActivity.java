@@ -3,10 +3,10 @@ package com.example.wmm;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import models.ContactSummary;
 import models.Global;
 import models.Iou;
 import models.IouDBManager;
-import models.IouItem;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,22 +18,14 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
-import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
 	private CharSequence app_title;
-	private ArrayList<IouItem> iouItems;
-	private ArrayList<Iou> ious;
-	private ListView mainListView;
-	private IouListAdapter adapter;
 	
 	// Navigation drawer variables
 	private CharSequence navigation_title;
@@ -99,19 +91,31 @@ public class MainActivity extends Activity {
         navigation_layout.setDrawerListener(navigation_toggle);
 		
 		// Database setup
+        
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
-		
+
 		if (savedInstanceState == null) {
             // on first time display view for first nav item
             display_fragment(0);
         }
 		
+		IouDBManager.reset_db();
 		for(int i=0; i<5; i++) {
+			
 			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
+			Iou test2 = new Iou("Drinks", "Jimmy", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out");
 			
 			Global.iou_db_mgr.insertIou(test1);
+			Global.iou_db_mgr.insertIou(test2);
 		}
+		
+		ArrayList<ContactSummary> cs = Global.iou_db_mgr.get_contact_summaries();
+		
+		for (int i = 0; i < cs.size(); i++) {
+			cs.get(i).print();
+		}
+
 	}
 	
 	private class SlideMenuClickListener implements ListView.OnItemClickListener {
@@ -173,6 +177,7 @@ public class MainActivity extends Activity {
         navigation_toggle.syncState();
     }
 	
+	
 	@Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -193,7 +198,7 @@ public class MainActivity extends Activity {
             return super.onOptionsItemSelected(item);
         }
 	}
-
+	
 	@Override
     public void setTitle(CharSequence title) {
         app_title = title;

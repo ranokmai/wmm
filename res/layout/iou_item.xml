@@ -23,12 +23,12 @@
         android:paddingTop="16dp"
         android:layout_marginRight="12dp"
         android:text="$420.00"
-        android:textColor="#00FF00"
+        android:textColor="#27AE60"
         android:textSize="12pt" />
 
     <TextView
         android:id="@+id/singleItemName"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="4dp"
@@ -39,7 +39,7 @@
     
     <TextView
         android:id="@+id/singleItemDate"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="15dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/singleItemName"
@@ -52,7 +52,7 @@
 
     <TextView
         android:id="@+id/singleItemAmount"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="15dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/singleItemDate"
