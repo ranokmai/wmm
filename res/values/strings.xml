@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="blank"></string>
+    <string name="save">Save</string>
     <string name="app_name">Where\'s My Money</string>
     <string name="app_add_iou">Where\'s My Money: New IOU</string>
     <string name="action_settings">Settings</string>
@@ -20,6 +22,7 @@
     </string-array>
     
 	<string name="new_iou_value">   Value:</string>
+	<string name="new_iou_default_value">10.00</string>
 	<string name="new_iou_value_$">$</string>
 	
 	<string-array name="new_iou_direction">
@@ -27,25 +30,30 @@
         <item>From:</item>
     </string-array>
 	<string-array name="new_iou_subjects">
+        <item>Add Person...</item>
         <item>Add from Contacts</item>
         <item>Enter name</item>
     </string-array>
+    <string name="new_iou_remove">Remove</string>
 
 	<string-array name="new_iou_pictures">
-        <item>Picture...</item>
-        <item>Add Picture</item>
-        
+        <item>Add Picture...</item>
+        <item>Take New</item>
+        <item>Choose Existing</item>        
     </string-array>
 	
 	<string name="new_iou_date_loaned">Date Loaned: </string>
-	<string name="new_iou_date_due">Date due: </string>
+	<string name="new_iou_date_due">Has Due Date </string>
 	
 	<string name="new_iou_notes_hint">Click to add notes...</string>
 	
 	<string name="new_iou_details">Details</string>
 	<string name="new_iou_reminders">Reminders</string>
 	<string name="new_iou_notes">Notes</string>
-
+	
+	<string name="new_iou_accept">Accept</string>
+	<string name="new_iou_cancel">Cancel</string>
+	
 		<!-- Navigation header text -->
 	<string-array name="nav_drawer_headers">
 	    <item>Your Money</item>
@@ -72,5 +80,24 @@
         <item>@drawable/ic_about</item>
     </array>
     <string name="desc_list_item_icon">Item Icon</string>
+    
+
+    <!-- color wheel picker -->
+	<string name="pref_category_visuals">Visuals</string>
+    <string name="color_background_title">Button Background Color</string>
+    <string name="color_background_summary">Change the color of the button background</string> <!-- black color by default, set by reference -->
+    <string name="color_text_title">Button Text Color</string>
+    <string name="color_text_summary">Change the color of the button text</string> <!-- not persistent color\nalpha slider added via code --> 
+    
+    
+    <string name="color3_title">Color 3</string>
+    <string name="color3_summary">picker with alpha slider</string> 
+    <string name="color4_title">Color 4</string>
+    <string name="color4_summary">color set with HEX code in xml</string>   
+    
+    
+	<!-- Settings menu -->
+    <string name="dialog_color_picker">Color Picker</string>
+    <string name="press_color_to_apply">Press on Color to apply</string>    
 
 </resources>

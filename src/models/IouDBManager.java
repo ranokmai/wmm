@@ -18,8 +18,8 @@ import android.database.sqlite.SQLiteDatabase;
  */
 
 //Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
-//Iou test2 = new Iou("DB Textbook", "Louis", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,30).getTime(), 80, "", "borrowed for semester");
-//Iou test3 = new Iou("Cash", "jimmy", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,15).getTime(), 20, "", "quick buck");
+//Iou test2 = new Iou("DB Textbook", "Louis", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,30).getTime(), (double)80, "", "borrowed for semester");
+//Iou test3 = new Iou("Cash", "jimmy", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,15).getTime(), (double)20, "", "quick buck");
 //
 ////test.print();		
 //
@@ -31,7 +31,7 @@ import android.database.sqlite.SQLiteDatabase;
 //test3.update_contact_name("Jimmy");
 //test3.update_value(25.0);
 //test.print();		
-//Global.iou_db_mgr.updateIou(test);
+//Global.iou_db_mgr.updateIou(testX);
 //test.print();
 
 //Log.i("db_test", "first query");		
@@ -41,7 +41,7 @@ import android.database.sqlite.SQLiteDatabase;
 //}
 //
 //Log.i("db_test", "second query");
-//ious = Global.iou_db_mgr.get_unordered_ious();
+//ious = Global.iou_db_mgr.get_ious_unordered();
 //for (int i = 0; i < ious.size(); i++) {
 //	ious.get(i).print();
 //}
@@ -53,7 +53,7 @@ import android.database.sqlite.SQLiteDatabase;
 //}
 //
 //Log.i("db_test", "fourth query");
-//ArrayList<Iou> ious_of_contact = Global.iou_db_mgr.get_ious_from_contact(contacts.get(0));
+//ArrayList<Iou> ious_of_contact = Global.iou_db_mgr.get_contact_ious_unordered(contacts.get(0));
 //for (int i = 0; i < ious_of_contact.size(); i++) {
 //	ious_of_contact.get(i).print();
 //}

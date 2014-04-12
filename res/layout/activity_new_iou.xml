@@ -34,6 +34,8 @@
              android:layout_toRightOf="@+id/addIouIouTitle"
              android:layout_marginLeft="25dp"
              android:ems="10"
+             android:singleLine="true"
+    		 android:lines="1"
              android:focusable="true"
              android:hint="@string/new_iou_title_hint"
              android:padding="10dp" >
@@ -81,9 +83,12 @@
             android:layout_alignLeft="@+id/addIouTypes"
             android:layout_toLeftOf="@+id/addIouValue$"
             android:ems="10"
+            android:singleLine="true"
+    		android:lines="1"
             android:focusable="true"
             android:inputType="numberDecimal"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:hint="@string/new_iou_default_value" />
 
         <TextView
             android:id="@+id/addIouValue$"
@@ -111,7 +116,29 @@
             android:layout_alignLeft="@+id/addIouValueField"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/addIouDirections" />
-		
+        
+         <EditText 
+            android:id="@+id/addIouContactNamed"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/addIouValueField"
+            android:layout_toLeftOf="@+id/addIouChangeContact"
+            android:layout_alignTop="@+id/addIouDirections"
+            android:ems="10"
+            android:singleLine="true"
+    		android:lines="1"
+            android:focusable="false"/>
+        
+         
+        <Button
+            android:id="@+id/addIouChangeContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/addIouDirections"
+            android:text="@string/new_iou_remove" />
+		 
+		 
 		<TextView
 		    android:id="@+id/addIouHeader"
 		    android:layout_width="wrap_content"
@@ -139,6 +166,14 @@
 		    android:layout_alignParentLeft="true"
 		    android:layout_below="@+id/addIouHeader" />
 
+		<Button
+		    android:id="@+id/addIouRemovePicture"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/addIouHeader" 
+		    android:text="@string/new_iou_remove" />
+		
 		<ImageView
 		    android:id="@+id/addIouPictureViewer"
 		    android:layout_width="wrap_content"
@@ -173,7 +208,7 @@
 		    android:scaleX="0.6"
 		    android:scaleY="0.6" />
 
-		<TextView
+		<CheckBox
 		    android:id="@+id/addIouDateDue"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
@@ -183,7 +218,7 @@
 		    android:layout_alignParentLeft="true"
 		    android:text="@string/new_iou_date_due"
 		    android:textSize="16sp" />
-
+ 
 		<DatePicker
 		    android:id="@+id/addIouDatePicker2"
 		    android:layout_width="wrap_content"
@@ -241,14 +276,48 @@
 		    android:layout_below="@+id/addIouSeparator3"
 		    android:layout_alignParentLeft="true"
 		    android:layout_alignParentRight="true"
-		    android:layout_marginRight="15dp"
+		    android:layout_marginRight="10dp"
 		    android:layout_marginLeft="8dp"
+		    android:layout_marginTop="15dp"
 		    android:ems="10"
 		    android:hint="@string/new_iou_notes_hint"
-		    android:lines="8"
+		    android:lines="12"
 		    android:minLines="6"
 		    android:scrollbars="vertical" />
 		
+		<RelativeLayout 
+		    android:id="@+id/addIouUserButtons"
+		    android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+		    android:layout_below="@+id/addIouNotes">
+		    
+			<Button
+				android:id="@+id/addIouAccept"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+        		android:layout_toLeftOf="@+id/centerPoint"
+				android:text="@string/new_iou_accept"
+			    android:textSize="16sp"  />
+	
+			<TextView
+		        android:id="@+id/centerPoint"
+		        android:text=""
+		        android:layout_width="0dip"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true" />
+		    
+			<Button
+				android:id="@+id/addIouDecline"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/new_iou_cancel"
+				android:layout_alignParentRight="true"
+        		android:layout_toRightOf="@+id/centerPoint"
+			    android:textSize="16sp" />
+		   
+			
+		</RelativeLayout>	
     </RelativeLayout>
 
 </ScrollView>
