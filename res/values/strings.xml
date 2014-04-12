@@ -82,6 +82,23 @@
     </array>
     <string name="desc_list_item_icon">Item Icon</string>
     
+
+    <!-- color wheel picker -->
+	<string name="pref_category_visuals">Visuals</string>
+    <string name="color_background_title">Button Background Color</string>
+    <string name="color_background_summary">Change the color of the button background</string> <!-- black color by default, set by reference -->
+    <string name="color_text_title">Button Text Color</string>
+    <string name="color_text_summary">Change the color of the button text</string> <!-- not persistent color\nalpha slider added via code --> 
     
+    
+    <string name="color3_title">Color 3</string>
+    <string name="color3_summary">picker with alpha slider</string> 
+    <string name="color4_title">Color 4</string>
+    <string name="color4_summary">color set with HEX code in xml</string>   
+    
+    
+	<!-- Settings menu -->
+    <string name="dialog_color_picker">Color Picker</string>
+    <string name="press_color_to_apply">Press on Color to apply</string>    
 
 </resources>

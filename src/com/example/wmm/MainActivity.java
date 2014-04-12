@@ -3,6 +3,7 @@ package com.example.wmm;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import preferences.SettingsFragment;
 import models.Global;
 import models.Iou;
 import models.IouDBManager;
@@ -137,12 +138,15 @@ public class MainActivity extends Activity {
         case 1:
             fragment = new ContactsFragment();
             break;
- 
+        case 4:
+        	fragment = new SettingsFragment();
+        	
         default:
             break;
-        }
- 
-        if (fragment != null) {
+        }    
+        
+    	// preference fragment functions differently than fragment 
+        if (fragment != null || position == 4) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
  
