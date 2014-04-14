@@ -11,7 +11,11 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -171,6 +175,9 @@ public class NewIouActivity extends Activity {
 					mPicture.setVisibility(View.INVISIBLE);
 				}
 				//TODO: Code to add a picture here...
+				
+				Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				startActivityForResult(i, 1);
 				
 			}
 
@@ -350,4 +357,27 @@ public class NewIouActivity extends Activity {
               return rootView;
         }
     }
+    
+
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (requestCode == 1 && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+ 
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+ 
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            pictureUrl = cursor.getString(columnIndex);
+            cursor.close();
+             
+            //ImageView imageView = (ImageView) findViewById(R.id.imgView);
+            //imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+         
+        }
+	}
 }
