@@ -375,8 +375,8 @@ public class NewIouActivity extends Activity {
             pictureUrl = cursor.getString(columnIndex);
             cursor.close();
              
-            //ImageView imageView = (ImageView) findViewById(R.id.imgView);
-            //imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            ImageView imageView = (ImageView) findViewById(R.id.addIouPictureViewer);
+            imageView.setImageBitmap(BitmapFactory.decodeFile(pictureUrl));
          
         }
 	}
