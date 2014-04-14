@@ -59,7 +59,7 @@ import android.database.sqlite.SQLiteDatabase;
 //}
 
 public class IouDBManager {
-	
+		
 	private static IouDB db;
 	private static SQLiteDatabase sqldb;
 	private static String db_table_name = "ious";
@@ -163,6 +163,90 @@ public class IouDBManager {
 		
 		return retrieve_ious(cursor);
 	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//BASIC DB QUERIES FOR ACTIVE IOUS OUTGOING
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//retrieves all ious unordered
+	public ArrayList<Iou> get_outgoing_ious_unordered() {
+		
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 1", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of the shortest time to due date
+	public ArrayList<Iou> get_outgoing_ious_ordered_by_closest_due_date() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 1 ORDER BY date_due ASC", null);
+		
+		return retrieve_ious(cursor);
+	}	
+	
+	//retrieves all ious in order of chronological time
+	public ArrayList<Iou> get_outgoing_ious_ordered_by_earliest_loan_date() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 1 ORDER BY date_borrowed ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of highest to lowest value
+	public ArrayList<Iou> get_outgoing_ious_ordered_by_value_desc() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 1 ORDER BY value DESC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of lowest to highest value
+	public ArrayList<Iou> get_outgoing_ious_ordered_by_value_asc() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 1 ORDER BY value ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//BASIC DB QUERIES FOR ACTIVE IOUS INCOMING
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//retrieves all ious unordered
+	public ArrayList<Iou> get_incoming_ious_unordered() {
+		
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of the shortest time to due date
+	public ArrayList<Iou> get_incoming_ious_ordered_by_closest_due_date() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0 ORDER BY date_due ASC", null);
+		
+		return retrieve_ious(cursor);
+	}	
+	
+	//retrieves all ious in order of chronological time
+	public ArrayList<Iou> get_incoming_ious_ordered_by_earliest_loan_date() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0 ORDER BY date_borrowed ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of highest to lowest value
+	public ArrayList<Iou> get_incoming_ious_ordered_by_value_desc() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0 ORDER BY value DESC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of lowest to highest value
+	public ArrayList<Iou> get_incoming_ious_ordered_by_value_asc() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0 ORDER BY value ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//DB QUERIES FOR SPECIFIC CONTACT IOUS
@@ -205,6 +289,63 @@ public class IouDBManager {
 		
 		return retrieve_ious(cursor);
 	}
+	
+	//get number of active loans between contact
+	public Integer get_contact_num_active_ious(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ?", new String[] {contact});
+		int num = cursor.getInt(0);
+		return num;
+	}
+	
+	//get number of arhcived loans between contact
+	public Integer get_contact_num_archived_ious(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM archived_ious WHERE contact = ?", new String[] {contact});
+		int num = cursor.getInt(0);
+		return num;
+	}
+	
+	//get number of active ious to contact
+	public Integer get_contact_num_outbound_ious(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 1", new String[] {contact});
+		int num = cursor.getInt(0);
+		return num;
+	}
+	
+	//get number of active ious from contact
+	public Integer get_contact_num_inbound_ious(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 0", new String[] {contact});
+		int num = cursor.getInt(0);
+		return num;
+	}
+	
+	//get number of money loans to contact
+	public Integer get_contact_num_outbound_money_ious(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 1 AND item_type = 'Money'", new String[] {contact});
+		int num = cursor.getInt(0);
+		return num;
+	}
+	
+	//get number of money loans from contact
+	public Integer get_contact_num_inbound_money_ious(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 0 AND item_type = 'Money'", new String[] {contact});
+		int num = cursor.getInt(0);
+		return num;
+	}
+	
+	//get number of non-money loans to contact
+	public Integer get_contact_num_outbound_item_ious(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 1 AND item_type = 'Item'", new String[] {contact});
+		int num = cursor.getInt(0);
+		return num;
+	}
+	
+	//get number of non-money loans from contact
+	public Integer get_contact_num_inbound_item_ious(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 0 AND item_type = 'Item'", new String[] {contact});
+		int num = cursor.getInt(0);
+		return num;
+	}
+	
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//OTHER DB QUERIES
