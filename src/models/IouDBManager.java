@@ -59,7 +59,7 @@ import android.database.sqlite.SQLiteDatabase;
 //}
 
 public class IouDBManager {
-	
+		
 	private static IouDB db;
 	private static SQLiteDatabase sqldb;
 	private static String db_table_name = "ious";
@@ -160,6 +160,90 @@ public class IouDBManager {
 	//retrieves all ious in order of lowest to highest value
 	public ArrayList<Iou> get_ious_ordered_by_value_asc() {
 		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious ORDER BY value ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//BASIC DB QUERIES FOR ACTIVE IOUS OUTGOING
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//retrieves all ious unordered
+	public ArrayList<Iou> get_outgoing_ious_unordered() {
+		
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 1", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of the shortest time to due date
+	public ArrayList<Iou> get_outgoing_ious_ordered_by_closest_due_date() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 1 ORDER BY date_due ASC", null);
+		
+		return retrieve_ious(cursor);
+	}	
+	
+	//retrieves all ious in order of chronological time
+	public ArrayList<Iou> get_outgoing_ious_ordered_by_earliest_loan_date() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 1 ORDER BY date_borrowed ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of highest to lowest value
+	public ArrayList<Iou> get_outgoing_ious_ordered_by_value_desc() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 1 ORDER BY value DESC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of lowest to highest value
+	public ArrayList<Iou> get_outgoing_ious_ordered_by_value_asc() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 1 ORDER BY value ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//BASIC DB QUERIES FOR ACTIVE IOUS INCOMING
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//retrieves all ious unordered
+	public ArrayList<Iou> get_incoming_ious_unordered() {
+		
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of the shortest time to due date
+	public ArrayList<Iou> get_incoming_ious_ordered_by_closest_due_date() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0 ORDER BY date_due ASC", null);
+		
+		return retrieve_ious(cursor);
+	}	
+	
+	//retrieves all ious in order of chronological time
+	public ArrayList<Iou> get_incoming_ious_ordered_by_earliest_loan_date() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0 ORDER BY date_borrowed ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of highest to lowest value
+	public ArrayList<Iou> get_incoming_ious_ordered_by_value_desc() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0 ORDER BY value DESC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	//retrieves all ious in order of lowest to highest value
+	public ArrayList<Iou> get_incoming_ious_ordered_by_value_asc() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0 ORDER BY value ASC", null);
 		
 		return retrieve_ious(cursor);
 	}
