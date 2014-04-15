@@ -72,8 +72,8 @@ public class IouListFragment extends Fragment{
         }
     }
     
-    
     // Update the main view with the Items in iouItems
+    // Set the onClickListener for the IOU list
  	public void updateListView() {
  		//make sure initialized
 		iouItems = new ArrayList<IouItem>();
@@ -89,6 +89,7 @@ public class IouListFragment extends Fragment{
         adapter = new IouListAdapter(iouItems);
         iou_list.setAdapter(adapter);
         
+        // ON CLICK LISTENTER FOR IOU LIST
         iou_list.setOnItemClickListener( new OnItemClickListener() {
 
 			@Override
@@ -96,7 +97,6 @@ public class IouListFragment extends Fragment{
 					long id) {
 				
 				((IouListAdapter)parent.getAdapter()).setSelected(position);
-				
 			}
         });
  	}
