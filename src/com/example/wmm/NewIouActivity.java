@@ -53,7 +53,7 @@ public class NewIouActivity extends Activity {
 	private Button mCancel;
 	private CheckBox mIsDateDue;  
 	private EditText mNotes;
-	
+		
 	private OnClickListener removeContact = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -76,9 +76,8 @@ public class NewIouActivity extends Activity {
 	   }
 	};
 	
-	
 	public NewIouActivity() {
-	// required empty constructor
+		// required empty constructor
 	}
 	
     public NewIouActivity(MainActivity parent,
@@ -96,7 +95,7 @@ public class NewIouActivity extends Activity {
         pictureUrl = "";
         
         Intent intent = getIntent();
-        
+                
         setContentView(R.layout.activity_new_iou);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -129,7 +128,6 @@ public class NewIouActivity extends Activity {
 					mNamedContact.setVisibility(View.VISIBLE);
 					mRemove.setVisibility(View.VISIBLE);
 				}
-				//TODO: code to add a contact here...
 			}
 
 			@Override
@@ -203,13 +201,17 @@ public class NewIouActivity extends Activity {
 			} 
 			 
 		});
-		 
+		mDateDue.setVisibility(View.INVISIBLE);
+		
 		mIsDateDue = (CheckBox) findViewById(R.id.addIouDateDue);		 
 		mIsDateDue.setOnCheckedChangeListener( new OnCheckedChangeListener() {
 		
 			@Override
 			public void onCheckedChanged(CompoundButton parent, boolean checked) {
 				mDateDue.setEnabled(checked);
+				if( checked ) mDateDue.setVisibility(View.VISIBLE);
+				else mDateDue.setVisibility(View.INVISIBLE);
+				
 				dateChanged = true;
 			}
 		 
@@ -238,7 +240,7 @@ public class NewIouActivity extends Activity {
     }
 	
 	private boolean addNewIou(){
-	
+
 		String name = this.mTitle.getText().toString();
 		String contact = this.mContacts.getSelectedItem().toString();
 		boolean isContact = this.realContact;
@@ -252,10 +254,33 @@ public class NewIouActivity extends Activity {
 											this.mDateDue.getYear(), 
 											this.mDateDue.getMonth(), 
 											this.mDateDue.getDayOfMonth());
-		Double value = Double.parseDouble(this.mValue.getText().toString());
+		Double value;
+		if( this.mValue.getText().toString().compareTo("") == 0) value = (double)0; 
+		else value = Double.parseDouble(this.mValue.getText().toString());
+		
 		String picture = this.pictureUrl; 
 		String notes = this.mNotes.getText().toString();
-	
+		
+		// three required fields for an IOU
+		if( name.compareTo("") == 0 || contact.compareTo("") == 0 || 
+									mContacts.getSelectedItemId() == 0  ){
+			
+			new AlertDialog.Builder(this)
+			    .setTitle("Invalid IOU!")
+				.setMessage("A title and contact must be set for a new IOU")
+				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+		
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+				        
+					}
+				
+				}).create().show();
+			
+			return false; 
+		}
+		
+		
 		Iou iou= new Iou(name, contact, isContact, type, direction, 
 				loanedDate.getTime(), dueDate.getTime(), value, picture, notes);
 		
@@ -302,7 +327,7 @@ public class NewIouActivity extends Activity {
 		if( changesMade() )
 			new AlertDialog.Builder(this)
 			    .setTitle("Continue?")
-				.setMessage("Leaving will discard your changes. Continue without adding IOU?")
+				.setMessage("Leaving will discard your changes. Continue without adding?")
 				.setNegativeButton(android.R.string.no, null)
 				.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			

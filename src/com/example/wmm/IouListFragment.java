@@ -6,7 +6,9 @@ import models.Global;
 import models.Iou;
 import models.IouItem;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,8 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.AdapterView.OnItemClickListener;
  
 @SuppressLint("NewApi")
@@ -26,11 +30,12 @@ public class IouListFragment extends Fragment{
 	private IouListAdapter adapter;
 	
     public IouListFragment(){}
-     
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
     		Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+    	
+    	View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 		
 		// Add current iou items
 		iou_list = (ListView) rootView.findViewById(R.id.iou_list);
@@ -44,16 +49,32 @@ public class IouListFragment extends Fragment{
 				
 				 // Display the fragment as the main content.
 				Intent intent = new Intent( getActivity(), NewIouActivity.class);
-			    startActivity(intent);
+			    startActivityForResult(intent, 0);			    
 			}
 
 		});
 		
+		Spinner filters = (Spinner) rootView.findViewById(R.id.filter_by);
+		ArrayAdapter<CharSequence> spinneradapter = ArrayAdapter.createFromResource( (Context)getActivity() ,
+		         R.array.filter_options, android.R.layout.simple_spinner_item);
+		spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		filters.setAdapter(spinneradapter);
+		
         return rootView;
     }
     
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+        case 0:
+        	updateListView();
+        }
+    }
+    
+    
     // Update the main view with the Items in iouItems
- 	private void updateListView() {
+ 	public void updateListView() {
  		//make sure initialized
 		iouItems = new ArrayList<IouItem>();
 		
