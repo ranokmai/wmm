@@ -107,5 +107,7 @@ public class IouItem {
 		}
 	}
 	
+	public Iou getIou() { return this.iou; }
+	
 	public RelativeLayout getView() { return layout;	}
 }

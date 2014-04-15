@@ -26,6 +26,31 @@ public class Global {
 	public static int NOV = 10;
 	public static int DEC = 11;
 	
+	public static Iou iou;
+	
+    public enum Filters {
+    	DATEDUE, 
+    	DATELOANED,
+ 	    TITLE,
+ 	    VALUE,
+ 	    CONTACT,
+ 	    NUMFILTER;
+ 	    
+    	private Filters() {
+	        this.value = -1;
+	    }
+    	
+    	// use this value/hack to get int back
+    	private int value;
+    	private Filters(int value) {
+	        this.value = value;
+	    }
+
+	    public int getint() {
+	        return value;
+	    }
+    }
+	
 	public static void setup_db_mgr(Context context) {
 		iou_db_mgr = new IouDBManager(context);
 	}

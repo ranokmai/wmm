@@ -76,6 +76,15 @@ public class NewIouActivity extends Activity {
 	   }
 	};
 	
+	private OnDateChangedListener changeDate = new OnDateChangedListener() {
+		
+		@Override
+		public void onDateChanged(DatePicker parent, int year, int month,
+				int day) {
+			dateChanged = true;
+		}  
+	};
+	
 	public NewIouActivity() {
 		// required empty constructor
 	}
@@ -127,7 +136,15 @@ public class NewIouActivity extends Activity {
 					mContacts.setVisibility(View.GONE);
 					mNamedContact.setVisibility(View.VISIBLE);
 					mRemove.setVisibility(View.VISIBLE);
+					
+					if( id == 1){
+						
+					}
+					else if( id == 2){
+						
+					}
 				}
+				
 			}
 
 			@Override
@@ -181,26 +198,10 @@ public class NewIouActivity extends Activity {
 		 
 		Calendar c = Calendar.getInstance(); 
 		mDateLoaned = (DatePicker) findViewById(R.id.addIouDatePicker1); 		 
-		mDateLoaned.init(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), new OnDateChangedListener() {
-		
-			@Override
-			public void onDateChanged(DatePicker parent, int year, int month,
-					int day) {
-				dateChanged = true;
-			} 
-			 
-		});
+		mDateLoaned.init(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), changeDate);
 		 
 		mDateDue = (DatePicker) findViewById(R.id.addIouDatePicker2); 
-		mDateDue.init(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), new OnDateChangedListener() {
-		
-			@Override
-			public void onDateChanged(DatePicker parent, int year, int month,
-					int day) {
-				dateChanged = true;
-			} 
-			 
-		});
+		mDateDue.init(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), changeDate);
 		mDateDue.setVisibility(View.INVISIBLE);
 		
 		mIsDateDue = (CheckBox) findViewById(R.id.addIouDateDue);		 
@@ -237,7 +238,54 @@ public class NewIouActivity extends Activity {
 				NewIouActivity.super.onBackPressed();
 			} 
 		});
+		
+		editIou(null);
+		
     }
+	
+	public void editIou( Iou iou){
+		
+		iou = Global.iou;
+		System.out.println("LOUIS: post");
+		
+		if( iou == null) return;
+		
+		//requests- change things to enums where possible
+		// 			change date to gregorian calendar
+		
+		this.mTitle.setText( iou.item_name() ); 
+		if( iou.is_a_contact() )
+			this.mContacts.setSelection(1);
+		else 
+			this.mContacts.setSelection(2);
+		this.mNamedContact.setText( iou.contact_name() );
+		if( iou.item_type().compareTo("Money") == 0 )
+			this.mTypes.setSelection(0);
+		else 
+			this.mTypes.setSelection(1);
+		this.mValue.setText( iou.value().toString() );
+		if( iou.outbound() )
+			this.mDirections.setSelection(0);
+		else 
+			this.mDirections.setSelection(1);
+		this.mPicture.setSelection(2);
+		this.pictureUrl = iou.pic_loc();
+		this.mDateLoaned.init(	iou.date_borrowed().getYear(), 
+								iou.date_borrowed().getMonth(), 
+								iou.date_borrowed().getDate(), 
+								changeDate);
+		
+		if( iou.date_due().compareTo(Global.DATE_MAX) == 0 )
+			this.mIsDateDue.setChecked(false);
+		else 
+			this.mDateDue.init(	iou.date_due().getYear(), 
+								iou.date_due().getMonth(), 
+								iou.date_due().getDate(), 
+								changeDate);
+		this.mNotes.setText(iou.notes());
+		
+		getActionBar().setTitle("Where\'s My Money: Edit Transaction");
+	}
 	
 	private boolean addNewIou(){
 
@@ -246,6 +294,7 @@ public class NewIouActivity extends Activity {
 		boolean isContact = this.realContact;
 		String type = this.mTypes.getSelectedItem().toString();
 		boolean direction = (this.mDirections.getSelectedItemPosition() == 0);
+		String picture = this.pictureUrl; 
 		GregorianCalendar loanedDate = new GregorianCalendar( 
 											this.mDateLoaned.getYear(), 
 											this.mDateLoaned.getMonth(), 
@@ -257,8 +306,6 @@ public class NewIouActivity extends Activity {
 		Double value;
 		if( this.mValue.getText().toString().compareTo("") == 0) value = (double)0; 
 		else value = Double.parseDouble(this.mValue.getText().toString());
-		
-		String picture = this.pictureUrl; 
 		String notes = this.mNotes.getText().toString();
 		
 		// three required fields for an IOU
