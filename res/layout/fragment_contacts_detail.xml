@@ -2,13 +2,89 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    >
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+        	android:layout_height="fill_parent"
+        	android:layout_gravity="left"
+        	android:layout_weight="3"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/detail_contact_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact Name"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/detail_last_loan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last Loan Date"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+        	android:layout_height="fill_parent"
+        	android:layout_gravity="right"
+        	android:layout_weight="2"
+        	android:gravity="right"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/detail_loan_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$3.50"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="30sp"
+                android:textColor="@color/money_pos" />
+
+            <TextView
+                android:id="@+id/detail_items_lent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ 0 Items"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/contact_title"
+        android:id="@+id/detail_loan_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_marginLeft="7dp"
+        android:text="0 outstanding loans"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
     
+    <View
+	    android:id="@+id/detail_separator"
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:layout_marginTop="5dp"
+	    android:layout_marginBottom="2dp"
+	    android:background="@color/separator_color" />
+    
+    <ListView
+        android:id="@+id/detail_iou_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/separator" >
+
+	</ListView>
 </LinearLayout>

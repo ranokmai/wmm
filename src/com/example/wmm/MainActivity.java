@@ -93,7 +93,6 @@ public class MainActivity extends Activity {
         navigation_layout.setDrawerListener(navigation_toggle);
 		
 		// Database setup
-        
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
 

@@ -89,27 +89,27 @@ public class ContactsFragment extends Fragment {
 						// Load the user's photo
 						photo = loadContactPhoto(content_resolver, Long.parseLong(contact_id), Long.parseLong(photo_id));
 					}
-						
-					// Query the user's loan information
-					outstanding_ious = Global.iou_db_mgr.get_contact_ious_ordered_by_earliest_loan_date(contacts.get(curr_contact));
-					
-					for (int curr_iou = 0; curr_iou < outstanding_ious.size(); curr_iou++){
-						if (outstanding_ious.get(curr_iou).item_type().equals("Money")){
-							total_loan_value += outstanding_ious.get(curr_iou).value();
-						}
-					}
-					
-					contacts_items.add(new ContactItem(getActivity(),
-					    full_contact_name,
-						Integer.toString(outstanding_ious.size()),
-						df.format(outstanding_ious.get(outstanding_ious.size()-1).date_borrowed()),
-						af.format(total_loan_value),
-						Integer.toString(Global.iou_db_mgr.get_contact_num_outbound_item_ious(contacts.get(curr_contact))),
-						photo));
 				
 					break;
 				}
 			}
+			
+			// Query the user's loan information
+			outstanding_ious = Global.iou_db_mgr.get_contact_ious_ordered_by_earliest_loan_date(contacts.get(curr_contact));
+			
+			for (int curr_iou = 0; curr_iou < outstanding_ious.size(); curr_iou++){
+				if (outstanding_ious.get(curr_iou).item_type().equals("Money")){
+					total_loan_value += outstanding_ious.get(curr_iou).value();
+				}
+			}
+			
+			contacts_items.add(new ContactItem(getActivity(),
+				contacts.get(curr_contact),
+				Integer.toString(outstanding_ious.size()),
+				df.format(outstanding_ious.get(outstanding_ious.size()-1).date_borrowed()),
+				af.format(total_loan_value),
+				Integer.toString(Global.iou_db_mgr.get_contact_num_outbound_item_ious(contacts.get(curr_contact))),
+				photo));
 		}
 		
         contacts_adapter = new ContactListAdapter(contacts_items);
@@ -118,17 +118,12 @@ public class ContactsFragment extends Fragment {
         contacts_list.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				((ContactListAdapter)parent.getAdapter()).setSelected(position);
-				
 				// Switch to the selected activity
 				ContactItem selected_item = ((ContactListAdapter)parent.getAdapter()).getContactItem(position);
 				Intent intent = new Intent();
 				intent.setClassName("com.example.wmm", "com.example.wmm.ContactsDetailActivity");
 				intent.putExtra("ContactName", selected_item.name);
 			    startActivity(intent);
-	            
-	            // Update the title
-	            //getActivity().setTitle(selected_item.name);
 			}
         });
     }
