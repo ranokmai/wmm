@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
 	private NavigationDrawerAdapter navigation_adapter;
 	private ArrayList<models.NavigationItem> navigation_items;
 	private ActionBarDrawerToggle navigation_toggle;
+	public Fragment listFrag;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +132,7 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-	private void display_fragment(int position) {
+	public void display_fragment(int position) {
         // update the main content by replacing fragments
         Fragment fragment = null;
         switch (position) {
@@ -158,6 +159,7 @@ public class MainActivity extends Activity {
             navigation_list.setSelection(position);
             setTitle(navigation_titles[position]);
             navigation_layout.closeDrawer(navigation_list);
+            
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error creating fragment from navigation drawer.");

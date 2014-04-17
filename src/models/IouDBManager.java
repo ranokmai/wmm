@@ -356,6 +356,112 @@ public class IouDBManager {
 		return num;
 	}
 	
+	//get total money lent out
+	public Double get_contact_total_value_lent_out(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT value FROM ious WHERE contact = ? AND outbound = 1", new String[] {contact});
+		double num = 0;
+		
+		while (cursor.moveToNext()) {
+			num += Double.parseDouble(cursor.getString(0));
+		}
+		
+		cursor.close();
+		
+		return num;
+	}
+	
+	//get total money that is owed to contact
+	public Double get_contact_total_value_owed_to(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT value FROM ious WHERE contact = ? AND outbound = 0", new String[] {contact});
+		double num = 0;
+		
+		while (cursor.moveToNext()) {
+			num += Double.parseDouble(cursor.getString(0));
+		}
+		
+		cursor.close();
+		
+		return num;
+	}
+	
+	//get total value of money loans lent out
+	public Double get_contact_total_money_value_lent(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT value FROM ious WHERE contact = ? AND outbound = 1 AND item_type = 'Money'", new String[] {contact});
+		double num = 0;
+		
+		while (cursor.moveToNext()) {
+			num += Double.parseDouble(cursor.getString(0));
+		}
+		
+		cursor.close();
+		
+		return num;
+	}
+	
+	//get total value of money owed to contact
+	public Double get_contact_total_money_value_owed_to(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT value FROM ious WHERE contact = ? AND outbound = 0 AND item_type = 'Money'", new String[] {contact});
+		double num = 0;
+		
+		while (cursor.moveToNext()) {
+			num += Double.parseDouble(cursor.getString(0));
+		}
+		
+		cursor.close();
+		
+		return num;
+	}
+	
+	//get total value of item loans lent out
+	public Double get_contact_total_item_value_lent(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT value FROM ious WHERE contact = ? AND outbound = 1 AND item_type = 'Item'", new String[] {contact});
+		double num = 0;
+		
+		while (cursor.moveToNext()) {
+			num += Double.parseDouble(cursor.getString(0));
+		}
+		
+		cursor.close();
+		
+		return num;
+	}
+	
+	//get total value of item owed to contact
+	public Double get_contact_total_item_value_owed_to(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT value FROM ious WHERE contact = ? AND outbound = 0 AND item_type = 'Item'", new String[] {contact});
+		double num = 0;
+		
+		while (cursor.moveToNext()) {
+			num += Double.parseDouble(cursor.getString(0));
+		}
+		
+		cursor.close();
+		
+		return num;
+	}
+	
+	//get total value traded between contacts across time
+	public Double get_contact_historical_total_value(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT value FROM ious WHERE contact = ?", new String[] {contact});
+		double num = 0;
+		
+		while (cursor.moveToNext()) {
+			num += Double.parseDouble(cursor.getString(0));
+		}
+		
+		cursor.close();
+		
+		cursor = sqldb.rawQuery("SELECT value FROM archived_ious WHERE contact = ?", new String[] {contact});
+		
+		while (cursor.moveToNext()) {
+			num += Double.parseDouble(cursor.getString(0));
+		}
+		
+		cursor.close();
+		
+		return num;
+	}
+	
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//OTHER DB QUERIES

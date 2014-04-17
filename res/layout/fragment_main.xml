@@ -1,21 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-	<ListView
-		android:id="@+id/iou_list"
-		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="1">
-	</ListView>
-	<Button 
-    	android:text="Add New IOU" 
-        android:id="@+id/add_new_button"
+	
+    <RelativeLayout 
+        android:id="@+id/filter_region" 
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0">
-    </Button>
-   
-</LinearLayout>
+		android:layout_height="wrap_content"
+        >
+        
+		<Button
+		    android:id="@+id/add_new_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@+id/filter2"
+		    android:layout_alignParentLeft="true"
+		    android:layout_marginTop="50dp"
+		    android:layout_marginLeft="30dp"
+		    android:text="@string/addnewiou" />
+		
+		<TextView 
+		    android:id="@+id/filter"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true" 
+		    android:layout_marginLeft="30dp"
+		    android:layout_alignParentTop="true"
+		    android:layout_marginTop="30dp"
+		    android:text="@string/filter"
+		    android:textSize="20sp" />
+		
+		<Spinner 
+		    android:id="@+id/filter_by"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_toRightOf="@+id/filter"
+		    android:layout_alignParentTop="true"
+		    android:layout_marginTop="20dp"
+		    android:layout_marginLeft="20dp"
+		    android:textSize="20sp" />
+		
+		<TextView
+		    android:id="@+id/filter2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignTop="@id/filter" 
+		    android:layout_marginLeft="30dp"
+		    android:layout_marginTop="40dp"
+		    android:text="@string/show_direction"
+		    android:textSize="20sp" />
+		
+		<RadioButton
+		    android:id="@+id/outgoing"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignLeft="@+id/incoming" 
+		    android:layout_toRightOf="@+id/incoming" 
+		    android:layout_marginLeft="120dp"
+		    android:layout_below="@+id/filter2"
+		    android:layout_marginTop="10dp"
+		    android:text="@string/outgoing"
+		    android:textSize="20sp" />
+
+		<RadioButton
+		    android:id="@+id/incoming"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@+id/filter2"
+		    android:layout_marginTop="10dp"
+		    android:layout_alignParentLeft="true"
+		    android:layout_marginLeft="40dp"
+		    android:text="@string/incoming"
+		    android:textSize="20sp" />
+		
+	</RelativeLayout>	
+	
+	<View
+	    android:id="@+id/separator"
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/filter_region"
+	    android:layout_marginTop="20dp"
+	    android:background="@android:color/darker_gray"
+	    android:paddingTop="50dp" />
+
+	<ListView
+	    android:id="@+id/iou_list"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@+id/separator" >
+	</ListView>
+	
+</RelativeLayout>
