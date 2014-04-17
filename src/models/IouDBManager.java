@@ -6,6 +6,7 @@ import java.util.Date;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 /*
  * A class that queries/inserts/updates for the db
@@ -293,6 +294,7 @@ public class IouDBManager {
 	//get number of active loans between contact
 	public Integer get_contact_num_active_ious(String contact) {
 		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ?", new String[] {contact});
+		cursor.moveToNext();
 		int num = cursor.getInt(0);
 		return num;
 	}
@@ -300,6 +302,7 @@ public class IouDBManager {
 	//get number of arhcived loans between contact
 	public Integer get_contact_num_archived_ious(String contact) {
 		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM archived_ious WHERE contact = ?", new String[] {contact});
+		cursor.moveToNext();
 		int num = cursor.getInt(0);
 		return num;
 	}
@@ -307,6 +310,7 @@ public class IouDBManager {
 	//get number of active ious to contact
 	public Integer get_contact_num_outbound_ious(String contact) {
 		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 1", new String[] {contact});
+		cursor.moveToNext();
 		int num = cursor.getInt(0);
 		return num;
 	}
@@ -314,6 +318,7 @@ public class IouDBManager {
 	//get number of active ious from contact
 	public Integer get_contact_num_inbound_ious(String contact) {
 		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 0", new String[] {contact});
+		cursor.moveToNext();
 		int num = cursor.getInt(0);
 		return num;
 	}
@@ -321,6 +326,7 @@ public class IouDBManager {
 	//get number of money loans to contact
 	public Integer get_contact_num_outbound_money_ious(String contact) {
 		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 1 AND item_type = 'Money'", new String[] {contact});
+		cursor.moveToNext();
 		int num = cursor.getInt(0);
 		return num;
 	}
@@ -328,6 +334,7 @@ public class IouDBManager {
 	//get number of money loans from contact
 	public Integer get_contact_num_inbound_money_ious(String contact) {
 		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 0 AND item_type = 'Money'", new String[] {contact});
+		cursor.moveToNext();
 		int num = cursor.getInt(0);
 		return num;
 	}
@@ -335,6 +342,7 @@ public class IouDBManager {
 	//get number of non-money loans to contact
 	public Integer get_contact_num_outbound_item_ious(String contact) {
 		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 1 AND item_type = 'Item'", new String[] {contact});
+		cursor.moveToNext();
 		int num = cursor.getInt(0);
 		return num;
 	}
@@ -342,7 +350,9 @@ public class IouDBManager {
 	//get number of non-money loans from contact
 	public Integer get_contact_num_inbound_item_ious(String contact) {
 		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 0 AND item_type = 'Item'", new String[] {contact});
+		cursor.moveToNext();
 		int num = cursor.getInt(0);
+		
 		return num;
 	}
 	

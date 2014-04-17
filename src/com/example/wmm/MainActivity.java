@@ -102,6 +102,18 @@ public class MainActivity extends Activity {
         }
 		
 		IouDBManager.reset_db();
+		for(int i=0; i<5; i++) {
+			
+			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
+			Iou test2 = new Iou("Drinks", "Jimmy Blanchard", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out");
+			Iou test3 = new Iou("GTA V", "Jimmy Blanchard", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 60.00, "", "GTA 5");
+			Iou test4 = new Iou("Great American Challenge", "Galen Gong", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 50.00, "", ":D");
+			
+			Global.iou_db_mgr.insertIou(test1);
+			Global.iou_db_mgr.insertIou(test2);
+			Global.iou_db_mgr.insertIou(test3);
+			Global.iou_db_mgr.insertIou(test4);
+		}
 		
 		ArrayList<ContactSummary> cs = Global.iou_db_mgr.get_contact_summaries();
 		

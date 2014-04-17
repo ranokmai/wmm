@@ -36,6 +36,11 @@ public class ContactListAdapter extends BaseAdapter {
 		return temp.getView();
 	}
 	
+	public ContactItem getContactItem(int position){
+		ContactItem temp = data.get(position);
+		return temp;
+	}
+	
 	public void setSelected(int select) {
 		// Toggle selection
 		if(select == selected) {
