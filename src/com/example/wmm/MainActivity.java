@@ -102,7 +102,7 @@ public class MainActivity extends Activity {
             display_fragment(0);
         }
 		
-		IouDBManager.reset_db();
+		/*IouDBManager.reset_db();
 		for(int i=0; i<5; i++) {
 			
 			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
@@ -114,7 +114,7 @@ public class MainActivity extends Activity {
 			Global.iou_db_mgr.insertIou(test2);
 			Global.iou_db_mgr.insertIou(test3);
 			Global.iou_db_mgr.insertIou(test4);
-		}
+		}*/
 		
 		ArrayList<ContactSummary> cs = Global.iou_db_mgr.get_contact_summaries();
 		
