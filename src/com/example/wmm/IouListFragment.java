@@ -72,8 +72,6 @@ public class IouListFragment extends Fragment{
         }
     }
     
-    // Update the main view with the Items in iouItems
-    // Set the onClickListener for the IOU list
  	public void updateListView() {
  		//make sure initialized
 		iouItems = new ArrayList<IouItem>();

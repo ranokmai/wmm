@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,6 +38,7 @@ import android.widget.TextView;
  
 @SuppressLint("NewApi")
 public class ContactsDetailActivity extends Activity {
+	private TypedArray navigation_icons;
 	private String contact_name;
 	private TextView contact_title;
 	private TextView last_loan;
@@ -55,10 +57,12 @@ public class ContactsDetailActivity extends Activity {
 		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		DecimalFormat af = new DecimalFormat("#.##");
 		contact_name = getIntent().getExtras().getString("ContactName");
+		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 		
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.fragment_contacts_detail);
 	    setTitle("Contact Details");
+	    getActionBar().setIcon(navigation_icons.getResourceId(1, -1));
 	    
 	    // Query the user's loan information
 	    ArrayList<Iou> outstanding_ious = Global.iou_db_mgr.get_contact_ious_ordered_by_earliest_loan_date(contact_name);

@@ -132,6 +132,8 @@ public class MainActivity extends Activity {
 	}
 	
 	public void display_fragment(int position) {
+		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
+		
         // update the main content by replacing fragments
         Fragment fragment = null;
         switch (position) {
@@ -143,6 +145,10 @@ public class MainActivity extends Activity {
             break;
         case 4:
         	fragment = new SettingsFragment();
+        	break;
+        case 5:
+        	fragment = new AboutFragment();
+        	break;
         	
         default:
             break;
@@ -157,6 +163,11 @@ public class MainActivity extends Activity {
             navigation_list.setItemChecked(position, true);
             navigation_list.setSelection(position);
             setTitle(navigation_titles[position]);
+            if (position == 0){
+            	getActionBar().setIcon(R.drawable.ic_logo);
+            } else {
+            	getActionBar().setIcon(navigation_icons.getResourceId(position, -1));
+            }
             navigation_layout.closeDrawer(navigation_list);
             
         } else {
