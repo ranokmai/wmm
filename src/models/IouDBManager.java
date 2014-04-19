@@ -524,7 +524,7 @@ public class IouDBManager {
 	
 	public void add_iou_to_archive(Iou iou) {
 				
-		sqldb.delete(db_table_name, "item_id = ?", new String[] {iou.getDb_row_id().toString()});
+		sqldb.delete(db_table_name, "iou_id = ?", new String[] {iou.getDb_row_id().toString()});
 		
 		iou.update_date_completed(new Date());
 		
@@ -534,7 +534,7 @@ public class IouDBManager {
 	
 	public void remove_iou_from_archive(Iou iou) {
 		
-		sqldb.delete(archive_table_name, "item_id = ?", new String[] {iou.getDb_row_id().toString()});
+		sqldb.delete(archive_table_name, "iou_id = ?", new String[] {iou.getDb_row_id().toString()});
 		
 		iou.update_date_completed(Global.DATE_MAX);
 		

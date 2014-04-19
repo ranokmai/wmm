@@ -71,6 +71,7 @@
         android:layout_marginLeft="12dp"
         android:layout_below="@+id/singleItemAmount"
         android:visibility="gone"
+        android:onClick="archiveIouButtonListener"
         android:src="@drawable/archive_icon" />
     
     <ImageButton

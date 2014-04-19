@@ -119,8 +119,12 @@ public class IouListFragment extends Fragment{
     }
 
 	public void deleteSelectedIOU() {
-		//Iou iou = ious.get(selected);
 		models.Global.iou_db_mgr.deleteIou(selectedIou);
+		updateListView();
+	}
+	
+	public void archiveSelectedIOU() {
+		models.Global.iou_db_mgr.add_iou_to_archive(selectedIou);
 		updateListView();
 	}
     
