@@ -62,6 +62,9 @@ public class IouListFragment extends Fragment{
 
 			public void onClick(View view) {
 				
+				if (selectedIou == null) {
+					//selectedIou = new Iou();
+				}
 				Global.iou = selectedIou;
 				
 				// Display the fragment as the main content.
@@ -133,7 +136,7 @@ public class IouListFragment extends Fragment{
         	updateListView();
         }
     }
-    
+
 	public void deleteSelectedIOU() {
 		Iou iou = ious.get(selected);
 		models.Global.iou_db_mgr.deleteIou(iou);
@@ -173,47 +176,58 @@ public class IouListFragment extends Fragment{
  		
  		if( this.incoming && this.outgoing ){
  			//add current iou items according to filter
- 			if( this.filters.getSelectedItemId() == 0 ) { // loaned
+ 			if( this.filters.getSelectedItemPosition() == 0 ) { // loaned
  				ious = Global.iou_db_mgr.get_ious_ordered_by_earliest_loan_date();
  			}
- 			else if ( this.filters.getSelectedItemId() == 1 ) {// due
+ 			else if ( this.filters.getSelectedItemPosition() == 1 ) {// due
  				ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
  			}
- 			else if( this.filters.getSelectedItemId() == 2 ) {// title
+ 			else if( this.filters.getSelectedItemPosition() == 2 ) {// title
  				ious = Global.iou_db_mgr.get_ious_ordered_by_name();
  			}
- 			else if( this.filters.getSelectedItemId() == 3 ) {// value
+ 			else if( this.filters.getSelectedItemPosition() == 3 ) {// value
  				ious = Global.iou_db_mgr.get_ious_ordered_by_value_desc();
  			}
- 			
+ 	 		else {
+ 	 			ious = Global.iou_db_mgr.get_ious_unordered();
+ 	 		}
  		}
  		else if( this.incoming){
- 			if( this.filters.getSelectedItemId() == 0 ) { // loaned
+ 			if( this.filters.getSelectedItemPosition() == 0 ) { // loaned
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_earliest_loan_date();
  			}
- 			else if ( this.filters.getSelectedItemId() == 1 ) {// due
+ 			else if ( this.filters.getSelectedItemPosition() == 1 ) {// due
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_closest_due_date();
  			}
- 			else if( this.filters.getSelectedItemId() == 2 ) {// title
+ 			else if( this.filters.getSelectedItemPosition() == 2 ) {// title
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_name();
  			}
- 			else if( this.filters.getSelectedItemId() == 3 ) {// value
+ 			else if( this.filters.getSelectedItemPosition() == 3 ) {// value
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_value_desc();
  			}
+ 	 		else {
+ 	 			ious = Global.iou_db_mgr.get_incoming_ious_unordered();
+ 	 		}
  		}
  		else if (this.outgoing){
- 			if( this.filters.getSelectedItemId() == 0 ) { // loaned
+ 			if( this.filters.getSelectedItemPosition() == 0 ) { // loaned
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_earliest_loan_date();
  			}
- 			else if ( this.filters.getSelectedItemId() == 1 ) {// due
+ 			else if ( this.filters.getSelectedItemPosition() == 1 ) {// due
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_closest_due_date();
  			}
- 			else if( this.filters.getSelectedItemId() == 2 ) {// title
+ 			else if( this.filters.getSelectedItemPosition() == 2 ) {// title
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_name();
  			}
- 			else if( this.filters.getSelectedItemId() == 3 ) {// value
+ 			else if( this.filters.getSelectedItemPosition() == 3 ) {// value
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_value_desc();
  			}
+ 	 		else {
+ 	 			ious = Global.iou_db_mgr.get_outgoing_ious_unordered();
+ 	 		}
+ 		}
+ 		else {
+ 			ious = Global.iou_db_mgr.get_ious_unordered();
  		}
  		
  		// flip if they want the other direction
