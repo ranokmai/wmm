@@ -42,7 +42,6 @@ public class IouListFragment extends Fragment{
     private Spinner filters;
     private boolean ascending; 
     
-    private Filters mFilter;
     private Iou selectedIou;
     
     @Override
@@ -51,7 +50,6 @@ public class IouListFragment extends Fragment{
     	
     	incoming = outgoing = true;
     	ascending = true; 
-    	mFilter = Filters.DATEDUE;
     			
     	View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 		
@@ -87,8 +85,7 @@ public class IouListFragment extends Fragment{
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				mFilter = Filters.values()[position];
-				updateListView( mFilter, outgoing, incoming);
+				updateListView( );
 			}
 
 			@Override
@@ -107,7 +104,7 @@ public class IouListFragment extends Fragment{
 			@Override
 			public void onCheckedChanged(CompoundButton parent, boolean checked) {
 				outgoing = checked;
-				updateListView( mFilter, outgoing, incoming);
+				updateListView( );
 				
 			}
 			
@@ -117,12 +114,12 @@ public class IouListFragment extends Fragment{
 			@Override
 			public void onCheckedChanged(CompoundButton parent, boolean checked) {
 				incoming = checked;
-				updateListView( mFilter, outgoing, incoming);
+				updateListView( );
 			}
 			
 		});
 		
-		updateListView( mFilter, outgoing, incoming);
+		updateListView();
 		
         return rootView;
     }
@@ -132,13 +129,13 @@ public class IouListFragment extends Fragment{
 
         switch (requestCode) {
         case 0:
-        	updateListView( mFilter, outgoing, incoming);
+        	updateListView();
         }
     }
     
     
     // Update the main view with the Items in iouItems
- 	public void updateListView( Filters filter, boolean showOut, boolean showIn) {
+ 	public void updateListView( ) {
  		//make sure initialized
 		iouItems = new ArrayList<IouItem>();
 		
