@@ -82,6 +82,7 @@ public class MainActivity extends Activity {
                 R.string.app_name
         		){
             public void onDrawerClosed(View view) {
+            	
                 getActionBar().setTitle(app_title);
                 invalidateOptionsMenu();
             }

@@ -83,6 +83,7 @@
         android:layout_below="@+id/singleItemAmount"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
+        android:onClick="deleteIouButtonListener"
         android:src="@drawable/delete_icon" />
 
     <ImageButton
