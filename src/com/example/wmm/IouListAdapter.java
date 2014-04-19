@@ -57,6 +57,15 @@ public class IouListAdapter extends BaseAdapter {
 		}		
 	}
 	
+	public void clearSelection() {
+		
+		for( int i=0; i < data.size(); i++ ) {
+			data.get(i).toggleExpandIou(false);
+			data.get(i).getView().setBackgroundColor( Color.TRANSPARENT);
+			selected = -1;
+		}
+	}
+	
 	public int getSelected() { return selected; }
 	
 }

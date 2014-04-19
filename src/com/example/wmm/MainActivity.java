@@ -39,6 +39,8 @@ public class MainActivity extends Activity {
 	private ArrayList<models.NavigationItem> navigation_items;
 	private ActionBarDrawerToggle navigation_toggle;
 	public Fragment listFrag;
+	private IouListFragment iouListFragment = null;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +143,7 @@ public class MainActivity extends Activity {
         switch (position) {
         case 0:
             fragment = new IouListFragment();
+            iouListFragment = (IouListFragment) listFrag;
             break;
         case 1:
             fragment = new ContactsFragment();
@@ -178,6 +181,16 @@ public class MainActivity extends Activity {
             Log.e("MainActivity", "Error creating fragment from navigation drawer.");
         }
     }
+	
+	public void deleteIouButtonListener(View v) {
+		if(iouListFragment != null)
+			iouListFragment.deleteSelectedIOU();
+	}
+	
+	public void editIouButtonListener(View v){		
+		if(iouListFragment != null)
+			iouListFragment.editSelectedIOU();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

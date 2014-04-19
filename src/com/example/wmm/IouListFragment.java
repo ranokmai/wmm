@@ -45,7 +45,7 @@ public class IouListFragment extends Fragment{
     
     private int selected_sort = 0;
     private Spinner filters;
-    private boolean ascending; 
+    private boolean ascending;
     
     private Iou selectedIou;
     
@@ -63,8 +63,8 @@ public class IouListFragment extends Fragment{
 
 		  @Override
 		  public boolean onNavigationItemSelected(int position, long itemId) {
-		    Log.d("Selected Sort Option", String.valueOf(itemId));
-		    selected_sort = (int)itemId;
+		    //Log.d("Selected Sort Option", String.valueOf(itemId));
+		    selected_sort = position;
 		    updateListView();
 			  
 		    return true;
@@ -113,14 +113,29 @@ public class IouListFragment extends Fragment{
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-        case 0:
-        	updateListView();
+        	case 1: // edit          		
+        		deleteSelectedIOU();        		
+        	case 0: // add
+	        	updateListView();
         }
     }
 
 	public void deleteSelectedIOU() {
 		models.Global.iou_db_mgr.deleteIou(selectedIou);
 		updateListView();
+		selectedIou = null;
+		
+		((IouListAdapter)iou_list.getAdapter()).clearSelection();
+		
+	}
+	
+	public void editSelectedIOU() {
+		
+		Global.iou = selectedIou;
+			
+		Intent intent = new Intent( getActivity(), NewIouActivity.class);
+		intent.putExtra( "isEdit", true);
+		startActivityForResult(intent, 1);	// 1 for edit
 	}
 	
 	public void archiveSelectedIOU() {
@@ -159,6 +174,7 @@ public class IouListFragment extends Fragment{
  	private void populateIous(){
  		if( this.incoming && this.outgoing ){
  			//add current iou items according to filter
+ 			 			
  			if(selected_sort == 0) { // loaned
  				ious = Global.iou_db_mgr.get_ious_ordered_by_earliest_loan_date();
  			}

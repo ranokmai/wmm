@@ -238,19 +238,20 @@ public class NewIouActivity extends Activity {
 			} 
 		});
 		
-		editIou(null);
 		
+		Bundle b = intent.getExtras();
+        if(b!=null) // an edit
+        {
+            editIou();
+        }
+	        
     }
 	
-	public void editIou( Iou iou){
+	public void editIou(){
 		
-		iou = Global.iou;
-		System.out.println("LOUIS: post");
-		
+		Iou iou = Global.iou;
+			
 		if( iou == null) return;
-		
-		//requests- change things to enums where possible
-		// 			change date to gregorian calendar
 		
 		this.mTitle.setText( iou.item_name() ); 
 		if( iou.is_a_contact() )
@@ -282,7 +283,6 @@ public class NewIouActivity extends Activity {
 			this.mDateDue.init(	gc.get(gc.YEAR), gc.get(gc.MONTH),
 								gc.get(gc.DAY_OF_MONTH), changeDate);
 		this.mNotes.setText(iou.notes());
-		
 		
 		getActionBar().setTitle("Where\'s My Money: Edit Transaction");
 	}
