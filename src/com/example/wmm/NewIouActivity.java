@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.example.wmm;
 
 import java.util.Calendar;
@@ -75,7 +74,6 @@ public class NewIouActivity extends Activity {
 			
 			mRemovePicture.setVisibility(View.GONE);
 			mPicture.setVisibility(View.VISIBLE);
-			
 			mPicture.setSelection(0);
 	   }
 	};
@@ -261,19 +259,20 @@ public class NewIouActivity extends Activity {
 			} 
 		});
 		
-		editIou(null);
 		
+		Bundle b = intent.getExtras();
+        if(b!=null) // an edit
+        {
+            editIou();
+        }
+	        
     }
 	
-	public void editIou( Iou iou){
+	public void editIou(){
 		
-		iou = Global.iou;
-		System.out.println("LOUIS: post");
-		
+		Iou iou = Global.iou;
+			
 		if( iou == null) return;
-		
-		//requests- change things to enums where possible
-		// 			change date to gregorian calendar
 		
 		this.mTitle.setText( iou.item_name() ); 
 		if( iou.is_a_contact() )
@@ -305,7 +304,6 @@ public class NewIouActivity extends Activity {
 			this.mDateDue.init(	gc.get(gc.YEAR), gc.get(gc.MONTH),
 								gc.get(gc.DAY_OF_MONTH), changeDate);
 		this.mNotes.setText(iou.notes());
-		
 		
 		getActionBar().setTitle("Where\'s My Money: Edit Transaction");
 	}
@@ -418,7 +416,7 @@ public class NewIouActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_open_settings) {
             return true;
         }
         if( id == android.R.id.home) {
