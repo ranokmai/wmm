@@ -173,7 +173,7 @@ public class IouListFragment extends Fragment{
  				ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
  			}
  			else if( this.filters.getSelectedItemId() == 2 ) {// title
- 				//ious = Global.iou_db_mgr.get_ious_ordered_by_title();
+ 				ious = Global.iou_db_mgr.get_ious_ordered_by_name();
  			}
  			else if( this.filters.getSelectedItemId() == 3 ) {// value
  				ious = Global.iou_db_mgr.get_ious_ordered_by_value_desc();
@@ -188,7 +188,7 @@ public class IouListFragment extends Fragment{
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_closest_due_date();
  			}
  			else if( this.filters.getSelectedItemId() == 2 ) {// title
- 				//ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_title();
+ 				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_name();
  			}
  			else if( this.filters.getSelectedItemId() == 3 ) {// value
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_value_desc();
@@ -202,7 +202,7 @@ public class IouListFragment extends Fragment{
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_closest_due_date();
  			}
  			else if( this.filters.getSelectedItemId() == 2 ) {// title
- 				//ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_title();
+ 				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_name();
  			}
  			else if( this.filters.getSelectedItemId() == 3 ) {// value
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_value_desc();
