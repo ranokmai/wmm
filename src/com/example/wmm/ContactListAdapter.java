@@ -12,7 +12,6 @@ import models.ContactItem;
  
 public class ContactListAdapter extends BaseAdapter {
 	private ArrayList<ContactItem> data;
-	int selected = -1;
  
     public ContactListAdapter(ArrayList<ContactItem> inArrayList) {
         data = inArrayList;
@@ -36,21 +35,8 @@ public class ContactListAdapter extends BaseAdapter {
 		return temp.getView();
 	}
 	
-	public void setSelected(int select) {
-		// Toggle selection
-		if(select == selected) {
-			data.get(selected).getView().setBackgroundColor(Color.TRANSPARENT);
-			selected = -1; 
-		} else {
-			if(selected != -1) 
-				data.get(selected).getView().setBackgroundColor(Color.TRANSPARENT);
-			
-			data.get(select).getView().setBackgroundColor(Color.parseColor("#4c4c4c"));
-			selected = select; 
-		}	
-	}
-	
-	public int getSelected() {
-		return selected;
+	public ContactItem getContactItem(int position){
+		ContactItem temp = data.get(position);
+		return temp;
 	}
 }

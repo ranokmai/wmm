@@ -6,4 +6,5 @@
     <color name="list_divider">#FFFFFF</color>
     <color name="money_pos">#27ae60</color>
     <color name="money_neg">#e74c3c</color>
+    <color name="separator_color">#363636</color>
 </resources>

@@ -2,13 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="7dp"
-    android:layout_marginBottom="7dp"
     android:orientation="horizontal">
     
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_gravity="left"
         android:layout_marginLeft="7dp"
         android:layout_weight="1"
@@ -16,10 +14,9 @@
 
         <ImageView
             android:id="@+id/contact_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
             android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
 
     </LinearLayout>
@@ -37,21 +34,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Contact Name"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="1dp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/contact_outstanding_loans"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="x Outstanding Loans"
+            android:text="0 outstanding loans"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/contact_last_loan_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
             android:text="Last Loan Date"
+            android:layout_marginBottom="3dp"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>
@@ -70,6 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$3.50"
+            android:layout_marginTop="1dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/money_pos" />
 

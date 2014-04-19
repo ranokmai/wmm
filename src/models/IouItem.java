@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -108,6 +109,20 @@ public class IouItem {
 	}
 	
 	public Iou getIou() { return this.iou; }
+
+	public void toggleExpandIou(boolean toggleFlag) {
+		if(toggleFlag) {
+			layout.findViewById(R.id.archive_button).setVisibility(View.VISIBLE);
+			layout.findViewById(R.id.delete_button).setVisibility(View.VISIBLE);
+			layout.findViewById(R.id.edit_button).setVisibility(View.VISIBLE);
+		}
+		else {
+			layout.findViewById(R.id.archive_button).setVisibility(View.GONE);
+			layout.findViewById(R.id.delete_button).setVisibility(View.GONE);
+			layout.findViewById(R.id.edit_button).setVisibility(View.GONE);
+		}
+		
+	}
 	
 	public RelativeLayout getView() { return layout;	}
 }

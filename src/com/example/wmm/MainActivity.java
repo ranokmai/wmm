@@ -93,7 +93,6 @@ public class MainActivity extends Activity {
         navigation_layout.setDrawerListener(navigation_toggle);
 		
 		// Database setup
-        
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
 
@@ -102,15 +101,19 @@ public class MainActivity extends Activity {
             display_fragment(0);
         }
 		
-		IouDBManager.reset_db();
+		/*IouDBManager.reset_db();
 		for(int i=0; i<5; i++) {
 			
 			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
-			Iou test2 = new Iou("Drinks", "Jimmy", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out");
+			Iou test2 = new Iou("Drinks", "Jimmy Blanchard", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out");
+			Iou test3 = new Iou("GTA V", "Jimmy Blanchard", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 60.00, "", "GTA 5");
+			Iou test4 = new Iou("Great American Challenge", "Galen Gong", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 50.00, "", ":D");
 			
 			Global.iou_db_mgr.insertIou(test1);
 			Global.iou_db_mgr.insertIou(test2);
-		}
+			Global.iou_db_mgr.insertIou(test3);
+			Global.iou_db_mgr.insertIou(test4);
+		}*/
 		
 		ArrayList<ContactSummary> cs = Global.iou_db_mgr.get_contact_summaries();
 		
@@ -129,6 +132,8 @@ public class MainActivity extends Activity {
 	}
 	
 	public void display_fragment(int position) {
+		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
+		
         // update the main content by replacing fragments
         Fragment fragment = null;
         switch (position) {
@@ -140,6 +145,10 @@ public class MainActivity extends Activity {
             break;
         case 4:
         	fragment = new SettingsFragment();
+        	break;
+        case 5:
+        	fragment = new AboutFragment();
+        	break;
         	
         default:
             break;
@@ -154,6 +163,11 @@ public class MainActivity extends Activity {
             navigation_list.setItemChecked(position, true);
             navigation_list.setSelection(position);
             setTitle(navigation_titles[position]);
+            if (position == 0){
+            	getActionBar().setIcon(R.drawable.ic_logo);
+            } else {
+            	getActionBar().setIcon(navigation_icons.getResourceId(position, -1));
+            }
             navigation_layout.closeDrawer(navigation_list);
             
         } else {

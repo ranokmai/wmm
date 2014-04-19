@@ -84,7 +84,8 @@
 	    android:layout_alignParentLeft="true"
 	    android:layout_below="@+id/filter_region"
 	    android:layout_marginTop="20dp"
-	    android:background="@android:color/darker_gray"
+	    android:layout_marginBottom="2dp"
+	    android:background="@color/separator_color"
 	    android:paddingTop="50dp" />
 
 	<ListView
