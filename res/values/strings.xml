@@ -20,8 +20,8 @@
 	<string-array name="filter_options">
         <item>Newest Loans</item>
         <item>Due Soon</item>
-        <item>Title</item>
-        <item>Value</item>
+        <item>Sort Title</item>
+        <item>Sort Value</item>
     </string-array>
     <string name="show_direction">Show:</string>
     <string name="outgoing">Outgoing</string>

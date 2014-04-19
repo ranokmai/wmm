@@ -81,13 +81,13 @@ public class MainActivity extends Activity {
                 R.string.app_name,
                 R.string.app_name
         		){
-            public void onDrawerClosed(View view) {
-            	
+            public void onDrawerClosed(View view){
+            	Menu actionbar_menu = (Menu)findViewById(R.id.action_new_iou);
                 getActionBar().setTitle(app_title);
                 invalidateOptionsMenu();
             }
  
-            public void onDrawerOpened(View drawerView) {
+            public void onDrawerOpened(View drawerView){
                 getActionBar().setTitle(navigation_title);
                 invalidateOptionsMenu();
             }
