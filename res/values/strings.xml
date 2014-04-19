@@ -18,7 +18,6 @@
         <item>Date Due</item>
         <item>Title</item>
         <item>Value</item>
-        <item>Contact</item>
     </string-array>
     <string name="show_direction">Show:</string>
     <string name="outgoing">Outgoing</string>

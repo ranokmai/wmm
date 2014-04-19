@@ -270,19 +270,20 @@ public class NewIouActivity extends Activity {
 			this.mDirections.setSelection(1);
 		this.mPicture.setSelection(2);
 		this.pictureUrl = iou.pic_loc();
-		this.mDateLoaned.init(	iou.date_borrowed().getYear(), 
-								iou.date_borrowed().getMonth(), 
-								iou.date_borrowed().getDate(), 
-								changeDate);
 		
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTime(iou.date_borrowed());
+		this.mDateLoaned.init(	gc.YEAR, gc.MONTH,
+								gc.DAY_OF_MONTH, changeDate);
+		
+		gc.setTime(iou.date_due());
 		if( iou.date_due().compareTo(Global.DATE_MAX) == 0 )
 			this.mIsDateDue.setChecked(false);
 		else 
-			this.mDateDue.init(	iou.date_due().getYear(), 
-								iou.date_due().getMonth(), 
-								iou.date_due().getDate(), 
-								changeDate);
+			this.mDateDue.init(	gc.YEAR, gc.MONTH,
+								gc.DAY_OF_MONTH, changeDate);
 		this.mNotes.setText(iou.notes());
+		
 		
 		getActionBar().setTitle("Where\'s My Money: Edit Transaction");
 	}

@@ -40,6 +40,7 @@ public class IouListFragment extends Fragment{
     private boolean outgoing;
     
     private Spinner filters;
+    private boolean ascending; 
     
     private Filters mFilter;
     private Iou selectedIou;
@@ -49,6 +50,7 @@ public class IouListFragment extends Fragment{
     		Bundle savedInstanceState) {
     	
     	incoming = outgoing = true;
+    	ascending = true; 
     	mFilter = Filters.DATEDUE;
     			
     	View rootView = inflater.inflate(R.layout.fragment_main, container, false);
@@ -62,10 +64,8 @@ public class IouListFragment extends Fragment{
 			public void onClick(View view) {
 				
 				Global.iou = selectedIou;
-				System.out.println("LOUIS: pre");
 				
-				
-				 // Display the fragment as the main content.
+				// Display the fragment as the main content.
 				Intent intent = new Intent( getActivity(), NewIouActivity.class);
 				startActivityForResult(intent, 0);			
 			    
@@ -142,9 +142,7 @@ public class IouListFragment extends Fragment{
  		//make sure initialized
 		iouItems = new ArrayList<IouItem>();
 		
-		//add current iou items
-		// use correct query here or just sort manually...
-		ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
+		populateIous();
 		
 		// Fill iouItems with db data
 		for (int i = 0; i < ious.size(); i++) {
@@ -165,5 +163,70 @@ public class IouListFragment extends Fragment{
 				
 			}
         });
+ 	}
+ 	
+ 	private void populateIous(){
+ 		
+ 		if( this.incoming && this.outgoing ){
+ 			//add current iou items according to filter
+ 			if( this.filters.getSelectedItemId() == 0 ) { // loaned
+ 				ious = Global.iou_db_mgr.get_ious_ordered_by_earliest_loan_date();
+ 			}
+ 			else if ( this.filters.getSelectedItemId() == 1 ) {// due
+ 				ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
+ 			}
+ 			else if( this.filters.getSelectedItemId() == 2 ) {// title
+ 				ious = Global.iou_db_mgr.get_ious_ordered_by_title();
+ 			}
+ 			else if( this.filters.getSelectedItemId() == 3 ) {// value
+ 				ious = Global.iou_db_mgr.get_ious_ordered_by_value_desc();
+ 			}
+ 			
+ 		}
+ 		else if( this.incoming){
+ 			if( this.filters.getSelectedItemId() == 0 ) { // loaned
+ 				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_earliest_loan_date();
+ 			}
+ 			else if ( this.filters.getSelectedItemId() == 1 ) {// due
+ 				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_closest_due_date();
+ 			}
+ 			else if( this.filters.getSelectedItemId() == 2 ) {// title
+ 				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_title();
+ 			}
+ 			else if( this.filters.getSelectedItemId() == 3 ) {// value
+ 				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_value_desc();
+ 			}
+ 		}
+ 		else if (this.outgoing){
+ 			if( this.filters.getSelectedItemId() == 0 ) { // loaned
+ 				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_earliest_loan_date();
+ 			}
+ 			else if ( this.filters.getSelectedItemId() == 1 ) {// due
+ 				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_closest_due_date();
+ 			}
+ 			else if( this.filters.getSelectedItemId() == 2 ) {// title
+ 				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_title();
+ 			}
+ 			else if( this.filters.getSelectedItemId() == 3 ) {// value
+ 				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_value_desc();
+ 			}
+ 		}
+ 		
+ 		// flip if they want the other direction
+ 		if( !ascending ) ious = flipArray(ious);
+ 		
+ 		return;
+ 	}
+ 	
+ 	private ArrayList<Iou> flipArray( ArrayList<Iou> reverse){
+		
+ 		for(int i = 0; i < reverse.size() / 2; i++)
+ 		{
+ 		    Iou temp = reverse.get(i);
+ 		    reverse.set(i, reverse.get(reverse.size() - i - 1));
+ 		   reverse.set(reverse.size() - i - 1, temp);
+ 		}
+ 		
+ 		return reverse;
  	}
 }
