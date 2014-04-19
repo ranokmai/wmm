@@ -63,8 +63,8 @@ public class IouListFragment extends Fragment{
 
 		  @Override
 		  public boolean onNavigationItemSelected(int position, long itemId) {
-		    Log.d("Selected Sort Option", String.valueOf(itemId));
-		    selected_sort = (int)itemId;
+		    //Log.d("Selected Sort Option", String.valueOf(itemId));
+		    selected_sort = position;
 		    updateListView();
 			  
 		    return true;
@@ -174,6 +174,7 @@ public class IouListFragment extends Fragment{
  	private void populateIous(){
  		if( this.incoming && this.outgoing ){
  			//add current iou items according to filter
+ 			 			
  			if(selected_sort == 0) { // loaned
  				ious = Global.iou_db_mgr.get_ious_ordered_by_earliest_loan_date();
  			}
@@ -228,8 +229,6 @@ public class IouListFragment extends Fragment{
  			ious = Global.iou_db_mgr.get_ious_unordered();
  		}
  		
- 		//System.out.println( this.filters.getSelectedItemPosition() + " LOUIS");
-
  		// flip if they want the other direction
  		if( !ascending ) ious = flipArray(ious);
  		
