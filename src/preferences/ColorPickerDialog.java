@@ -18,7 +18,7 @@ package preferences;
 
 import java.util.Locale;
 
-import com.example.wmm.R;
+import com.example.wmm.R; 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.ColorStateList;

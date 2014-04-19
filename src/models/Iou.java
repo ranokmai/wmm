@@ -110,7 +110,8 @@ public class Iou {
 		iou.put(outbound, outbound_);
 		iou.put(date_borrowed, Global.date_to_str(date_borrowed_));
 		iou.put(date_due, Global.date_to_str(date_due_));
-		iou.put(date_completed, Global.date_to_str(Global.DATE_MAX));
+		String s = Global.date_to_str(Global.DATE_MAX);
+		iou.put(date_completed, s);
 		iou.put(value, value_.toString());
 		iou.put(pic_loc, pic_loc_);
 		iou.put(notes, notes_);
@@ -178,7 +179,8 @@ public class Iou {
 		Date r = Global.DATE_MAX;
 		
 		try {
-			r = df.parse(iou.getAsString(date_due));
+			String s = iou.getAsString(date_due);
+			r = df.parse(s);
 			
 		} catch (ParseException e) {
 			e.printStackTrace();

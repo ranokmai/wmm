@@ -113,9 +113,7 @@ public class IouItem {
 		}
 	}
 	
-	public void deletestuff() {
-		models.Global.iou_db_mgr.deleteIou(iou);
-	}
+	public Iou getIou() { return this.iou; }
 
 	public void toggleExpandIou(boolean toggleFlag) {
 		if(toggleFlag) {

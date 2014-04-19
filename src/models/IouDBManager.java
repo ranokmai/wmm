@@ -164,6 +164,12 @@ public class IouDBManager {
 		
 		return retrieve_ious(cursor);
 	}
+
+	public ArrayList<Iou> get_ious_ordered_by_name() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious ORDER BY item_name ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//BASIC DB QUERIES FOR ACTIVE IOUS OUTGOING
@@ -206,6 +212,12 @@ public class IouDBManager {
 		
 		return retrieve_ious(cursor);
 	}
+
+	public ArrayList<Iou> get_outgoing_ious_ordered_by_name() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 1 ORDER BY item_name DESC", null);
+		
+		return retrieve_ious(cursor);
+	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//BASIC DB QUERIES FOR ACTIVE IOUS INCOMING
@@ -244,7 +256,13 @@ public class IouDBManager {
 	
 	//retrieves all ious in order of lowest to highest value
 	public ArrayList<Iou> get_incoming_ious_ordered_by_value_asc() {
-		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0 ORDER BY value ASC", null);
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0 ORDER BY value DESC", null);
+		
+		return retrieve_ious(cursor);
+	}
+
+	public ArrayList<Iou> get_incoming_ious_ordered_by_name() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0 ORDER BY item_name DESC", null);
 		
 		return retrieve_ious(cursor);
 	}

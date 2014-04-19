@@ -290,42 +290,43 @@
 			    android:lines="12"
 			    android:minLines="6"
 			    android:scrollbars="vertical" />
+
+			<RelativeLayout 
+			    android:id="@+id/addIouUserButtons"
+			    android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+			    android:layout_below="@+id/addIouNotes">
+			    
+				<Button
+					android:id="@+id/addIouAccept"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
+		       		android:layout_toLeftOf="@+id/centerPoint"
+					android:text="@string/new_iou_accept"
+				    android:textSize="16sp"  />
+		
+				<TextView
+			        android:id="@+id/centerPoint"
+			        android:text=""
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_centerHorizontal="true" />
+			    
+				<Button
+					android:id="@+id/addIouDecline"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/new_iou_cancel"
+					android:layout_alignParentRight="true"
+		       		android:layout_toRightOf="@+id/centerPoint"
+				    android:textSize="16sp" />
+			   
+				
+			</RelativeLayout>	
 			
 	    </RelativeLayout>
-	
+
 	</ScrollView>
 	
-	<RelativeLayout 
-	    android:id="@+id/addIouUserButtons"
-	    android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-	    android:layout_below="@+id/scrollView1">
-	    
-		<Button
-			android:id="@+id/addIouAccept"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentLeft="true"
-       		android:layout_toLeftOf="@+id/centerPoint"
-			android:text="@string/new_iou_accept"
-		    android:textSize="16sp"  />
-
-		<TextView
-	        android:id="@+id/centerPoint"
-	        android:text=""
-	        android:layout_width="0dip"
-	        android:layout_height="wrap_content"
-	        android:layout_centerHorizontal="true" />
-	    
-		<Button
-			android:id="@+id/addIouDecline"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/new_iou_cancel"
-			android:layout_alignParentRight="true"
-       		android:layout_toRightOf="@+id/centerPoint"
-		    android:textSize="16sp" />
-	   
-		
-	</RelativeLayout>	
 </RelativeLayout>
