@@ -7,11 +7,14 @@ import models.Global.Filters;
 import models.Iou;
 import models.IouItem;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,12 +36,14 @@ public class IouListFragment extends Fragment{
 	private ArrayList<Iou> ious;
 	private ListView iou_list;
 	private IouListAdapter adapter;
+	private OnNavigationListener filter_callback;
 	
     public IouListFragment(){}
     
     private boolean incoming;
     private boolean outgoing;
     
+    private int selected_sort = 0;
     private Spinner filters;
     private boolean ascending; 
     
@@ -47,38 +52,33 @@ public class IouListFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
     		Bundle savedInstanceState) {
-    	
     	incoming = outgoing = true;
     	ascending = true; 
     			
     	View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+    	
+    	filter_callback = new OnNavigationListener() {
+		  // Get the dropdown string list
+		  String[] strings = getResources().getStringArray(R.array.filter_options);
+
+		  @Override
+		  public boolean onNavigationItemSelected(int position, long itemId) {
+		    Log.d("Selected Sort Option", String.valueOf(itemId));
+		    selected_sort = (int)itemId;
+		    updateListView();
+			  
+		    return true;
+		  }
+		};
 		
 		// Add current iou items
 		iou_list = (ListView) rootView.findViewById(R.id.iou_list);
 		
-		filters = (Spinner) rootView.findViewById(R.id.filter_by);
-		ArrayAdapter<CharSequence> spinneradapter = ArrayAdapter.createFromResource( (Context)getActivity() ,
+		ArrayAdapter<CharSequence> spinneradapter = ArrayAdapter.createFromResource((Context)getActivity(),
 		         R.array.filter_options, android.R.layout.simple_spinner_item);
 		spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		filters.setAdapter(spinneradapter);
-		
-		Filters toint = Filters.DATEDUE;
-		filters.setSelection( toint.getint() );
-		
-		filters.setOnItemSelectedListener( new OnItemSelectedListener(){
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-				updateListView( );
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-				
-			}
-			
-		});
+		getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		getActivity().getActionBar().setListNavigationCallbacks(spinneradapter, filter_callback);
 		
 		final RadioButton rboutgoing = (RadioButton) rootView.findViewById(R.id.outgoing);
 		final RadioButton rbincoming = (RadioButton) rootView.findViewById(R.id.incoming);
@@ -157,36 +157,35 @@ public class IouListFragment extends Fragment{
  	}
  	
  	private void populateIous(){
- 		
  		if( this.incoming && this.outgoing ){
  			//add current iou items according to filter
- 			if( this.filters.getSelectedItemPosition() == 0 ) { // loaned
+ 			if(selected_sort == 0) { // loaned
  				ious = Global.iou_db_mgr.get_ious_ordered_by_earliest_loan_date();
  			}
- 			else if ( this.filters.getSelectedItemPosition() == 1 ) {// due
+ 			else if (selected_sort == 1) {// due
  				ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
  			}
- 			else if( this.filters.getSelectedItemPosition() == 2 ) {// title
+ 			else if (selected_sort == 2) {// title
  				ious = Global.iou_db_mgr.get_ious_ordered_by_name();
  			}
- 			else if( this.filters.getSelectedItemPosition() == 3 ) {// value
+ 			else if (selected_sort == 3) {// value
  				ious = Global.iou_db_mgr.get_ious_ordered_by_value_desc();
  			}
  	 		else {
  	 			ious = Global.iou_db_mgr.get_ious_unordered();
  	 		}
  		}
- 		else if( this.incoming){
- 			if( this.filters.getSelectedItemPosition() == 0 ) { // loaned
+ 		else if(this.incoming){
+ 			if (selected_sort == 0) { // loaned
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_earliest_loan_date();
  			}
- 			else if ( this.filters.getSelectedItemPosition() == 1 ) {// due
+ 			else if (selected_sort == 1) {// due
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_closest_due_date();
  			}
- 			else if( this.filters.getSelectedItemPosition() == 2 ) {// title
+ 			else if(selected_sort == 2) {// title
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_name();
  			}
- 			else if( this.filters.getSelectedItemPosition() == 3 ) {// value
+ 			else if(selected_sort == 3) {// value
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_value_desc();
  			}
  	 		else {
@@ -194,16 +193,16 @@ public class IouListFragment extends Fragment{
  	 		}
  		}
  		else if (this.outgoing){
- 			if( this.filters.getSelectedItemPosition() == 0 ) { // loaned
+ 			if(selected_sort == 0) { // loaned
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_earliest_loan_date();
  			}
- 			else if ( this.filters.getSelectedItemPosition() == 1 ) {// due
+ 			else if (selected_sort == 1) {// due
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_closest_due_date();
  			}
- 			else if( this.filters.getSelectedItemPosition() == 2 ) {// title
+ 			else if (selected_sort == 2) {// title
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_name();
  			}
- 			else if( this.filters.getSelectedItemPosition() == 3 ) {// value
+ 			else if (selected_sort == 3) {// value
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_value_desc();
  			}
  	 		else {
@@ -213,8 +212,6 @@ public class IouListFragment extends Fragment{
  		else {
  			ious = Global.iou_db_mgr.get_ious_unordered();
  		}
- 		
- 		System.out.println( this.filters.getSelectedItemPosition() + " LOUIS");
  		
  		// flip if they want the other direction
  		if( !ascending ) ious = flipArray(ious);

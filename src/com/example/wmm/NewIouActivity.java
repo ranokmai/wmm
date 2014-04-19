@@ -71,7 +71,6 @@ public class NewIouActivity extends Activity {
 			
 			mRemovePicture.setVisibility(View.GONE);
 			mPicture.setVisibility(View.VISIBLE);
-			
 			mPicture.setSelection(0);
 	   }
 	};
@@ -273,15 +272,15 @@ public class NewIouActivity extends Activity {
 		
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(iou.date_borrowed());
-		this.mDateLoaned.init(	gc.YEAR, gc.MONTH,
-								gc.DAY_OF_MONTH, changeDate);
+		this.mDateLoaned.init(	gc.get(gc.YEAR), gc.get(gc.MONTH),
+								gc.get(gc.DAY_OF_MONTH), changeDate);
 		
 		gc.setTime(iou.date_due());
 		if( iou.date_due().compareTo(Global.DATE_MAX) == 0 )
 			this.mIsDateDue.setChecked(false);
 		else 
-			this.mDateDue.init(	gc.YEAR, gc.MONTH,
-								gc.DAY_OF_MONTH, changeDate);
+			this.mDateDue.init(	gc.get(gc.YEAR), gc.get(gc.MONTH),
+								gc.get(gc.DAY_OF_MONTH), changeDate);
 		this.mNotes.setText(iou.notes());
 		
 		
@@ -396,7 +395,7 @@ public class NewIouActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_open_settings) {
             return true;
         }
         if( id == android.R.id.home) {
