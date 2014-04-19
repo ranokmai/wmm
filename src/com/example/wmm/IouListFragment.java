@@ -40,7 +40,7 @@ public class IouListFragment extends Fragment{
     private boolean outgoing;
     
     private Spinner filters;
-    private boolean ascending; 
+    private boolean ascending;
     
     private Iou selectedIou;
     
@@ -113,8 +113,10 @@ public class IouListFragment extends Fragment{
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-        case 0:
-        	updateListView();
+        	case 1: // edit          		
+        		deleteSelectedIOU();        		
+        	case 0: // add
+	        	updateListView();
         }
     }
 
@@ -122,6 +124,19 @@ public class IouListFragment extends Fragment{
 		//Iou iou = ious.get(selected);
 		models.Global.iou_db_mgr.deleteIou(selectedIou);
 		updateListView();
+		selectedIou = null;
+		
+		((IouListAdapter)iou_list.getAdapter()).clearSelection();
+		
+	}
+	
+	public void editSelectedIOU() {
+		
+		Global.iou = selectedIou;
+			
+		Intent intent = new Intent( getActivity(), NewIouActivity.class);
+		intent.putExtra( "isEdit", true);
+		startActivityForResult(intent, 1);	// 1 for edit
 	}
     
     // Update the main view with the Items in iouItems
@@ -210,7 +225,7 @@ public class IouListFragment extends Fragment{
  			ious = Global.iou_db_mgr.get_ious_unordered();
  		}
  		
- 		System.out.println( this.filters.getSelectedItemPosition() + " LOUIS");
+ 		//System.out.println( this.filters.getSelectedItemPosition() + " LOUIS");
  		
  		// flip if they want the other direction
  		if( !ascending ) ious = flipArray(ious);

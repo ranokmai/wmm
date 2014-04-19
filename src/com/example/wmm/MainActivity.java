@@ -185,6 +185,11 @@ public class MainActivity extends Activity {
 			iouListFragment.deleteSelectedIOU();
 	}
 	
+	public void editIouButtonListener(View v){		
+		if(iouListFragment != null)
+			iouListFragment.editSelectedIOU();
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -220,10 +225,10 @@ public class MainActivity extends Activity {
 		}
 		
 		// Handle action bar actions click
-        switch (item.getItemId()) {
-        case R.id.action_settings:
+        if( item.getItemId() == R.id.action_settings ) {
             return true;
-        default:
+        }
+        else { 
             return super.onOptionsItemSelected(item);
         }
 	}

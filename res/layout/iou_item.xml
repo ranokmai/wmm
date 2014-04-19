@@ -96,6 +96,7 @@
 		android:layout_alignParentRight="true"
         android:visibility="gone"
 		android:layout_marginRight="12dp"
+		android:onClick="editIouButtonListener"
         android:src="@drawable/edit_icon" />
 
 </RelativeLayout>
