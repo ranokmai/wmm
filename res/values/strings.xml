@@ -14,8 +14,8 @@
 	
 	<string name="filter">Sort By:</string>
 	<string-array name="filter_options">
-        <item>Date Loaned</item>
-        <item>Date Due</item>
+        <item>Newest Loans</item>
+        <item>Due Soon</item>
         <item>Title</item>
         <item>Value</item>
         <item>Contact</item>
@@ -85,6 +85,8 @@
     </string-array>
     
     <!-- Navigation drawer icons -->
+    <string name="action_open_settings">Settings</string>
+    <string name="action_new_iou">Create Transaction</string>
     <array name="nav_drawer_icons">
         <item>@drawable/ic_loans</item>
         <item>@drawable/ic_contacts</item>

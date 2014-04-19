@@ -10,16 +10,6 @@
         android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
         >
-        
-		<Button
-		    android:id="@+id/add_new_button"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_below="@+id/filter2"
-		    android:layout_alignParentLeft="true"
-		    android:layout_marginTop="50dp"
-		    android:layout_marginLeft="30dp"
-		    android:text="@string/addnewiou" />
 		
 		<TextView 
 		    android:id="@+id/filter"

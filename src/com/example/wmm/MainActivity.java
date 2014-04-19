@@ -13,6 +13,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -162,10 +163,11 @@ public class MainActivity extends Activity {
             // Update the title and close the drawer
             navigation_list.setItemChecked(position, true);
             navigation_list.setSelection(position);
-            setTitle(navigation_titles[position]);
             if (position == 0){
+            	setTitle("");
             	getActionBar().setIcon(R.drawable.ic_logo);
             } else {
+            	setTitle(navigation_titles[position]);
             	getActionBar().setIcon(navigation_icons.getResourceId(position, -1));
             }
             navigation_layout.closeDrawer(navigation_list);
@@ -180,14 +182,14 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 	@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If nav drawer is opened, hide the action items
         boolean drawerOpen = navigation_layout.isDrawerOpen(navigation_list);
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        menu.findItem(R.id.action_open_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 	
@@ -212,10 +214,26 @@ public class MainActivity extends Activity {
 		
 		// Handle action bar actions click
         switch (item.getItemId()) {
-        case R.id.action_settings:
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+        	case R.id.action_new_iou:
+        		Intent intent = new Intent(this, NewIouActivity.class);
+			    startActivityForResult(intent, 0);
+			    
+        		return true;
+        	case R.id.action_open_settings:
+        		Fragment fragment = new SettingsFragment();
+        		FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+     
+                // Update the title and close the drawer
+                navigation_list.setItemChecked(4, true);
+                navigation_list.setSelection(4);
+                setTitle(navigation_titles[4]);
+                getActionBar().setIcon(navigation_icons.getResourceId(4, -1));
+                navigation_layout.closeDrawer(navigation_list);
+        		
+        		return true;
+        	default:
+        		return super.onOptionsItemSelected(item);
         }
 	}
 	

@@ -6,11 +6,14 @@ import models.Global;
 import models.Iou;
 import models.IouItem;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,36 +31,38 @@ public class IouListFragment extends Fragment{
 	private ArrayList<Iou> ious;
 	private ListView iou_list;
 	private IouListAdapter adapter;
+	private OnNavigationListener filter_callback;
 	
     public IouListFragment(){}
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
     		Bundle savedInstanceState) {
-    	
     	View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+    	
+    	filter_callback = new OnNavigationListener() {
+		  // Get the dropdown string list
+		  String[] strings = getResources().getStringArray(R.array.filter_options);
+
+		  @Override
+		  public boolean onNavigationItemSelected(int position, long itemId) {
+		    Log.d("NAV SELECT TEST", "TESTTESTTEST");
+			  
+		    return true;
+		  }
+		};
 		
 		// Add current iou items
 		iou_list = (ListView) rootView.findViewById(R.id.iou_list);
 		
 		updateListView();
 		
-		Button b = (Button)(rootView.findViewById(R.id.add_new_button));
-		b.setOnClickListener( new OnClickListener() {
-
-			public void onClick(View view) {
-				
-				 // Display the fragment as the main content.
-				Intent intent = new Intent( getActivity(), NewIouActivity.class);
-			    startActivityForResult(intent, 0);			    
-			}
-
-		});
-		
 		Spinner filters = (Spinner) rootView.findViewById(R.id.filter_by);
 		ArrayAdapter<CharSequence> spinneradapter = ArrayAdapter.createFromResource( (Context)getActivity() ,
 		         R.array.filter_options, android.R.layout.simple_spinner_item);
 		spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		getActivity().getActionBar().setListNavigationCallbacks(spinneradapter, filter_callback);
 		filters.setAdapter(spinneradapter);
 		
         return rootView;
