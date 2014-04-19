@@ -1,10 +1,14 @@
 package models;
 
+import com.example.wmm.IouListFragment;
 import com.example.wmm.R;
+import models.Global;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -22,7 +26,8 @@ public class IouItem {
 	private String contact, date, item_name;
 	int amount;
 	private Iou iou;
-	
+	private IouListFragment parentFragment;
+
 	public IouItem(Context context, String inName, String inDate, String inDesc, double inAmount, boolean money) {
 		contact = inName;
 		date = inDate;
@@ -31,19 +36,19 @@ public class IouItem {
 			amount = (int) Math.floor(inAmount);
 		else
 			amount = (int) Math.ceil(inAmount);
-		
+
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layout = (RelativeLayout) inflater.inflate(R.layout.iou_item, null);
-		
+
 		// Set the name, date, and desc
 		((TextView) layout.findViewById(R.id.singleItemName)).setText(contact);
 		((TextView) layout.findViewById(R.id.singleItemDate)).setText(date);
 		((TextView) layout.findViewById(R.id.singleItemAmount)).setText(item_name);
-		
+
 		// If this IOU is money or not money, use an Image for not money, and text for money
 		if(money) {
 			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setVisibility(View.GONE);
-			
+
 			// Set color to red if amount is negative
 			if(amount < 0) {
 				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setTextColor(Color.parseColor("#FF0000"));
@@ -60,36 +65,36 @@ public class IouItem {
 			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setImageResource(R.drawable.ic_logo);
 			((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setVisibility(View.GONE);
 		}
-		
+
 	}
-	
-	public IouItem(Context context, Iou iou) {
+
+	public IouItem(Context context, final Iou iou) {
 		contact = iou.contact_name();
 		date = Global.date_to_str(iou.date_due());
 		item_name = iou.item_name();
-		
+
 		this.iou = iou;
-		
+
 		if(iou.value() < 0)
 			amount = (int) Math.floor(iou.value());
 		else
 			amount = (int) Math.ceil(iou.value());
-		
+
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layout = (RelativeLayout) inflater.inflate(R.layout.iou_item, null);
-		
+
 		// Set the name, date, and desc
 		((TextView) layout.findViewById(R.id.singleItemName)).setText(contact);
 		((TextView) layout.findViewById(R.id.singleItemDate)).setText(date);
 		((TextView) layout.findViewById(R.id.singleItemAmount)).setText(item_name);
-		
+
 		// If this IOU is money or not money, use an Image for not money, and text for money
-		
+
 		String temp = iou.item_type();
-		
+
 		if(temp.equals("Money")) {
 			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setVisibility(View.GONE);
-			
+
 			// Set color to red if amount is negative
 			if(amount < 0) {
 				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setTextColor(Color.parseColor("#FF0000"));
@@ -108,6 +113,10 @@ public class IouItem {
 		}
 	}
 	
+	public void deletestuff() {
+		models.Global.iou_db_mgr.deleteIou(iou);
+	}
+
 	public void toggleExpandIou(boolean toggleFlag) {
 		if(toggleFlag) {
 			layout.findViewById(R.id.archive_button).setVisibility(View.VISIBLE);
@@ -119,8 +128,8 @@ public class IouItem {
 			layout.findViewById(R.id.delete_button).setVisibility(View.GONE);
 			layout.findViewById(R.id.edit_button).setVisibility(View.GONE);
 		}
-		
+
 	}
-	
+
 	public RelativeLayout getView() { return layout;	}
 }
