@@ -273,15 +273,15 @@ public class NewIouActivity extends Activity {
 		
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(iou.date_borrowed());
-		this.mDateLoaned.init(	gc.YEAR, gc.MONTH,
-								gc.DAY_OF_MONTH, changeDate);
+		this.mDateLoaned.init(	gc.get(gc.YEAR), gc.get(gc.MONTH),
+								gc.get(gc.DAY_OF_MONTH), changeDate);
 		
 		gc.setTime(iou.date_due());
 		if( iou.date_due().compareTo(Global.DATE_MAX) == 0 )
 			this.mIsDateDue.setChecked(false);
 		else 
-			this.mDateDue.init(	gc.YEAR, gc.MONTH,
-								gc.DAY_OF_MONTH, changeDate);
+			this.mDateDue.init(	gc.get(gc.YEAR), gc.get(gc.MONTH),
+								gc.get(gc.DAY_OF_MONTH), changeDate);
 		this.mNotes.setText(iou.notes());
 		
 		
