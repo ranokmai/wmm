@@ -38,6 +38,7 @@ public class MainActivity extends Activity {
 	private ArrayList<models.NavigationItem> navigation_items;
 	private ActionBarDrawerToggle navigation_toggle;
 	public Fragment listFrag;
+	private IouListFragment iouListFragment = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -135,19 +136,22 @@ public class MainActivity extends Activity {
 		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 		
         // update the main content by replacing fragments
-        Fragment fragment = null;
         switch (position) {
         case 0:
-            fragment = new IouListFragment();
+        	listFrag = new IouListFragment();
+        	iouListFragment = (IouListFragment) listFrag;
             break;
         case 1:
-            fragment = new ContactsFragment();
+        	listFrag = new ContactsFragment();
+        	iouListFragment = null;
             break;
         case 4:
-        	fragment = new SettingsFragment();
+        	listFrag = new SettingsFragment();
+        	iouListFragment = null;
         	break;
         case 5:
-        	fragment = new AboutFragment();
+        	listFrag = new AboutFragment();
+        	iouListFragment = null;
         	break;
         	
         default:
@@ -155,9 +159,9 @@ public class MainActivity extends Activity {
         }    
         
     	// preference fragment functions differently than fragment 
-        if (fragment != null || position == 4) {
+        if (listFrag != null || position == 4) {
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, listFrag).commit();
  
             // Update the title and close the drawer
             navigation_list.setItemChecked(position, true);
@@ -175,7 +179,12 @@ public class MainActivity extends Activity {
             Log.e("MainActivity", "Error creating fragment from navigation drawer.");
         }
     }
-
+	
+	public void deleteIouButtonListener(View v) {
+		if(iouListFragment != null)
+			iouListFragment.deleteSelectedIOU();
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

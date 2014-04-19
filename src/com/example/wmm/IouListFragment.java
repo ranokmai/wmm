@@ -11,6 +11,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class IouListFragment extends Fragment{
 	private ArrayList<Iou> ious;
 	private ListView iou_list;
 	private IouListAdapter adapter;
+	private int selected;
 	
     public IouListFragment(){}
     
@@ -72,6 +74,13 @@ public class IouListFragment extends Fragment{
         }
     }
     
+	public void deleteSelectedIOU() {
+		Log.e("TAG", Integer.toString(selected));
+		Iou iou = ious.get(selected);
+		models.Global.iou_db_mgr.deleteIou(iou);
+		updateListView();
+	}
+    
  	public void updateListView() {
  		//make sure initialized
 		iouItems = new ArrayList<IouItem>();
@@ -93,7 +102,7 @@ public class IouListFragment extends Fragment{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-				
+				selected = position;
 				((IouListAdapter)parent.getAdapter()).setSelected(position);
 			}
         });
