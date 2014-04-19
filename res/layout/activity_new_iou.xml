@@ -182,7 +182,7 @@
 		    android:layout_marginTop="14dp"
 		    android:layout_toLeftOf="@+id/addIouValue$"
 		    android:layout_marginRight="14dp"
-		    android:scaleType="center"
+		    android:scaleType="centerInside"
 		    android:src="@drawable/ic_logo" />
 
 		<TextView
