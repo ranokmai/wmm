@@ -108,6 +108,8 @@ public class IouItem {
 		}
 	}
 	
+	public Iou getIou() { return this.iou; }
+
 	public void toggleExpandIou(boolean toggleFlag) {
 		if(toggleFlag) {
 			layout.findViewById(R.id.archive_button).setVisibility(View.VISIBLE);
