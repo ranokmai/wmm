@@ -16,8 +16,7 @@
             android:id="@+id/contact_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="3dp"
-            android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
+            android:layout_margin="3dp" />
 
     </LinearLayout>
 

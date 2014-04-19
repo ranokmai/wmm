@@ -71,7 +71,6 @@ public class NewIouActivity extends Activity {
 			
 			mRemovePicture.setVisibility(View.GONE);
 			mPicture.setVisibility(View.VISIBLE);
-			
 			mPicture.setSelection(0);
 	   }
 	};
@@ -396,7 +395,7 @@ public class NewIouActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_open_settings) {
             return true;
         }
         if( id == android.R.id.home) {
