@@ -43,7 +43,6 @@ public class IouListFragment extends Fragment{
     private boolean ascending; 
     
     private Iou selectedIou;
-	private int selected;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,24 +55,6 @@ public class IouListFragment extends Fragment{
 		
 		// Add current iou items
 		iou_list = (ListView) rootView.findViewById(R.id.iou_list);
-		
-		Button b = (Button)(rootView.findViewById(R.id.add_new_button));
-		b.setOnClickListener( new OnClickListener() {
-
-			public void onClick(View view) {
-				
-				if (selectedIou == null) {
-					//selectedIou = new Iou();
-				}
-				Global.iou = selectedIou;
-				
-				// Display the fragment as the main content.
-				Intent intent = new Intent( getActivity(), NewIouActivity.class);
-				startActivityForResult(intent, 0);			
-			    
-			}
-
-		});
 		
 		filters = (Spinner) rootView.findViewById(R.id.filter_by);
 		ArrayAdapter<CharSequence> spinneradapter = ArrayAdapter.createFromResource( (Context)getActivity() ,
@@ -138,11 +119,11 @@ public class IouListFragment extends Fragment{
     }
 
 	public void deleteSelectedIOU() {
-		Iou iou = ious.get(selected);
-		models.Global.iou_db_mgr.deleteIou(iou);
+		//Iou iou = ious.get(selected);
+		models.Global.iou_db_mgr.deleteIou(selectedIou);
 		updateListView();
 	}
-	
+    
     // Update the main view with the Items in iouItems
  	public void updateListView( ) {
  		//make sure initialized
@@ -166,7 +147,6 @@ public class IouListFragment extends Fragment{
 				
 				((IouListAdapter)parent.getAdapter()).setSelected(position);
 				selectedIou = ious.get(position);
-				selected = position;
 				
 			}
         });
@@ -229,6 +209,8 @@ public class IouListFragment extends Fragment{
  		else {
  			ious = Global.iou_db_mgr.get_ious_unordered();
  		}
+ 		
+ 		System.out.println( this.filters.getSelectedItemPosition() + " LOUIS");
  		
  		// flip if they want the other direction
  		if( !ascending ) ious = flipArray(ious);
