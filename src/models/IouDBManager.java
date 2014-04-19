@@ -654,7 +654,8 @@ public class IouDBManager {
 	}
 	
 	public void deleteIou(Iou iou) {
-		sqldb.delete(db_table_name, "item_id = ?", new String[] {iou.getDb_row_id().toString()});
+		String s = iou.getDb_row_id().toString();
+		sqldb.delete(db_table_name, "iou_id = ?", new String[] {s});
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////

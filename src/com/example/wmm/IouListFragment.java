@@ -163,7 +163,9 @@ public class IouListFragment extends Fragment{
  			else if( this.filters.getSelectedItemPosition() == 3 ) {// value
  				ious = Global.iou_db_mgr.get_ious_ordered_by_value_desc();
  			}
- 			
+ 	 		else {
+ 	 			ious = Global.iou_db_mgr.get_ious_unordered();
+ 	 		}
  		}
  		else if( this.incoming){
  			if( this.filters.getSelectedItemPosition() == 0 ) { // loaned
@@ -178,6 +180,9 @@ public class IouListFragment extends Fragment{
  			else if( this.filters.getSelectedItemPosition() == 3 ) {// value
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_value_desc();
  			}
+ 	 		else {
+ 	 			ious = Global.iou_db_mgr.get_incoming_ious_unordered();
+ 	 		}
  		}
  		else if (this.outgoing){
  			if( this.filters.getSelectedItemPosition() == 0 ) { // loaned
@@ -192,6 +197,12 @@ public class IouListFragment extends Fragment{
  			else if( this.filters.getSelectedItemPosition() == 3 ) {// value
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_value_desc();
  			}
+ 	 		else {
+ 	 			ious = Global.iou_db_mgr.get_outgoing_ious_unordered();
+ 	 		}
+ 		}
+ 		else {
+ 			ious = Global.iou_db_mgr.get_ious_unordered();
  		}
  		
  		System.out.println( this.filters.getSelectedItemPosition() + " LOUIS");
