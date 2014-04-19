@@ -56,21 +56,6 @@ public class IouListFragment extends Fragment{
 		// Add current iou items
 		iou_list = (ListView) rootView.findViewById(R.id.iou_list);
 		
-		Button b = (Button)(rootView.findViewById(R.id.add_new_button));
-		b.setOnClickListener( new OnClickListener() {
-
-			public void onClick(View view) {
-				
-				Global.iou = selectedIou;
-				
-				// Display the fragment as the main content.
-				Intent intent = new Intent( getActivity(), NewIouActivity.class);
-				startActivityForResult(intent, 0);			
-			    
-			}
-
-		});
-		
 		filters = (Spinner) rootView.findViewById(R.id.filter_by);
 		ArrayAdapter<CharSequence> spinneradapter = ArrayAdapter.createFromResource( (Context)getActivity() ,
 		         R.array.filter_options, android.R.layout.simple_spinner_item);
@@ -166,48 +151,50 @@ public class IouListFragment extends Fragment{
  		
  		if( this.incoming && this.outgoing ){
  			//add current iou items according to filter
- 			if( this.filters.getSelectedItemId() == 0 ) { // loaned
+ 			if( this.filters.getSelectedItemPosition() == 0 ) { // loaned
  				ious = Global.iou_db_mgr.get_ious_ordered_by_earliest_loan_date();
  			}
- 			else if ( this.filters.getSelectedItemId() == 1 ) {// due
+ 			else if ( this.filters.getSelectedItemPosition() == 1 ) {// due
  				ious = Global.iou_db_mgr.get_ious_ordered_by_closest_due_date();
  			}
- 			else if( this.filters.getSelectedItemId() == 2 ) {// title
+ 			else if( this.filters.getSelectedItemPosition() == 2 ) {// title
  				ious = Global.iou_db_mgr.get_ious_ordered_by_name();
  			}
- 			else if( this.filters.getSelectedItemId() == 3 ) {// value
+ 			else if( this.filters.getSelectedItemPosition() == 3 ) {// value
  				ious = Global.iou_db_mgr.get_ious_ordered_by_value_desc();
  			}
  			
  		}
  		else if( this.incoming){
- 			if( this.filters.getSelectedItemId() == 0 ) { // loaned
+ 			if( this.filters.getSelectedItemPosition() == 0 ) { // loaned
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_earliest_loan_date();
  			}
- 			else if ( this.filters.getSelectedItemId() == 1 ) {// due
+ 			else if ( this.filters.getSelectedItemPosition() == 1 ) {// due
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_closest_due_date();
  			}
- 			else if( this.filters.getSelectedItemId() == 2 ) {// title
+ 			else if( this.filters.getSelectedItemPosition() == 2 ) {// title
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_name();
  			}
- 			else if( this.filters.getSelectedItemId() == 3 ) {// value
+ 			else if( this.filters.getSelectedItemPosition() == 3 ) {// value
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_value_desc();
  			}
  		}
  		else if (this.outgoing){
- 			if( this.filters.getSelectedItemId() == 0 ) { // loaned
+ 			if( this.filters.getSelectedItemPosition() == 0 ) { // loaned
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_earliest_loan_date();
  			}
- 			else if ( this.filters.getSelectedItemId() == 1 ) {// due
+ 			else if ( this.filters.getSelectedItemPosition() == 1 ) {// due
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_closest_due_date();
  			}
- 			else if( this.filters.getSelectedItemId() == 2 ) {// title
+ 			else if( this.filters.getSelectedItemPosition() == 2 ) {// title
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_name();
  			}
- 			else if( this.filters.getSelectedItemId() == 3 ) {// value
+ 			else if( this.filters.getSelectedItemPosition() == 3 ) {// value
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_value_desc();
  			}
  		}
+ 		
+ 		System.out.println( this.filters.getSelectedItemPosition() + " LOUIS");
  		
  		// flip if they want the other direction
  		if( !ascending ) ious = flipArray(ious);
