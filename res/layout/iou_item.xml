@@ -29,13 +29,13 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/singleItemName"
+        android:id="@+id/singleItemAmount"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="4dp"
         android:layout_alignParentTop="true"
-        android:text="[Name]"
+        android:text="[Amount]"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <TextView
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="15dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/singleItemName"
+        android:layout_below="@+id/singleItemAmount"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="5dp"
         android:text="[Date]"
@@ -51,14 +51,14 @@
 		android:textColor="#C5C5C5" />
 
     <TextView
-        android:id="@+id/singleItemAmount"
+        android:id="@+id/singleItemName"
         android:layout_width="wrap_content"
         android:layout_height="15dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/singleItemDate"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="3dp"
-        android:text="[Amount]"
+        android:text="[Name]"
 		android:textColor="#C5C5C5"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -69,7 +69,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="12dp"
-        android:layout_below="@+id/singleItemAmount"
+        android:layout_below="@+id/singleItemName"
         android:visibility="gone"
         android:onClick="archiveIouButtonListener"
         android:src="@drawable/archive_icon" />
@@ -81,7 +81,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="4dp"
         android:layout_alignBaseline="@+id/archive_button"
-        android:layout_below="@+id/singleItemAmount"
+        android:layout_below="@+id/singleItemName"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
         android:onClick="deleteIouButtonListener"
@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="4dp"
-        android:layout_below="@+id/singleItemAmount"
+        android:layout_below="@+id/singleItemName"
 		android:layout_alignParentRight="true"
         android:visibility="gone"
 		android:layout_marginRight="12dp"
