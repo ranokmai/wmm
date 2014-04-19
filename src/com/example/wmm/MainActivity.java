@@ -28,7 +28,7 @@ import android.widget.ListView;
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
 	private CharSequence app_title;
-	
+
 	// Navigation drawer variables
 	private CharSequence navigation_title;
 	private String[] navigation_titles;
@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.navigation_drawer);
 		app_title = "Where's My Money";
 		navigation_title = app_title;
-				
+
 		// Setup the navigation drawer
 		navigation_titles = getResources().getStringArray(R.array.nav_drawer_items);
 		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
@@ -54,26 +54,26 @@ public class MainActivity extends Activity {
 		navigation_list = (ListView)findViewById(R.id.nav_drawer);
 		navigation_items = new ArrayList<models.NavigationItem>();
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-		
+		getActionBar().setHomeButtonEnabled(true);
+
 		// Add navigation links
 		navigation_items.add(new models.NavigationItem(navigation_titles[0],
-			navigation_icons.getResourceId(0, -1)));
+				navigation_icons.getResourceId(0, -1)));
 		navigation_items.add(new models.NavigationItem(navigation_titles[1],
-			navigation_icons.getResourceId(1, -1)));
+				navigation_icons.getResourceId(1, -1)));
 		navigation_items.add(new models.NavigationItem(navigation_titles[2],
-			navigation_icons.getResourceId(2, -1)));
+				navigation_icons.getResourceId(2, -1)));
 		navigation_items.add(new models.NavigationItem(navigation_titles[3],
-			navigation_icons.getResourceId(3, -1)));
+				navigation_icons.getResourceId(3, -1)));
 		navigation_items.add(new models.NavigationItem(navigation_titles[4],
-			navigation_icons.getResourceId(4, -1)));
+				navigation_icons.getResourceId(4, -1)));
 		navigation_items.add(new models.NavigationItem(navigation_titles[5],
-			navigation_icons.getResourceId(5, -1)));
+				navigation_icons.getResourceId(5, -1)));
 		navigation_icons.recycle();
-		
+
 		// Populate navigation drawer
 		navigation_adapter = new NavigationDrawerAdapter(getApplicationContext(),
-			navigation_items);
+				navigation_items);
 		navigation_list.setAdapter(navigation_adapter);
 		navigation_list.setOnItemClickListener(new SlideMenuClickListener());
         navigation_toggle = new ActionBarDrawerToggle(this, navigation_layout,
@@ -99,32 +99,32 @@ public class MainActivity extends Activity {
 		Iou.init_item_types();
 
 		if (savedInstanceState == null) {
-            // on first time display view for first nav item
-            display_fragment(0);
-        }
-		
+			// on first time display view for first nav item
+			display_fragment(0);
+		}
+
 		/*IouDBManager.reset_db();
 		for(int i=0; i<5; i++) {
-			
+
 			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
 			Iou test2 = new Iou("Drinks", "Jimmy Blanchard", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out");
 			Iou test3 = new Iou("GTA V", "Jimmy Blanchard", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 60.00, "", "GTA 5");
 			Iou test4 = new Iou("Great American Challenge", "Galen Gong", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 50.00, "", ":D");
-			
+
 			Global.iou_db_mgr.insertIou(test1);
 			Global.iou_db_mgr.insertIou(test2);
 			Global.iou_db_mgr.insertIou(test3);
 			Global.iou_db_mgr.insertIou(test4);
 		}*/
-		
+
 		ArrayList<ContactSummary> cs = Global.iou_db_mgr.get_contact_summaries();
-		
+
 		for (int i = 0; i < cs.size(); i++) {
 			cs.get(i).print();
 		}
 
 	}
-	
+
 	private class SlideMenuClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -132,7 +132,7 @@ public class MainActivity extends Activity {
 			display_fragment(position);
 		}
 	}
-	
+
 	public void display_fragment(int position) {
 		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 		
@@ -185,7 +185,7 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If nav drawer is opened, hide the action items
@@ -195,52 +195,53 @@ public class MainActivity extends Activity {
     }
 	
 	@Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        navigation_toggle.syncState();
-    }
-	
-	
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		navigation_toggle.syncState();
+	}
+
+
 	@Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        navigation_toggle.onConfigurationChanged(newConfig);
-    }
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		navigation_toggle.onConfigurationChanged(newConfig);
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (navigation_toggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		
+
 		// Handle action bar actions click
-        switch (item.getItemId()) {
-        	case R.id.action_new_iou:
-        		Intent intent = new Intent(this, NewIouActivity.class);
-			    startActivityForResult(intent, 0);
-			    
-        		return true;
-        	case R.id.action_open_settings:
-        		Fragment fragment = new SettingsFragment();
-        		FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-     
-                // Update the title and close the drawer
-                navigation_list.setItemChecked(4, true);
-                navigation_list.setSelection(4);
-                setTitle(navigation_titles[4]);
-                getActionBar().setIcon(navigation_icons.getResourceId(4, -1));
-                navigation_layout.closeDrawer(navigation_list);
-        		
-        		return true;
-        	default:
-        		return super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        if(itemId == R.id.action_new_iou) {
+    		Intent intent = new Intent(this, NewIouActivity.class);
+		    startActivityForResult(intent, 0);
+    		return true;
+        }
+        else if(itemId == R.id.action_open_settings) {
+    		Fragment fragment = new SettingsFragment();
+    		FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+ 
+            // Update the title and close the drawer
+            navigation_list.setItemChecked(4, true);
+            navigation_list.setSelection(4);
+            setTitle(navigation_titles[4]);
+            getActionBar().setIcon(navigation_icons.getResourceId(4, -1));
+            navigation_layout.closeDrawer(navigation_list);
+    		
+    		return true;
+        }
+        else {
+    		return super.onOptionsItemSelected(item);
         }
 	}
-	
+
 	@Override
-    public void setTitle(CharSequence title) {
-        app_title = title;
-        getActionBar().setTitle(app_title);
-    }
+	public void setTitle(CharSequence title) {
+		app_title = title;
+		getActionBar().setTitle(app_title);
+	}
 }
