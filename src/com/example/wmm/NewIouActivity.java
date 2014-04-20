@@ -41,6 +41,7 @@ import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.ViewSwitcher;
 
 @SuppressLint("NewApi")
 public class NewIouActivity extends Activity {
@@ -166,9 +167,16 @@ public class NewIouActivity extends Activity {
 					else if( position == 2){
 						
 						// goto contacts 
-			            FragmentManager fragmentManager = getFragmentManager();
-			            fragmentManager.beginTransaction().replace(R.id.content_frame, new ContactsFragment()).commit();
+			            //FragmentManager fragmentManager = getFragmentManager();
+			            //fragmentManager.beginTransaction().replace(R.id.mainView1, new ContactsFragment()).commit();
+				        
 						
+						ViewSwitcher viewSwitcher =   (ViewSwitcher)findViewById(R.id.switchViews);
+				        //View myFirstView= findViewById(R.id.mainView1);
+				        //View mySecondView = findViewById(R.id.contactsFrag);
+				      
+				        viewSwitcher.showNext();
+				        
 						realContact = false;
 					}
 				}
