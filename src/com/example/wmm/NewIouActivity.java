@@ -78,6 +78,8 @@ public class NewIouActivity extends Activity {
 			mNamedContact.setVisibility(View.GONE);
 			mContacts.setVisibility(View.VISIBLE);
 			
+			mNamedContact.setText("");
+			
 			mContacts.setSelection(0);
 	   }
 	};
