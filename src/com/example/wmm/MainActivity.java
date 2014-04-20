@@ -164,6 +164,12 @@ public class MainActivity extends Activity {
         	invalidateOptionsMenu();
         	listFrag = new ContactsFragment();
             break;
+        case 3:
+        	getActionBar().setDisplayShowTitleEnabled(true);
+        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        	invalidateOptionsMenu();
+        	listFrag = new StatisticsFragment();
+            break;
         case 4:
         	getActionBar().setDisplayShowTitleEnabled(true);
         	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
