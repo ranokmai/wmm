@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -216,11 +217,6 @@ public class NewIouActivity extends Activity {
 					mPicture.setVisibility(View.INVISIBLE);
 				}
 				
-				//TODO: Code to add a picture here...
-				if (!pictureUrl.isEmpty()) {
-					
-				}
-				
 				if (position == 1) {
 				    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				    
@@ -335,8 +331,23 @@ public class NewIouActivity extends Activity {
 		this.pictureUrl = iou.pic_loc();
 		
 		if (this.pictureUrl.length() != 0) {
+			
+			mCurrentPhotoPath = this.pictureUrl;
+			//setPic();
+			
+			int width = mImg.getMaxWidth();
+			int height = mImg.getMaxHeight();
+			
 			Uri pic = Uri.parse(iou.pic_loc());
 			this.mImg.setImageURI(pic);
+			
+			Bitmap unscaled_bm = ((BitmapDrawable)mImg.getDrawable()).getBitmap();
+			
+			Bitmap scaled_bm = Bitmap.createScaledBitmap(unscaled_bm, width, height, true);
+			
+			mImg.setImageBitmap(scaled_bm);
+			
+			this.mImg.setVisibility(View.VISIBLE);
 		}
 		
 		GregorianCalendar gc = new GregorianCalendar();
@@ -572,12 +583,10 @@ public class NewIouActivity extends Activity {
 
 		/* There isn't enough memory to open up more than a couple camera photos */
 		/* So pre-scale the target bitmap into which the file is decoded */
-
-        ImageView mImageView = (ImageView) findViewById(R.id.addIouPictureViewer);
 		
 		/* Get the size of the ImageView */
-		int targetW = mImageView.getWidth();
-		int targetH = mImageView.getHeight();
+		int targetW = mImg.getWidth();
+		int targetH = mImg.getHeight();
 
 		/* Get the size of the image */
 		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -601,8 +610,8 @@ public class NewIouActivity extends Activity {
 		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
 		
 		/* Associate the Bitmap to the ImageView */
-		mImageView.setImageBitmap(bitmap);
-		mImageView.setVisibility(View.VISIBLE);
+		mImg.setImageBitmap(bitmap);
+		mImg.setVisibility(View.VISIBLE);
 	}
 
     /**
