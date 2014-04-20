@@ -249,7 +249,25 @@ public class MainActivity extends Activity {
 		super.onConfigurationChanged(newConfig);
 		navigation_toggle.onConfigurationChanged(newConfig);
 	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        switch (resultCode) {
+    	
+	    	case 1: // edit          		
+	    		iouListFragment.deleteSelectedIOU();        		
+	    	case 0: // add
+	        	iouListFragment.updateListView(null);
+        }
+    }
+	
+	@Override
+	protected void onPostResume() {
+	    super.onPostResume();
+	    
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (navigation_toggle.onOptionsItemSelected(item)) {
