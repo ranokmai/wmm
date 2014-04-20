@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.example.wmm.NewIouActivity;
+
+import android.app.Fragment;
 import android.content.Context;
 
 public class Global {
@@ -27,6 +30,10 @@ public class Global {
 	public static int DEC = 11;
 	
 	public static Iou iou;
+	
+	public static boolean fromnew = false;
+	public static String tonew = "";
+	public static NewIouActivity newIouAct = null;
 	
     public enum Filters {
     	DATEDUE, 

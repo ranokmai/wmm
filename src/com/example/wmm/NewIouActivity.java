@@ -25,11 +25,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -123,6 +125,7 @@ public class NewIouActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        Global.newIouAct = this;
         dateChanged = false;
         realContact = true; 
         pictureUrl = "";
@@ -132,6 +135,8 @@ public class NewIouActivity extends Activity {
         setContentView(R.layout.activity_new_iou);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
+        getWindow().setSoftInputMode(
+        	      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		///////////////////////////////////////////////////////
 		// Initialize all private memers in class and on screen
 		///////////////////////////////////////////////////////
@@ -167,21 +172,13 @@ public class NewIouActivity extends Activity {
 					}
 					else if( position == 2){
 						
-						// goto contacts 
-			            //FragmentManager fragmentManager = getFragmentManager();
-			            //fragmentManager.beginTransaction().replace(R.id.mainView1, new ContactsFragment()).commit();
-				        
-						
 						ViewSwitcher viewSwitcher =   (ViewSwitcher)findViewById(R.id.switchViews);
-				        //View myFirstView= findViewById(R.id.mainView1);
-				        //View mySecondView = findViewById(R.id.contactsFrag);
-				      
 				        viewSwitcher.showNext();
-				        
+				     
+				        Global.fromnew = true;
 						realContact = false;
 					}
 				}
-				
 			}
 
 			@Override
@@ -313,6 +310,16 @@ public class NewIouActivity extends Activity {
         }
 	        
     }
+	
+	public void returnFromContacts() {
+		ViewSwitcher viewSwitcher =   (ViewSwitcher)findViewById(R.id.switchViews);
+        viewSwitcher.showNext();
+        
+        mNamedContact.setText( Global.tonew);
+        mNamedContact.setFocusable(false);
+        
+        Global.fromnew = false; 
+	}
 	
 	public void editIou(){
 		

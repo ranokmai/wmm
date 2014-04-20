@@ -137,15 +137,18 @@ public class IouListFragment extends Fragment{
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (resultCode) {
-    	
+        
+    		
 	    	case 1: // edit          		
 	    		deleteSelectedIOU();        		
 	    	case 0: // add
 	        	updateListView(null);
+	        	Global.newIouAct = null;
         }
     }
     
-	public void addNewIou() {
+	public void addNewIou( ) {
+		
 		Intent intent = new Intent( getActivity(), NewIouActivity.class);
 	    startActivityForResult(intent, 0);
 	}
