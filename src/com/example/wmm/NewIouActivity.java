@@ -333,6 +333,9 @@ public class NewIouActivity extends Activity {
 			this.mDirections.setSelection(1);
 		this.mPicture.setSelection(0);
 		this.pictureUrl = iou.pic_loc();
+
+		Uri pic = Uri.parse(iou.pic_loc());
+		this.mImg.setImageURI(pic);
 		
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(iou.date_borrowed());
