@@ -25,3 +25,8 @@ CREATE TABLE archived_ious (
 	value TEXT,
 	picture_loc TEXT,
 	notes TEXT);
+	
+CREATE TABLE reminders (
+	reminder_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	iou_id INTEGER,
+	time TEXT);
