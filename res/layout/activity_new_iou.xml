@@ -132,8 +132,7 @@
 	            android:layout_alignTop="@+id/addIouDirections"
 	            android:ems="10"
 	            android:singleLine="true"
-	    		android:lines="1"
-	            android:focusable="false"/>
+	    		android:lines="1" />
 	        
 	         
 	        <Button

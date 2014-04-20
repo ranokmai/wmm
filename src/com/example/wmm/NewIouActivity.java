@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -151,16 +152,22 @@ public class NewIouActivity extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				if( id != 0 ){
+				if( position != 0 ){
 					mContacts.setVisibility(View.GONE);
 					mNamedContact.setVisibility(View.VISIBLE);
 					mRemove.setVisibility(View.VISIBLE);
 					
-					if( id == 1){
-						
+					if( position == 1){
+						realContact = true;
+						mNamedContact.requestFocus();
 					}
-					else if( id == 2){
+					else if( position == 2){
 						
+						// goto contacts 
+			            FragmentManager fragmentManager = getFragmentManager();
+			            fragmentManager.beginTransaction().replace(R.id.content_frame, new ContactsFragment()).commit();
+						
+						realContact = false;
 					}
 				}
 				
@@ -344,7 +351,7 @@ public class NewIouActivity extends Activity {
 	private boolean addNewIou(){
 
 		String name = this.mTitle.getText().toString();
-		String contact = this.mContacts.getSelectedItem().toString();
+		String contact = this.mNamedContact.getText().toString();
 		boolean isContact = this.realContact;
 		String type = this.mTypes.getSelectedItem().toString();
 		boolean direction = (this.mDirections.getSelectedItemPosition() == 0);
