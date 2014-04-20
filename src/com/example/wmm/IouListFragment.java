@@ -138,6 +138,7 @@ public class IouListFragment extends Fragment{
     }
 
 	public void deleteSelectedIOU() {
+				
 		models.Global.iou_db_mgr.deleteIou(selectedIou);
 		updateListView(null);
 		selectedIou = null;
@@ -163,10 +164,10 @@ public class IouListFragment extends Fragment{
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (resultCode) {
-        
+
+        switch (requestCode) {
     		
-	    	case 1: // edit          		
+	    	case 1: // edit         
 	    		deleteSelectedIOU();        		
 	    	case 0: // add
 	        	updateListView(null);

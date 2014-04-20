@@ -141,9 +141,7 @@ public class ContactsFragment extends Fragment {
 				    startActivity(intent);
 				}
 				else {
-					Global.tonew = selected_item.name;
-					Global.newIouAct.returnFromContacts();
-			
+					Global.newIouAct.returnFromContacts( selected_item.name );
 				}
 			}
         });

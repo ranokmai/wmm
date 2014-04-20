@@ -32,7 +32,6 @@ public class Global {
 	public static Iou iou;
 	
 	public static boolean fromnew = false;
-	public static String tonew = "";
 	public static NewIouActivity newIouAct = null;
 	
     public enum Filters {

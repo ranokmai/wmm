@@ -83,6 +83,7 @@ public class NewIouActivity extends Activity {
 			mContacts.setVisibility(View.VISIBLE);
 			
 			mNamedContact.setText("");
+			mNamedContact.setEnabled(true);
 			
 			mContacts.setSelection(0);
 	   }
@@ -167,16 +168,18 @@ public class NewIouActivity extends Activity {
 					mRemove.setVisibility(View.VISIBLE);
 					
 					if( position == 1){
-						realContact = true;
 						mNamedContact.requestFocus();
+						
+						realContact = false;
 					}
 					else if( position == 2){
 						
-						ViewSwitcher viewSwitcher =   (ViewSwitcher)findViewById(R.id.switchViews);
-				        viewSwitcher.showNext();
-				     
-				        Global.fromnew = true;
-						realContact = false;
+						if( Global.iou == null ){
+							ViewSwitcher viewSwitcher =   (ViewSwitcher)findViewById(R.id.switchViews);
+					        viewSwitcher.showNext();
+					        Global.fromnew = true;
+						}
+						realContact = true;
 					}
 				}
 			}
@@ -311,13 +314,11 @@ public class NewIouActivity extends Activity {
 	        
     }
 	
-	public void returnFromContacts() {
+	public void returnFromContacts( String name) {
 		ViewSwitcher viewSwitcher =   (ViewSwitcher)findViewById(R.id.switchViews);
         viewSwitcher.showNext();
         
-        mNamedContact.setText( Global.tonew);
-        mNamedContact.setFocusable(false);
-        
+        mNamedContact.setText( name );
         Global.fromnew = false; 
 	}
 	
@@ -328,10 +329,7 @@ public class NewIouActivity extends Activity {
 		if( iou == null) return;
 		
 		this.mTitle.setText( iou.item_name() ); 
-		if( iou.is_a_contact() )
-			this.mContacts.setSelection(1);
-		else 
-			this.mContacts.setSelection(2);
+		this.mContacts.setSelection(1);
 		this.mNamedContact.setText( iou.contact_name() );
 		if( iou.item_type().compareTo("Money") == 0 )
 			this.mTypes.setSelection(0);
@@ -343,8 +341,11 @@ public class NewIouActivity extends Activity {
 		else 
 			this.mDirections.setSelection(1);
 		this.mPicture.setSelection(0);
-		this.pictureUrl = iou.pic_loc();
 		
+		if( iou.pic_loc() != null ) {
+			this.pictureUrl = iou.pic_loc();	
+		}
+		else this.pictureUrl = "";
 		if (this.pictureUrl.length() != 0) {
 			
 			mCurrentPhotoPath = this.pictureUrl;
@@ -378,7 +379,7 @@ public class NewIouActivity extends Activity {
 								gc.get(gc.DAY_OF_MONTH), changeDate);
 		this.mNotes.setText(iou.notes());
 		
-		getActionBar().setTitle("Where\'s My Money: Edit Transaction");
+		Global.iou = null;
 	}
 	
 	private boolean addNewIou(){
