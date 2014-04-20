@@ -10,6 +10,7 @@ import models.Global;
 import models.ContactItem;
 import models.Iou;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.ContentResolver;
@@ -45,8 +46,7 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
     		Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_contacts, container, false);
-        
+        View rootView = inflater.inflate(R.layout.fragment_contacts, container, false);        
         contacts_list = (ListView) rootView.findViewById(R.id.contact_list);
         update_contacts_list();
         

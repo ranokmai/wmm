@@ -77,7 +77,6 @@ public class IouListFragment extends Fragment{
 		ArrayAdapter<CharSequence> spinneradapter = ArrayAdapter.createFromResource((Context)getActivity(),
 		         R.array.filter_options, android.R.layout.simple_spinner_item);
 		spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		getActivity().getActionBar().setListNavigationCallbacks(spinneradapter, filter_callback);
 		
 		final RadioButton rboutgoing = (RadioButton) rootView.findViewById(R.id.outgoing);

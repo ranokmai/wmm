@@ -10,6 +10,7 @@ import models.Iou;
 import models.IouDBManager;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -40,13 +41,13 @@ public class MainActivity extends Activity {
 	private ActionBarDrawerToggle navigation_toggle;
 	public Fragment listFrag;
 	private IouListFragment iouListFragment = null;
-
+	private int selected_fragment = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.navigation_drawer);
-		app_title = "Where's My Money";
+		app_title = "Where's My Money?!";
 		navigation_title = app_title;
 
 		// Setup the navigation drawer
@@ -84,12 +85,21 @@ public class MainActivity extends Activity {
                 R.string.app_name
         		){
             public void onDrawerClosed(View view){
-            	Menu actionbar_menu = (Menu)findViewById(R.id.action_new_iou);
-                getActionBar().setTitle(app_title);
-                invalidateOptionsMenu();
+            	if (selected_fragment == 0){
+            		getActionBar().setDisplayShowTitleEnabled(false);
+                	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+                    invalidateOptionsMenu();
+            	} else {
+            		getActionBar().setDisplayShowTitleEnabled(true);
+                	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+                	setTitle(navigation_titles[selected_fragment]);
+                    invalidateOptionsMenu();
+            	}
             }
  
             public void onDrawerOpened(View drawerView){
+            	getActionBar().setDisplayShowTitleEnabled(true);
+            	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
                 getActionBar().setTitle(navigation_title);
                 invalidateOptionsMenu();
             }
@@ -140,18 +150,31 @@ public class MainActivity extends Activity {
 		
         // update the main content by replacing fragments
         Fragment fragment = null;
+        selected_fragment = position;
         switch (position) {
         case 0:
+        	getActionBar().setDisplayShowTitleEnabled(false);
+        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        	invalidateOptionsMenu();
             fragment = new IouListFragment();
             iouListFragment = (IouListFragment) listFrag;
             break;
         case 1:
+        	getActionBar().setDisplayShowTitleEnabled(true);
+        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        	invalidateOptionsMenu();
             fragment = new ContactsFragment();
             break;
         case 4:
+        	getActionBar().setDisplayShowTitleEnabled(true);
+        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        	invalidateOptionsMenu();
         	fragment = new SettingsFragment();
         	break;
         case 5:
+        	getActionBar().setDisplayShowTitleEnabled(true);
+        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        	invalidateOptionsMenu();
         	fragment = new AboutFragment();
         	break;
         	
@@ -160,22 +183,22 @@ public class MainActivity extends Activity {
         }    
         
     	// preference fragment functions differently than fragment 
-        if (fragment != null || position == 4) {
+        if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
  
             // Update the title and close the drawer
             navigation_list.setItemChecked(position, true);
             navigation_list.setSelection(position);
+            
             if (position == 0){
-            	setTitle("");
             	getActionBar().setIcon(R.drawable.ic_logo);
             } else {
             	setTitle(navigation_titles[position]);
             	getActionBar().setIcon(navigation_icons.getResourceId(position, -1));
             }
-            navigation_layout.closeDrawer(navigation_list);
             
+            navigation_layout.closeDrawer(navigation_list);
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error creating fragment from navigation drawer.");
