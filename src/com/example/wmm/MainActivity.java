@@ -226,7 +226,14 @@ public class MainActivity extends Activity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If nav drawer is opened, hide the action items
         boolean drawerOpen = navigation_layout.isDrawerOpen(navigation_list);
+        
         menu.findItem(R.id.action_open_settings).setVisible(!drawerOpen);
+        if (selected_fragment == 0 && !drawerOpen){
+        	menu.findItem(R.id.action_new_iou).setVisible(true);
+        } else {
+        	menu.findItem(R.id.action_new_iou).setVisible(false);
+        }
+        
         return super.onPrepareOptionsMenu(menu);
     }
 	
