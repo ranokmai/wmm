@@ -3,6 +3,7 @@ package models;
 import com.example.wmm.IouListFragment;
 import com.example.wmm.R;
 import models.Global;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -28,7 +29,7 @@ public class IouItem {
 	private Iou iou;
 	private IouListFragment parentFragment;
 
-	public IouItem(Context context, String inName, String inDate, String inDesc, double inAmount, boolean money) {
+	@SuppressLint("NewApi") public IouItem(Context context, String inName, String inDate, String inDesc, double inAmount, boolean money) {
 		contact = inName;
 		date = inDate;
 		item_name = inDesc;
@@ -62,7 +63,13 @@ public class IouItem {
 		}
 		// Set image to be the launcher and hide the MoneyThumbnail
 		else {
-			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setImageResource(R.drawable.ic_logo);
+			if (iou.pic_loc().isEmpty()) {
+				((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setImageResource(R.drawable.ic_logo);
+			}
+			else {
+				//load image
+				((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setImageResource(R.drawable.ic_logo);
+			}
 			((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setVisibility(View.GONE);
 		}
 

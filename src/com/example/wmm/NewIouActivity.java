@@ -1,8 +1,11 @@
 package com.example.wmm;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import models.Global;
@@ -11,12 +14,15 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -59,6 +65,8 @@ public class NewIouActivity extends Activity {
 	private Button mCancel;
 	private CheckBox mIsDateDue;  
 	private EditText mNotes;
+
+	private String mCurrentPhotoPath;
 	
 	private static final int REQUEST_IMAGE_CAPTURE = 1;
 	private static final int REQUEST_GALLERY_IMAGE = 2;
@@ -81,6 +89,10 @@ public class NewIouActivity extends Activity {
 			mRemovePicture.setVisibility(View.GONE);
 			mPicture.setVisibility(View.VISIBLE);
 			mPicture.setSelection(0);
+			
+			mImg.setVisibility(View.INVISIBLE);
+			mCurrentPhotoPath = null;
+			pictureUrl = null;
 	   }
 	};
 	
@@ -140,16 +152,22 @@ public class NewIouActivity extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				if( id != 0 ){
+				if( position != 0 ){
 					mContacts.setVisibility(View.GONE);
 					mNamedContact.setVisibility(View.VISIBLE);
 					mRemove.setVisibility(View.VISIBLE);
 					
-					if( id == 1){
-						
+					if( position == 1){
+						realContact = true;
+						mNamedContact.requestFocus();
 					}
-					else if( id == 2){
+					else if( position == 2){
 						
+						// goto contacts 
+			            FragmentManager fragmentManager = getFragmentManager();
+			            fragmentManager.beginTransaction().replace(R.id.content_frame, new ContactsFragment()).commit();
+						
+						realContact = false;
 					}
 				}
 				
@@ -172,6 +190,8 @@ public class NewIouActivity extends Activity {
 		         R.array.new_iou_direction, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mDirections.setAdapter(adapter);
+		
+		mImg = (ImageView) findViewById(R.id.addIouPictureViewer);
 		 
 		mPicture = (Spinner) findViewById(R.id.addIouPicture);
 		adapter = ArrayAdapter.createFromResource(this,
@@ -201,16 +221,30 @@ public class NewIouActivity extends Activity {
 				
 				if (position == 1) {
 				    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-				        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-				    }
+				    
+				    File photoFile = null;
+			        try {
+			            photoFile = createImageFile();
+						mCurrentPhotoPath = photoFile.getAbsolutePath();
+			        } catch (IOException ex) {
+			            // Error occurred while creating the File
+			        }
+			        // Continue only if the File was successfully created
+			        if (photoFile != null) {
+			            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+			                    Uri.fromFile(photoFile));
+					    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+					        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+					    }
+			        }
 				}
 				else if (position == 2) {
 			      Intent intent = new Intent();
 			      intent.setType("image/*");
 			      intent.setAction(Intent.ACTION_GET_CONTENT);
-
-			      startActivityForResult(Intent.createChooser(intent,"Select Picture"), REQUEST_GALLERY_IMAGE);
+			      if (intent.resolveActivity(getPackageManager()) != null) {
+			    	  startActivityForResult(Intent.createChooser(intent,"Select Picture"), REQUEST_GALLERY_IMAGE);
+			      }
 				}
 				
 			}
@@ -295,7 +329,7 @@ public class NewIouActivity extends Activity {
 			this.mDirections.setSelection(0);
 		else 
 			this.mDirections.setSelection(1);
-		this.mPicture.setSelection(2);
+		this.mPicture.setSelection(0);
 		this.pictureUrl = iou.pic_loc();
 		
 		GregorianCalendar gc = new GregorianCalendar();
@@ -317,7 +351,7 @@ public class NewIouActivity extends Activity {
 	private boolean addNewIou(){
 
 		String name = this.mTitle.getText().toString();
-		String contact = this.mContacts.getSelectedItem().toString();
+		String contact = this.mNamedContact.getText().toString();
 		boolean isContact = this.realContact;
 		String type = this.mTypes.getSelectedItem().toString();
 		boolean direction = (this.mDirections.getSelectedItemPosition() == 0);
@@ -455,11 +489,17 @@ public class NewIouActivity extends Activity {
 		
 
 	    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-	        Bundle extras = data.getExtras();
-	        Bitmap imageBitmap = (Bitmap) extras.get("data");
+	        
+			setPic();
+			galleryAddPic();
+			
+			pictureUrl = mCurrentPhotoPath;
+	    	
+	        //Bundle extras = data.getExtras();
+	        //Bitmap imageBitmap = (Bitmap) extras.get("data");
             
-	        ImageView imageView = (ImageView) findViewById(R.id.addIouPictureViewer);
-	        imageView.setImageBitmap(imageBitmap);
+	        //ImageView imageView = (ImageView) findViewById(R.id.addIouPictureViewer);
+	        //imageView.setImageBitmap(imageBitmap);
 	    }
 
 		
@@ -470,11 +510,12 @@ public class NewIouActivity extends Activity {
             System.out.println("Image Path : " + pictureUrl);
             
             try {
+	            ImageView imageView = (ImageView) findViewById(R.id.addIouPictureViewer);
+	            
 				Bitmap bm = Bitmap.createScaledBitmap(
 						MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri), 
-						200, 200,  false);
+						imageView.getWidth(), imageView.getHeight(),  false);
 				
-	            ImageView imageView = (ImageView) findViewById(R.id.addIouPictureViewer);
 	            imageView.setImageBitmap(bm);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -486,7 +527,76 @@ public class NewIouActivity extends Activity {
          
         }
 	}
+
+	private File createImageFile() throws IOException {
+	    // Create an image file name
+	    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+	    String imageFileName = "WMM_JPEG_" + timeStamp + "_";
+	    File storageDir = Environment.getExternalStoragePublicDirectory(
+	            Environment.DIRECTORY_PICTURES);
+	    File image = File.createTempFile(
+	        imageFileName,  /* prefix */
+	        ".jpg",         /* suffix */
+	        storageDir      /* directory */
+	    );
+
+	    // Save a file: path for use with ACTION_VIEW intents
+	    mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+	    return image;
+	}
 	
+	private void galleryAddPic() {
+	    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+	    File f = new File(mCurrentPhotoPath);
+	    Uri contentUri = Uri.fromFile(f);
+	    mediaScanIntent.setData(contentUri);
+	    this.sendBroadcast(mediaScanIntent);
+	}
+
+	private File setUpPhotoFile() throws IOException {
+		
+		File f = createImageFile();
+		mCurrentPhotoPath = f.getAbsolutePath();
+		
+		return f;
+	}
+	
+	private void setPic() {
+
+		/* There isn't enough memory to open up more than a couple camera photos */
+		/* So pre-scale the target bitmap into which the file is decoded */
+
+        ImageView mImageView = (ImageView) findViewById(R.id.addIouPictureViewer);
+		
+		/* Get the size of the ImageView */
+		int targetW = mImageView.getWidth();
+		int targetH = mImageView.getHeight();
+
+		/* Get the size of the image */
+		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+		bmOptions.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+		int photoW = bmOptions.outWidth;
+		int photoH = bmOptions.outHeight;
+		
+		/* Figure out which way needs to be reduced less */
+		int scaleFactor = 1;
+		if ((targetW > 0) || (targetH > 0)) {
+			scaleFactor = Math.min(photoW/targetW, photoH/targetH);	
+		}
+
+		/* Set bitmap options to scale the image decode target */
+		bmOptions.inJustDecodeBounds = false;
+		bmOptions.inSampleSize = scaleFactor;
+		bmOptions.inPurgeable = true;
+
+		/* Decode the JPEG file into a Bitmap */
+		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+		
+		/* Associate the Bitmap to the ImageView */
+		mImageView.setImageBitmap(bitmap);
+		mImageView.setVisibility(View.VISIBLE);
+	}
 
     /**
      * helper to retrieve the path of an image URI

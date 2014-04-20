@@ -51,8 +51,8 @@
     </string-array>
 	<string-array name="new_iou_subjects">
         <item>Add Person...</item>
-        <item>Add from Contacts</item>
         <item>Enter name</item>
+        <item>Add from Contacts</item>
     </string-array>
     <string name="new_iou_remove">Remove</string>
 

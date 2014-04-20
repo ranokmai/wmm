@@ -109,17 +109,6 @@ public class IouListFragment extends Fragment{
 		
         return rootView;
     }
-    
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-        	case 1: // edit          		
-        		deleteSelectedIOU();        		
-        	case 0: // add
-	        	updateListView(null);
-        }
-    }
 
 	public void deleteSelectedIOU() {
 		models.Global.iou_db_mgr.deleteIou(selectedIou);
@@ -143,7 +132,24 @@ public class IouListFragment extends Fragment{
 		models.Global.iou_db_mgr.add_iou_to_archive(selectedIou);
 		updateListView(null);
 	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (resultCode) {
+    	
+	    	case 1: // edit          		
+	    		deleteSelectedIOU();        		
+	    	case 0: // add
+	        	updateListView(null);
+        }
+    }
     
+	public void addNewIou() {
+		Intent intent = new Intent( getActivity(), NewIouActivity.class);
+	    startActivityForResult(intent, 0);
+	}
+	
     // Update the main view with the Items in iouItems
  	public void updateListView(View rootView) {
  		//make sure initialized
