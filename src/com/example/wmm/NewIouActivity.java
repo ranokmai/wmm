@@ -1,5 +1,7 @@
 package com.example.wmm;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -11,7 +13,11 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +59,9 @@ public class NewIouActivity extends Activity {
 	private Button mCancel;
 	private CheckBox mIsDateDue;  
 	private EditText mNotes;
+	
+	private static final int REQUEST_IMAGE_CAPTURE = 1;
+	private static final int REQUEST_GALLERY_IMAGE = 2;
 		
 	private OnClickListener removeContact = new OnClickListener() {
 		@Override
@@ -184,7 +193,25 @@ public class NewIouActivity extends Activity {
 					mRemovePicture.setVisibility(View.VISIBLE);
 					mPicture.setVisibility(View.INVISIBLE);
 				}
+				
 				//TODO: Code to add a picture here...
+				if (!pictureUrl.isEmpty()) {
+					
+				}
+				
+				if (position == 1) {
+				    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+				        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+				    }
+				}
+				else if (position == 2) {
+			      Intent intent = new Intent();
+			      intent.setType("image/*");
+			      intent.setAction(Intent.ACTION_GET_CONTENT);
+
+			      startActivityForResult(Intent.createChooser(intent,"Select Picture"), REQUEST_GALLERY_IMAGE);
+				}
 				
 			}
 
@@ -421,5 +448,54 @@ public class NewIouActivity extends Activity {
                       container, false);
               return rootView;
         }
+    }	
+    
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+
+	    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+	        Bundle extras = data.getExtras();
+	        Bitmap imageBitmap = (Bitmap) extras.get("data");
+            
+	        ImageView imageView = (ImageView) findViewById(R.id.addIouPictureViewer);
+	        imageView.setImageBitmap(imageBitmap);
+	    }
+
+		
+		if (requestCode == REQUEST_GALLERY_IMAGE && resultCode == RESULT_OK) {
+			
+            Uri selectedImageUri = data.getData();
+            pictureUrl = getPath(selectedImageUri);
+            System.out.println("Image Path : " + pictureUrl);
+            
+            try {
+				Bitmap bm = Bitmap.createScaledBitmap(
+						MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri), 
+						200, 200,  false);
+				
+	            ImageView imageView = (ImageView) findViewById(R.id.addIouPictureViewer);
+	            imageView.setImageBitmap(bm);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+         
+        }
+	}
+	
+
+    /**
+     * helper to retrieve the path of an image URI
+     */
+    private String getPath(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 }
