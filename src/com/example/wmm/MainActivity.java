@@ -115,8 +115,8 @@ public class MainActivity extends Activity {
 			display_fragment(0);
 		}
 
-		/*IouDBManager.reset_db();
-		for(int i=0; i<5; i++) {
+		//IouDBManager.reset_db();
+		/*for(int i=0; i<5; i++) {
 
 			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
 			Iou test2 = new Iou("Drinks", "Jimmy Blanchard", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out");

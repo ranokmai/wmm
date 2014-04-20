@@ -26,9 +26,11 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.TextView;
  
 @SuppressLint("NewApi")
 public class IouListFragment extends Fragment{
@@ -65,7 +67,7 @@ public class IouListFragment extends Fragment{
 		  public boolean onNavigationItemSelected(int position, long itemId) {
 		    //Log.d("Selected Sort Option", String.valueOf(itemId));
 		    selected_sort = position;
-		    updateListView();
+		    updateListView(null);
 			  
 		    return true;
 		  }
@@ -88,7 +90,7 @@ public class IouListFragment extends Fragment{
 			@Override
 			public void onCheckedChanged(CompoundButton parent, boolean checked) {
 				outgoing = checked;
-				updateListView( );
+				updateListView(null);
 				
 			}
 			
@@ -98,12 +100,12 @@ public class IouListFragment extends Fragment{
 			@Override
 			public void onCheckedChanged(CompoundButton parent, boolean checked) {
 				incoming = checked;
-				updateListView( );
+				updateListView(null);
 			}
 			
 		});
 		
-		updateListView();
+		updateListView(rootView);
 		
         return rootView;
     }
@@ -115,13 +117,13 @@ public class IouListFragment extends Fragment{
         	case 1: // edit          		
         		deleteSelectedIOU();        		
         	case 0: // add
-	        	updateListView();
+	        	updateListView(null);
         }
     }
 
 	public void deleteSelectedIOU() {
 		models.Global.iou_db_mgr.deleteIou(selectedIou);
-		updateListView();
+		updateListView(null);
 		selectedIou = null;
 		
 		((IouListAdapter)iou_list.getAdapter()).clearSelection();
@@ -139,15 +141,39 @@ public class IouListFragment extends Fragment{
 	
 	public void archiveSelectedIOU() {
 		models.Global.iou_db_mgr.add_iou_to_archive(selectedIou);
-		updateListView();
+		updateListView(null);
 	}
     
     // Update the main view with the Items in iouItems
- 	public void updateListView( ) {
+ 	public void updateListView(View rootView) {
  		//make sure initialized
 		iouItems = new ArrayList<IouItem>();
+		View fragment_view;
 		
 		populateIous();
+		
+		if (rootView == null){
+			fragment_view = getView();
+		} else {
+			fragment_view = rootView;
+		}
+		
+		// Detect no IOUs 
+		if (ious.size() == 0){
+			TextView no_iou_text = (TextView) fragment_view.findViewById(R.id.no_iou_text);
+			no_iou_text.setVisibility(View.VISIBLE);
+			RelativeLayout filter_panel = (RelativeLayout) fragment_view.findViewById(R.id.filter_region);
+			filter_panel.setVisibility(View.GONE);
+			View seperator = (View) fragment_view.findViewById(R.id.separator);
+			seperator.setVisibility(View.GONE);
+		} else {
+			TextView no_iou_text = (TextView) fragment_view.findViewById(R.id.no_iou_text);
+			no_iou_text.setVisibility(View.GONE);
+			RelativeLayout filter_panel = (RelativeLayout) fragment_view.findViewById(R.id.filter_region);
+			filter_panel.setVisibility(View.VISIBLE);
+			View seperator = (View) fragment_view.findViewById(R.id.separator);
+			seperator.setVisibility(View.VISIBLE);
+		}
 		
 		// Fill iouItems with db data
 		for (int i = 0; i < ious.size(); i++) {

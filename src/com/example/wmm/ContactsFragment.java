@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
  
 @SuppressLint("NewApi")
 public class ContactsFragment extends Fragment {
@@ -48,12 +49,12 @@ public class ContactsFragment extends Fragment {
     		Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_contacts, container, false);        
         contacts_list = (ListView) rootView.findViewById(R.id.contact_list);
-        update_contacts_list();
+        update_contacts_list(rootView);
         
         return rootView;
     }
     
-    private void update_contacts_list(){
+    private void update_contacts_list(View rootView){
 		contacts_items = new ArrayList<ContactItem>();
 		ContentResolver content_resolver;
 		String[] projection = new String[]{ContactsContract.Data.DISPLAY_NAME, PhoneLookup._ID, ContactsContract.Data.PHOTO_ID};
@@ -69,6 +70,14 @@ public class ContactsFragment extends Fragment {
 		
 		// Load contact names from the database
 		contacts = Global.iou_db_mgr.get_contacts();
+		
+		if (contacts.size() == 0){
+			TextView no_contacts_text = (TextView)rootView.findViewById(R.id.no_contacts_text);
+			no_contacts_text.setVisibility(View.VISIBLE);
+		} else {
+			TextView no_contacts_text = (TextView)rootView.findViewById(R.id.no_contacts_text);
+			no_contacts_text.setVisibility(View.GONE);
+		}
 		
 		for (int curr_contact=0; curr_contact < contacts.size(); curr_contact++){
 			// Query for the contact
