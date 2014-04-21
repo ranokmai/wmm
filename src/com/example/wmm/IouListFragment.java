@@ -113,26 +113,6 @@ public class IouListFragment extends Fragment{
 		    }
 		});
 		
-		/*rboutgoing.setOnCheckedChangeListener( new OnCheckedChangeListener() {
-
-			@Override
-			public void onCheckedChanged(CompoundButton parent, boolean checked) {
-				outgoing = checked;
-				updateListView(null);
-				
-			}
-			
-		});
-		rbincoming.setOnCheckedChangeListener( new OnCheckedChangeListener() {
-
-			@Override
-			public void onCheckedChanged(CompoundButton parent, boolean checked) {
-				incoming = checked;
-				updateListView(null);
-			}
-			
-		});*/
-		
 		updateListView(rootView);
 		
         return rootView;
@@ -207,14 +187,14 @@ public class IouListFragment extends Fragment{
 			TextView no_iou_text = (TextView) fragment_view.findViewById(R.id.no_iou_text);
 			no_iou_text.setVisibility(View.VISIBLE);
 			RelativeLayout filter_panel = (RelativeLayout) fragment_view.findViewById(R.id.filter_region);
-			filter_panel.setVisibility(View.GONE);
+			//filter_panel.setVisibility(View.GONE);
 			View seperator = (View) fragment_view.findViewById(R.id.separator);
 			seperator.setVisibility(View.GONE);
 		} else {
 			TextView no_iou_text = (TextView) fragment_view.findViewById(R.id.no_iou_text);
 			no_iou_text.setVisibility(View.GONE);
 			RelativeLayout filter_panel = (RelativeLayout) fragment_view.findViewById(R.id.filter_region);
-			filter_panel.setVisibility(View.VISIBLE);
+			//filter_panel.setVisibility(View.VISIBLE);
 			View seperator = (View) fragment_view.findViewById(R.id.separator);
 			seperator.setVisibility(View.VISIBLE);
 		}
