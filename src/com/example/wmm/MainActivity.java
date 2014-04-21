@@ -182,10 +182,10 @@ public class MainActivity extends Activity {
 			    //popup dialog to ask if want to send sms reminder
 				final Dialog dialog = new Dialog(this);
 				dialog.setContentView(R.layout.reminder_dialogue);
-				dialog.setTitle("Title...");
+				dialog.setTitle("Reminder Alert");
 				
 				TextView text = (TextView) dialog.findViewById(R.id.reminderText);
-				text.setText("Your reminder for " + to_be_reminded.get(i).item_name() + "has trigggered, would you like to send a text to" +
+				text.setText("Your reminder for " + to_be_reminded.get(i).item_name() + " has trigggered, would you like to send a text to " +
 				to_be_reminded.get(i).contact_name() + "?");
 				
 				Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
