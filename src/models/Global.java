@@ -15,8 +15,6 @@ import com.example.wmm.NewIouActivity;
 public class Global {
 	public static IouDBManager iou_db_mgr;
 	
-	public static Context main_context;
-	
 	public static Date DATE_MAX = new Date(Long.MAX_VALUE);
 	
 	public static int JAN = 0;
