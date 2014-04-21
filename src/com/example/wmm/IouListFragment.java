@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import models.Global;
 import models.Global.Filters;
 import models.Iou;
+import models.IouDB_Error;
 import models.IouItem;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -138,8 +139,14 @@ public class IouListFragment extends Fragment{
     }
 
 	public void deleteSelectedIOU() {
-				
-		models.Global.iou_db_mgr.deleteIou(selectedIou);
+		
+		try {
+			models.Global.iou_db_mgr.deleteIou(selectedIou);
+		}
+		catch (IouDB_Error e) {
+			Log.i("db_error", e.error);
+		}
+		
 		updateListView(null);
 		selectedIou = null;
 		
