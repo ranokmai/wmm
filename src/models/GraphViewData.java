@@ -2,6 +2,11 @@ package models;
 
 import com.jjoe64.graphview.GraphViewDataInterface;
 
+/**
+ * Represents a point of data on the line graph
+ * @author Galen
+ *
+ */
 public class GraphViewData implements GraphViewDataInterface {
     private double x,y;
 
