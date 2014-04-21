@@ -177,22 +177,22 @@ public class IouDBManager {
 		
 	}
 	
-	public ArrayList<Iou> get_ious_ordered_by_reminders() {
-		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious ORDER BY reminder ASC", null);
+	public ArrayList<Iou> get_incoming_ious_ordered_by_reminders() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE outbound = 0 ORDER BY reminder ASC", null);
 		
 		return retrieve_ious(cursor);
 	}
 	
-	public ArrayList<Iou> get_ious_of_reminder_date(Date reminder_time) {
+	public ArrayList<Iou> get_incoming_ious_of_reminder_date(Date reminder_time) {
 		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE reminder = ?", new String [] {Global.time_to_str(reminder_time)});
 		
 		return retrieve_ious(cursor);
 	}
 	
-	public ArrayList<Iou> get_ious_with_reminders_before_and_of_date() {
+	public ArrayList<Iou> get_incoming_ious_with_reminders_before_and_of_date() {
 		Date cur_date = new Date();
 		
-		ArrayList<Iou> ious = get_ious_ordered_by_reminders();
+		ArrayList<Iou> ious = get_incoming_ious_ordered_by_reminders();
 		ArrayList<Iou> to_be_reminded = new ArrayList<Iou>();
 		
 		for (int i = 0; i < ious.size(); i++) {

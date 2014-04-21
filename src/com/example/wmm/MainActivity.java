@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import preferences.SettingsActivity;
 import models.ContactSummary;
 import preferences.SettingsFragment;
 import models.Global;
@@ -13,13 +14,18 @@ import models.Iou;
 import models.IouDBManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -51,13 +57,30 @@ public class MainActivity extends Activity {
 	private IouListFragment iouListFragment = null;
 	private StatisticsFragment statisticsFragment = null;
 	private int selected_fragment = 0;
-	private String contact_number;
-	private String text_content;
+	private ArrayList<String> contact_number;
+	private ArrayList<String> text_content;
+	
+	private int cur_reminder = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.navigation_drawer);
+		
+		/* failed settings 
+		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this); 
+		
+		int colorOutvalue = prefs.getInt("colorOut", -1);
+		if( colorOutvalue != 0  ){
+			Global.colorOut = colorOutvalue;
+		}
+		int colorInvalue = prefs.getInt("colorIn", -1);
+		if( colorInvalue != 0  ){
+			Global.colorIn = colorInvalue;
+		}
+		*/
+		
 		app_title = "Where's My Money?!";
 		navigation_title = app_title;
 
@@ -81,8 +104,6 @@ public class MainActivity extends Activity {
 				navigation_icons.getResourceId(3, -1)));
 		navigation_items.add(new models.NavigationItem(navigation_titles[4],
 				navigation_icons.getResourceId(4, -1)));
-		navigation_items.add(new models.NavigationItem(navigation_titles[5],
-				navigation_icons.getResourceId(5, -1)));
 		navigation_icons.recycle();
 
 		// Populate navigation drawer
@@ -166,47 +187,55 @@ public class MainActivity extends Activity {
 			cs.get(i).print();
 		}
 		
-		ArrayList<Iou> to_be_reminded = Global.iou_db_mgr.get_ious_with_reminders_before_and_of_date();
+		ArrayList<Iou> to_be_reminded = Global.iou_db_mgr.get_incoming_ious_with_reminders_before_and_of_date();
 		
+		text_content = new ArrayList<String>();
+		contact_number = new ArrayList<String>();
 		
 		for (int i = 0; i < to_be_reminded.size(); i++) {
-			text_content = Global.text_content(to_be_reminded.get(i));
+			text_content.add(text_content(to_be_reminded.get(i)));
 
-			contact_number = Global.contact_number(to_be_reminded.get(i).contact_name(), getApplicationContext());
+			contact_number.add(Global.contact_number(to_be_reminded.get(i).contact_name(), getApplicationContext()));
 			
 			if (contact_number.equals("Unsaved")) {
 				
 			}
 			else {
 			    //popup dialog to ask if want to send sms reminder
-				final Dialog dialog = new Dialog(this);
-				dialog.setContentView(R.layout.reminder_dialogue);
+				AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+				//dialog.setContentView(R.layout.reminder_dialogue);
 				dialog.setTitle("Reminder Alert");
-				
-				TextView text = (TextView) dialog.findViewById(R.id.reminderText);
-				text.setText("Your reminder for " + to_be_reminded.get(i).item_name() + " has trigggered, would you like to send a text to " +
+			    
+				//TextView text = (TextView) dialog.findViewById(R.id.reminderText);
+				dialog.setMessage("Your reminder for " + to_be_reminded.get(i).item_name() + " has trigggered, would you like to send a text to " +
 				to_be_reminded.get(i).contact_name() + "?");
 				
-				Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-				dialogButton.setOnClickListener(new OnClickListener() {
+				//Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+				dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					@Override
-					public void onClick(View v) {
-						//if yes to send reminder
-						Uri uri = Uri.parse("smsto:" + contact_number); 
-					    Intent it = new Intent(Intent.ACTION_SENDTO, uri); 
-					    it.putExtra("sms_body", text_content); 
-					    startActivity(it); 
+					public void onClick(DialogInterface dialog, int whichButton) {
+						//if yes to send reminder 
+						send_text();
 						dialog.dismiss();
 					}
 				});
-				Button cancelButton = (Button) dialog.findViewById(R.id.dialogButtonCancel);
-				cancelButton.setOnClickListener(new OnClickListener() {
+				//Button cancelButton = (Button) dialog.findViewById(R.id.dialogButtonCancel);
+				dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
 					@Override
-					public void onClick(View v) {
+					public void onClick(DialogInterface dialog, int whichButton) {
 						dialog.dismiss();
 					}
 				});
-	 
+
+				dialog.setOnDismissListener(new OnDismissListener() {
+
+					@Override
+					public void onDismiss(DialogInterface arg0) {
+						cur_reminder++;
+					}
+					
+				});
+
 				dialog.show();
 				
 			}
@@ -222,77 +251,66 @@ public class MainActivity extends Activity {
 		}
 	}
 
+
 	public void display_fragment(int position) {
 		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
-
-		// update the main content by replacing fragments
-		selected_fragment = position;
-		switch (position) {
-		case 0:
-			getActionBar().setDisplayShowTitleEnabled(false);
-			getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-			invalidateOptionsMenu();
-			listFrag = new IouListFragment();
-			iouListFragment = (IouListFragment) listFrag;
-			break;
-		case 1:
-			getActionBar().setDisplayShowTitleEnabled(true);
-			getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-			invalidateOptionsMenu();
-			listFrag = new ContactsFragment();
-			break;
-		case 3:
-			getActionBar().setDisplayShowTitleEnabled(true);
-			getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-			invalidateOptionsMenu();
-			listFrag = new StatisticsFragment();
-			statisticsFragment = (StatisticsFragment) listFrag;
-			break;
-		case 4:
-			getActionBar().setDisplayShowTitleEnabled(true);
-			getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-			invalidateOptionsMenu();
-			listFrag = new SettingsFragment();
-			break;
-		case 5:
-			getActionBar().setDisplayShowTitleEnabled(true);
-			getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-			invalidateOptionsMenu();
-			listFrag = new AboutFragment();
-			break;
-
-		default:
-			break;
-		}    
-
-		// preference fragment functions differently than fragment 
-		if (listFrag != null) {
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction().replace(R.id.content_frame, listFrag).commit();
-
-			// Update the title and close the drawer
-			navigation_list.setItemChecked(position, true);
-			navigation_list.setSelection(position);
-
-			if (position == 0){
-				getActionBar().setIcon(R.drawable.ic_logo);
-			} else {
-				setTitle(navigation_titles[position]);
-				getActionBar().setIcon(navigation_icons.getResourceId(position, -1));
-			}
-
-			navigation_layout.closeDrawer(navigation_list);
-		} else {
-			// error in creating fragment
-			Log.e("MainActivity", "Error creating fragment from navigation drawer.");
-		}
-	}
-	
-	public void archiveIouButtonListener(View v) {
-		if(iouListFragment != null){
-			iouListFragment.archiveSelectedIOU();
-		}
-	}
+		
+        // update the main content by replacing fragments
+        selected_fragment = position;
+        switch (position) {
+        case 0:
+        	getActionBar().setDisplayShowTitleEnabled(false);
+        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        	invalidateOptionsMenu();
+            listFrag = new IouListFragment();
+            iouListFragment = (IouListFragment) listFrag;
+            break;
+        case 1:
+        	getActionBar().setDisplayShowTitleEnabled(true);
+        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        	invalidateOptionsMenu();
+        	listFrag = new ContactsFragment();
+            break;
+        case 3:
+        	getActionBar().setDisplayShowTitleEnabled(true);
+        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        	invalidateOptionsMenu();
+        	listFrag = new StatisticsFragment();
+        	statisticsFragment = (StatisticsFragment) listFrag;
+            break;
+        case 4:
+        	getActionBar().setDisplayShowTitleEnabled(true);
+        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        	invalidateOptionsMenu();
+        	listFrag = new AboutFragment();
+        	break;
+        	
+        default:
+            break;
+        }    
+        
+    	// preference fragment functions differently than fragment 
+        if (listFrag != null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, listFrag).commit(); 	
+            
+            // Update the title and close the drawer
+            navigation_list.setItemChecked(position, true);
+            navigation_list.setSelection(position);
+            
+            if (position == 0){
+            	getActionBar().setIcon(R.drawable.ic_logo);
+            } else {
+            	setTitle(navigation_titles[position]);
+            	getActionBar().setIcon(navigation_icons.getResourceId(position, -1));
+            }
+            
+            navigation_layout.closeDrawer(navigation_list);
+        } else {
+            // error in creating fragment
+            Log.e("MainActivity", "Error creating fragment from navigation drawer.");
+        }
+    }
 
 	public void deleteIouButtonListener(View v) {
 		if(iouListFragment != null){
@@ -323,20 +341,20 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// If nav drawer is opened, hide the action items
-		boolean drawerOpen = navigation_layout.isDrawerOpen(navigation_list);
-
-		menu.findItem(R.id.action_open_settings).setVisible(!drawerOpen);
-		if (selected_fragment == 0 && !drawerOpen){
-			menu.findItem(R.id.action_new_iou).setVisible(true);
-		} else {
-			menu.findItem(R.id.action_new_iou).setVisible(false);
-		}
-
-		return super.onPrepareOptionsMenu(menu);
-	}
-
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If nav drawer is opened, hide the action items
+        boolean drawerOpen = navigation_layout.isDrawerOpen(navigation_list);
+        
+        menu.findItem(R.id.action_open_settings).setVisible(false);
+        if (selected_fragment == 0 && !drawerOpen){
+        	menu.findItem(R.id.action_new_iou).setVisible(true);
+        } else {
+        	menu.findItem(R.id.action_new_iou).setVisible(false);
+        }
+        
+        return super.onPrepareOptionsMenu(menu);
+    }
+	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -391,5 +409,26 @@ public class MainActivity extends Activity {
 	public void setTitle(CharSequence title) {
 		app_title = title;
 		getActionBar().setTitle(app_title);
+	}
+	
+	public String text_content(Iou iou) {
+		String s = new String();
+		
+		if (iou.item_type() == "Item") {
+			s += "You borrowed " + iou.item_name() + " from me on " + iou.date_borrowed();
+			s += ". It is due on " + iou.date_due() + ". This is just a reminder that you still have it.";
+		}
+		else {
+			s += "You borrowed " + iou.item_name() + " from me on " + iou.date_borrowed();
+			s += ". It is due on " + iou.date_due() + ". This is just a reminder that you still owe me $" + iou.value();
+		}
+		return s;
+	}
+	
+	public void send_text() {
+		Uri uri = Uri.parse("smsto:" + contact_number.get(contact_number.size() - cur_reminder - 1)); 
+	    Intent it = new Intent(Intent.ACTION_SENDTO, uri); 
+	    it.putExtra("sms_body", text_content.get(contact_number.size() - cur_reminder - 1));
+	    startActivity(it); 
 	}
 }

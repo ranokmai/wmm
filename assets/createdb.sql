@@ -26,6 +26,6 @@ CREATE TABLE archived_ious (
 	date_completed TEXT,
 	value TEXT,
 	picture_loc TEXT,
-	notes TEXT
+	notes TEXT,
 	reminder TEXT,
 	sorted_name TEXT);

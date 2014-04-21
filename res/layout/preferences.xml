@@ -3,40 +3,30 @@
     xmlns:android="http://schemas.android.com/apk/res/android" >
     	
 	<PreferenceCategory android:title="@string/pref_category_visuals">
+		
 		<preferences.ColorPickerPreference 
-			android:key="color1"
-			android:title="@string/color_background_title" 
-			android:summary="@string/color_background_summary"
-			android:defaultValue="@integer/COLOR_BLACK" 
+			android:key="colorOut"
+			android:title="@string/color_out_title" 
+			android:summary="@string/color_out_summary"
+			android:persistent="true" 
+			android:defaultValue="@integer/COLOR_OUT" 
 		/>
 		
 		<preferences.ColorPickerPreference 
-			android:key="color2"
-			android:persistent="false"
-			android:title="@string/color_text_title" 
-			android:summary="@string/color_text_summary"
-			android:defaultValue="@integer/COLOR_GREEN" 
+			android:key="colorIn"
+			android:title="@string/color_in_title" 
+			android:summary="@string/color_in_summary"
+			android:persistent="true" 
+			android:defaultValue="@integer/COLOR_IN" 
 		/>
-		
-		<!--
-		<preferences.ColorPickerPreference 
-			android:key="color3"
-			android:title="@string/color3_title" 
-			android:summary="@string/color3_summary"
-			android:defaultValue="@integer/COLOR_GREEN"
-			alphaSlider="true" 
-		/>
-		
-		<preferences.ColorPickerPreference 
-			android:key="color4"
-			android:persistent="false"
-			android:title="@string/color4_title" 
-			android:summary="@string/color4_summary"
-			android:defaultValue="0xff0000ff"
-		/>
-		
-		-->
 	</PreferenceCategory>
  	
+	<PreferenceCategory android:title="@string/pref_category_misc">
+ 		
+ 		<Preference 
+	 	    android:key="reset"
+			android:title="@string/reset_settings_title"
+			android:summary="@string/reset_settings_summary" />
+	</PreferenceCategory>
  	
 </PreferenceScreen>

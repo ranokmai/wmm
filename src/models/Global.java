@@ -5,11 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 import android.content.Context;
+import android.graphics.Color;
 import android.database.Cursor;
 import android.provider.ContactsContract;
-
 import com.example.wmm.NewIouActivity;
 
 public class Global {
@@ -32,8 +31,16 @@ public class Global {
 	
 	public static Iou iou;
 	
+	public static boolean persist = false; 
+	
 	public static boolean fromnew = false;
 	public static NewIouActivity newIouAct = null;
+	
+	public static int colorOut = Color.parseColor("#e74c3c");
+	public static int colorIn = Color.parseColor("#27ae60");
+	
+	public static final int outgoingCol =  Color.parseColor("#e74c3c");
+	public static final int incomingCol =  Color.parseColor("#27ae60");
 	
     public enum Filters {
     	DATEDUE, 
@@ -60,15 +67,6 @@ public class Global {
 	
 	public static void setup_db_mgr(Context context) {
 		iou_db_mgr = new IouDBManager(context);
-	}
-
-	public static String text_content(Iou iou) {
-		String s = new String();
-		
-		s += "You borrowed " + iou.item_name() + " from me on " + iou.date_borrowed();
-		s += ". It is due on " + iou.date_due() + ". This is just a reminder that you still have it.";
-		
-		return s;
 	}
 	
 	public static String contact_number(String name, Context context) {

@@ -6,8 +6,10 @@ import com.example.wmm.R;
 import models.Global;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +34,15 @@ public class IouItem {
 	private IouListFragment parentFragment;
 	private boolean can_expand;
 
-	@SuppressLint("NewApi") public IouItem(Context context, String inName, String inDate, String inDesc, double inAmount, boolean money, boolean outgoing) {
+
+	@SuppressLint("NewApi") 
+	public IouItem(Context context, String inName, String inDate, String inDesc, double inAmount, boolean money, boolean outgoing) {
 		contact = inName;
 		date = inDate;
+				
+		if( date.compareTo( Global.date_to_str( Global.DATE_MAX) ) == 0 )
+			date = "No Due Date";
+		
 		item_name = inDesc;
 		if(inAmount < 0)
 			amount = (int) Math.floor(inAmount);
@@ -83,6 +91,9 @@ public class IouItem {
 		can_expand = expandable;
 		date = Global.date_to_str(iou.date_due());
 		item_name = iou.item_name();
+		
+		if( date.compareTo( Global.date_to_str( Global.DATE_MAX) ) == 0 )
+			date = "No Due Date";
 
 		this.iou = iou;
 
@@ -106,15 +117,17 @@ public class IouItem {
 		if(temp.equals("Money")) {
 			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setVisibility(View.GONE);
 
-			// Set color to red if outgoing
-			if(iou.outbound()) {
-				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setTextColor(Color.parseColor("#FF0000"));
-				String text = "($" + Integer.toString(amount) + ")";
+		
+			// Set color to red if amount is negative
+			if(amount < 0) {
+				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setTextColor(Global.colorOut);
+				String text = "($" + Integer.toString(amount*-1) + ")";
 				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setText(text);
 			}
 			else {
 				String text = "$" + Integer.toString(amount);
 				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setText(text);
+				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setTextColor(Global.colorIn);
 			}
 		}
 		// Set image to be the launcher and hide the MoneyThumbnail
