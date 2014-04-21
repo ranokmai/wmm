@@ -146,8 +146,8 @@ public class MainActivity extends Activity {
 			display_fragment(0);
 		}
 
-		IouDBManager.reset_db();
-		for(int i=0; i<1; i++) {
+		//IouDBManager.reset_db();
+		/*for(int i=0; i<1; i++) {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
 			String dateInString = "01-04-2014";
 			Date date1 = null;
@@ -178,7 +178,7 @@ public class MainActivity extends Activity {
 			Global.iou_db_mgr.insertIou(test3);
 			Global.iou_db_mgr.insertIou(test4);
 			Global.iou_db_mgr.insertIou(test5);
-		}
+		}*/
 		
 
 		ArrayList<ContactSummary> cs = Global.iou_db_mgr.get_contact_summaries();
