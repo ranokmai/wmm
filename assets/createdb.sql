@@ -10,7 +10,7 @@ CREATE TABLE ious (
 	date_completed TEXT,
 	value TEXT,
 	picture_loc TEXT,
-	notes TEXT
+	notes TEXT, 
 	reminder TEXT);
 	
 CREATE TABLE archived_ious (
