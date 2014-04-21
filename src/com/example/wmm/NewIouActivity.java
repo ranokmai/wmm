@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 
 import models.Global;
 import models.Iou;
+import models.IouDB_Error;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,6 +27,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -447,7 +449,12 @@ public class NewIouActivity extends Activity {
 		Iou iou= new Iou(name, contact, isContact, type, direction, 
 				loanedDate.getTime(), dueDate.getTime(), value, picture, notes);
 		
-		Global.iou_db_mgr.insertIou(iou);
+		try {
+			Global.iou_db_mgr.insertIou(iou); 
+		}
+		catch (IouDB_Error e) {
+			Log.i("db_error", e.error);
+		}
 		NewIouActivity.super.onBackPressed();
 		
 		return false;

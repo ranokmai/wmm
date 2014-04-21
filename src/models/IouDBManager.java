@@ -3,6 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -82,9 +83,6 @@ public class IouDBManager {
 		
 		while (cursor.moveToNext()) {
 			
-			//i'm not sure if these are off by one or not
-			//setting at not off by one because sqlplus isn't
-			//minus one if run into error
 			String i_name = cursor.getString(1);
 			String c = cursor.getString(2);
 			
@@ -133,6 +131,48 @@ public class IouDBManager {
 		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious", null);
 		
 		return retrieve_ious(cursor);
+	}
+	
+	public Iou get_iou_by_id(Long id) {
+		
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE iou_id = ?", new String[] {id.toString()});
+		
+		cursor.moveToNext();
+		
+		String i_name = cursor.getString(1);
+		String c = cursor.getString(2);
+		
+		int is_c_i = cursor.getInt(3);
+		boolean is_c = false;
+		if (is_c_i == 1) {
+			is_c = true;
+		}
+		
+		String i_type = cursor.getString(4);
+		
+		int is_o_i = cursor.getInt(5);
+		boolean is_o = false;
+		if (is_o_i == 1) {
+			is_o = true;
+		}
+		
+		String date_s = cursor.getString(6);
+		Date b = Global.str_to_date(date_s);
+		
+		date_s = cursor.getString(7);
+		Date d = Global.str_to_date(date_s);
+		
+		Double val = Double.parseDouble(cursor.getString(9));
+		String pic = cursor.getString(10);
+		String notes = cursor.getString(11);
+		
+		Iou temp = new Iou(i_name, c, is_c, i_type, is_o, b, d, val, pic, notes);
+		temp.setDb_row_id(cursor.getLong(0));
+		
+		cursor.close();
+		
+		return temp;
+		
 	}
 	
 	//retrieves all ious in order of the shortest time to due date
@@ -631,7 +671,7 @@ public class IouDBManager {
 	//IOU INSERT UPDATE DELETE
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public void insertIou(Iou iou) {
+	public void insertIou(Iou iou) throws IouDB_Error{
 		if (iou.can_insert_into_db()) {
 			
 			iou.setDb_row_id(sqldb.insert(db_table_name, null, iou.iou));
@@ -642,7 +682,7 @@ public class IouDBManager {
 		}
 	}
 	
-	public void updateIou(Iou iou) {
+	public void updateIou(Iou iou) throws IouDB_Error {
 		if (iou.getDb_row_id() > 0) {
 			
 			sqldb.update(db_table_name, iou.iou, "iou_id = ?", new String[] {iou.getDb_row_id().toString()});
@@ -653,9 +693,16 @@ public class IouDBManager {
 		}
 	}
 	
-	public void deleteIou(Iou iou) {
+	public void deleteIou(Iou iou) throws IouDB_Error  {
 		String s = iou.getDb_row_id().toString();
-		sqldb.delete(db_table_name, "iou_id = ?", new String[] {s});
+		int return_num = sqldb.delete(db_table_name, "iou_id = ?", new String[] {s});
+		
+		if (return_num == 0) {
+			throw new IouDB_Error("Delete error: not deleted");
+		}
+		else if (return_num > 1) {
+			throw new IouDB_Error("Delete error: too many deleted");
+		}
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -672,5 +719,65 @@ public class IouDBManager {
 		db.reset_archive(sqldb);
 	}
 	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Reminders
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	private ArrayList<IouReminder> get_reminders(Cursor cursor) {
+
+		ArrayList<IouReminder> reminders = new ArrayList<IouReminder>();
+		
+		while (cursor.moveToNext()) {
+			IouReminder r = new IouReminder();
+			r.iou_id = cursor.getLong(0);
+			r.reminder_time = Global.str_to_time(cursor.getString(1));
+		}
+		cursor.close();
+		
+		for (int i = 0; i < reminders.size(); i++) {
+			reminders.get(i).iou = get_iou_by_id(reminders.get(i).iou_id);
+		}
+		
+		return reminders;
+	}
+	
+	public ArrayList<IouReminder> get_all_reminders() {
+		Cursor cursor = sqldb.rawQuery("SELECT iou_id, time FROM reminders", null);
+	
+		return get_reminders(cursor);
+	}
+	
+	public ArrayList<IouReminder> get_reminders_by_closest_time() {
+		Cursor cursor = sqldb.rawQuery("SELECT iou_id, time FROM reminders ORDER BY time", null);
+	
+		return get_reminders(cursor);
+	}
+	
+	public ArrayList<IouReminder> get_reminders_for_iou(Iou iou) {
+		Cursor cursor = sqldb.rawQuery("SELECT iou_id, time FROM reminders WHERE iou_id = ?", new String [] {iou.getDb_row_id().toString()});
+	
+		return get_reminders(cursor);
+	}
+	
+	public void insert_reminder(IouReminder r) throws IouDB_Error {
+		if (r.iou.getDb_row_id() == -1) {
+			throw new IouDB_Error("Not a valid iou in db");
+		}
+		
+		ContentValues cv = new ContentValues();
+		
+		cv.put("iou_id", r.iou.getDb_row_id());
+		cv.put("time", Global.time_to_str(r.reminder_time));
+		
+		r.setReminder_id(sqldb.insert("reminders", null, cv));
+	}
+	
+	public void delete_reminder(IouReminder r) throws IouDB_Error {
+		int return_num = sqldb.delete("reminder", "reminder_id = ?", new String[] {r.getReminder_id().toString()});
+		
+		if (return_num == 0) {
+			throw new IouDB_Error("Delete error: not deleted");
+		}
+	}
 	
 }

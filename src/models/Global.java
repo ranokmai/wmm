@@ -63,6 +63,7 @@ public class Global {
 
 	//for date formatting:
 	public static String date_format = "yyyy-MM-dd";
+	public static String reminder_format = "yyyy-MM-dd-HH:mm";
 	
 	public static Date str_to_date(String s)  {
 		
@@ -81,6 +82,26 @@ public class Global {
 	
 	public static String date_to_str(Date d) {
 		return new SimpleDateFormat(date_format, Locale.US).format(d);
+	}
+	
+	public static Date str_to_time(String s) {
+		
+		DateFormat df = new SimpleDateFormat(reminder_format, Locale.US);
+		Date r = new Date();
+		
+		try {
+			r = df.parse(s);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return r;
+		
+	}
+	
+	public static String time_to_str(Date d) {
+		return new SimpleDateFormat(reminder_format, Locale.US).format(d);
 	}
 	
 }
