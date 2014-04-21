@@ -537,7 +537,7 @@ public class NewIouActivity extends Activity {
 		}
 		
 		//add reminder intent
-		add_reminder(iou);
+		//add_reminder(iou);
 	
 		NewIouActivity.super.onBackPressed();
 		return false;
