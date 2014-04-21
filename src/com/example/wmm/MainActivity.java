@@ -114,6 +114,7 @@ public class MainActivity extends Activity {
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
 		
+		// Reset the database for startup
 		//Global.iou_db_mgr.reset_db();
 
 		if (savedInstanceState == null) {
