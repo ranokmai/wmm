@@ -187,15 +187,15 @@ public class IouListFragment extends Fragment{
 			no_iou_text.setVisibility(View.VISIBLE);
 			RelativeLayout filter_panel = (RelativeLayout) fragment_view.findViewById(R.id.filter_region);
 			//filter_panel.setVisibility(View.GONE);
-			View seperator = (View) fragment_view.findViewById(R.id.separator);
-			seperator.setVisibility(View.GONE);
+			//View seperator = (View) fragment_view.findViewById(R.id.separator);
+			//seperator.setVisibility(View.GONE);
 		} else {
 			TextView no_iou_text = (TextView) fragment_view.findViewById(R.id.no_iou_text);
 			no_iou_text.setVisibility(View.GONE);
 			RelativeLayout filter_panel = (RelativeLayout) fragment_view.findViewById(R.id.filter_region);
 			//filter_panel.setVisibility(View.VISIBLE);
-			View seperator = (View) fragment_view.findViewById(R.id.separator);
-			seperator.setVisibility(View.VISIBLE);
+			//View seperator = (View) fragment_view.findViewById(R.id.separator);
+			//seperator.setVisibility(View.VISIBLE);
 		}
 		
 		// Fill iouItems with db data
