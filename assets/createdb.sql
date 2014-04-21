@@ -11,7 +11,8 @@ CREATE TABLE ious (
 	value TEXT,
 	picture_loc TEXT,
 	notes TEXT, 
-	reminder TEXT);
+	reminder TEXT,
+	sorted_name TEXT);
 	
 CREATE TABLE archived_ious (
 	iou_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,4 +27,5 @@ CREATE TABLE archived_ious (
 	value TEXT,
 	picture_loc TEXT,
 	notes TEXT
-	reminder TEXT);
+	reminder TEXT,
+	sorted_name TEXT);
