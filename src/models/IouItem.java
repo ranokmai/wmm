@@ -2,10 +2,12 @@ package models;
 
 import com.example.wmm.IouListFragment;
 import com.example.wmm.R;
+
 import models.Global;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,7 +117,13 @@ public class IouItem {
 		}
 		// Set image to be the launcher and hide the MoneyThumbnail
 		else {
-			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setImageResource(R.drawable.ic_logo);
+			if (iou.pic_loc().length() == 0) {
+				((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setImageResource(R.drawable.ic_logo);
+			}
+			else {
+				Uri pic = Uri.parse(iou.pic_loc());
+				((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setImageURI(pic);
+			}
 			((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setVisibility(View.GONE);
 		}
 	}
