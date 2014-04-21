@@ -132,15 +132,15 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, date, new GregorianCalendar(2014,Global.APR,20).getTime(), 1000.21, "", "night out", new GregorianCalendar(2014,Global.APR,21).getTime());
-			Iou test2 = new Iou("Drinks", "Jimmy Blanchard", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out", new GregorianCalendar(2014,Global.APR,21).getTime());
-			Iou test3 = new Iou("GTA V", "Jimmy Blanchard", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 60.00, "", "GTA 5", new GregorianCalendar(2014,Global.APR,21).getTime());
-			Iou test4 = new Iou("Great American Challenge", "Galen Gong", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 50.00, "", ":D", new GregorianCalendar(2014,Global.APR,21).getTime());
-
-			Global.iou_db_mgr.insertIou(test1);
-			Global.iou_db_mgr.insertIou(test2);
-			Global.iou_db_mgr.insertIou(test3);
-			Global.iou_db_mgr.insertIou(test4);
+//			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, date, new GregorianCalendar(2014,Global.APR,20).getTime(), 1000.21, "", "night out", new GregorianCalendar(2014,Global.APR,21).getTime());
+//			Iou test2 = new Iou("Drinks", "Jimmy Blanchard", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out", new GregorianCalendar(2014,Global.APR,21).getTime());
+//			Iou test3 = new Iou("GTA V", "Jimmy Blanchard", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 60.00, "", "GTA 5", new GregorianCalendar(2014,Global.APR,21).getTime());
+//			Iou test4 = new Iou("Great American Challenge", "Galen Gong", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 50.00, "", ":D", new GregorianCalendar(2014,Global.APR,21).getTime());
+//
+//			Global.iou_db_mgr.insertIou(test1);
+//			Global.iou_db_mgr.insertIou(test2);
+//			Global.iou_db_mgr.insertIou(test3);
+//			Global.iou_db_mgr.insertIou(test4);
 		}
 
 		ArrayList<ContactSummary> cs = Global.iou_db_mgr.get_contact_summaries();
