@@ -189,6 +189,21 @@ public class IouDBManager {
 		return retrieve_ious(cursor);
 	}
 	
+	public ArrayList<Iou> get_ious_with_reminders_before_and_of_date() {
+		Date cur_date = new Date();
+		
+		ArrayList<Iou> ious = get_ious_ordered_by_reminders();
+		ArrayList<Iou> to_be_reminded = new ArrayList<Iou>();
+		
+		for (int i = 0; i < ious.size(); i++) {
+			if (ious.get(i).reminder().before(cur_date)) {
+				to_be_reminded.add(ious.get(i));
+			}
+		}
+		
+		return to_be_reminded;
+	}
+	
 	//retrieves all ious in order of the shortest time to due date
 	public ArrayList<Iou> get_ious_ordered_by_closest_due_date() {
 

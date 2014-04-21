@@ -6,13 +6,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import com.example.wmm.NewIouActivity;
-
-import android.app.Fragment;
 import android.content.Context;
+import android.database.Cursor;
+import android.provider.ContactsContract;
+
+import com.example.wmm.NewIouActivity;
 
 public class Global {
 	public static IouDBManager iou_db_mgr;
+	
+	public static Context main_context;
 	
 	public static Date DATE_MAX = new Date(Long.MAX_VALUE);
 	
@@ -61,6 +64,31 @@ public class Global {
 		iou_db_mgr = new IouDBManager(context);
 	}
 
+	public static String text_content(Iou iou) {
+		String s = new String();
+		
+		s += "You borrowed " + iou.item_name() + " from me on " + iou.date_borrowed();
+		s += ". It is due on " + iou.date_due() + ". This is just a reminder that you still have it.";
+		
+		return s;
+	}
+	
+	public static String contact_number(String name, Context context) {
+		
+		String ret = null;
+		String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" like'%" + name +"%'";
+		String[] projection = new String[] { ContactsContract.CommonDataKinds.Phone.NUMBER};
+		Cursor c = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+		        projection, selection, null, null);
+		if (c.moveToFirst()) {
+		    ret = c.getString(0);
+		}
+		c.close();
+		if(ret==null)
+		    ret = "Unsaved";
+		return ret;
+	}
+	
 	//for date formatting:
 	public static String date_format = "yyyy-MM-dd";
 	public static String reminder_format = "yyyy-MM-dd-HH:mm";

@@ -11,12 +11,15 @@ import preferences.SettingsFragment;
 import models.Global;
 import models.Iou;
 import models.IouDBManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -25,8 +28,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
@@ -45,6 +51,8 @@ public class MainActivity extends Activity {
 	private IouListFragment iouListFragment = null;
 	private StatisticsFragment statisticsFragment = null;
 	private int selected_fragment = 0;
+	private String contact_number;
+	private String text_content;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +117,8 @@ public class MainActivity extends Activity {
 		};
 		navigation_layout.setDrawerListener(navigation_toggle);
 
+		Global.main_context = getApplicationContext();
+		
 		// Database setup
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
@@ -150,11 +160,58 @@ public class MainActivity extends Activity {
 			Global.iou_db_mgr.insertIou(test4);
 			Global.iou_db_mgr.insertIou(test5);
 		}
+		
 
 		ArrayList<ContactSummary> cs = Global.iou_db_mgr.get_contact_summaries();
 
 		for (int i = 0; i < cs.size(); i++) {
 			cs.get(i).print();
+		}
+		
+		ArrayList<Iou> to_be_reminded = Global.iou_db_mgr.get_ious_with_reminders_before_and_of_date();
+		
+		
+		for (int i = 0; i < to_be_reminded.size(); i++) {
+			text_content = Global.text_content(to_be_reminded.get(i));
+
+			contact_number = Global.contact_number(to_be_reminded.get(i).contact_name(), getApplicationContext());
+			
+			if (contact_number.equals("Unsaved")) {
+				
+			}
+			else {
+			    //popup dialog to ask if want to send sms reminder
+				final Dialog dialog = new Dialog(this);
+				dialog.setContentView(R.layout.reminder_dialogue);
+				dialog.setTitle("Reminder Alert");
+				
+				TextView text = (TextView) dialog.findViewById(R.id.reminderText);
+				text.setText("Your reminder for " + to_be_reminded.get(i).item_name() + " has trigggered, would you like to send a text to " +
+				to_be_reminded.get(i).contact_name() + "?");
+				
+				Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+				dialogButton.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						//if yes to send reminder
+						Uri uri = Uri.parse("smsto:" + contact_number); 
+					    Intent it = new Intent(Intent.ACTION_SENDTO, uri); 
+					    it.putExtra("sms_body", text_content); 
+					    startActivity(it); 
+						dialog.dismiss();
+					}
+				});
+				Button cancelButton = (Button) dialog.findViewById(R.id.dialogButtonCancel);
+				cancelButton.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						dialog.dismiss();
+					}
+				});
+	 
+				dialog.show();
+				
+			}
 		}
 
 	}
