@@ -115,6 +115,9 @@ public class ContactsFragment extends Fragment {
 				}
 			}
 			
+			int test = Global.iou_db_mgr.get_contact_num_outbound_item_ious(contacts.get(curr_contact));
+			Log.d("IOU Test", Integer.toString(test));
+			
 			contacts_items.add(new ContactItem(getActivity(),
 				contacts.get(curr_contact),
 				Integer.toString(outstanding_ious.size()),

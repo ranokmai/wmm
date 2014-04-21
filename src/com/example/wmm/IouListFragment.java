@@ -90,29 +90,28 @@ public class IouListFragment extends Fragment{
 		rboutgoing.setChecked(true);
 		rbincoming.setChecked(true);
 		
+		sort_switch.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0){
+				ascending = !ascending;
+				updateListView(null);
+			}
+		});
+		
 		rboutgoing.setOnClickListener( new OnClickListener() {		
 			@Override
 			public void onClick(View arg0) {
-		 	    outgoing = ((ToggleButton) arg0).isChecked();				
+		 	    outgoing = !outgoing;
+		 	    updateListView(null);
 			}
 		});
 		
 		rbincoming.setOnClickListener( new OnClickListener() {		
 			@Override
 			public void onClick(View arg0) {
-		 	    incoming = ((ToggleButton) arg0).isChecked();				
+		 	    incoming = !incoming;
+		 	    updateListView(null);
 			}
-		});
-		
-		rboutgoing.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		    	updateListView(null);
-		    }
-		});
-		rbincoming.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		    	updateListView(null);
-		    }
 		});
 		
 		updateListView(rootView);
@@ -223,8 +222,6 @@ public class IouListFragment extends Fragment{
  	
  	private void populateIous(){
  		if( this.incoming && this.outgoing ){
- 			//add current iou items according to filter
- 			 			
  			if(selected_sort == 0) { // loaned
  				ious = Global.iou_db_mgr.get_ious_ordered_by_earliest_loan_date();
  			}
@@ -276,11 +273,12 @@ public class IouListFragment extends Fragment{
  	 		}
  		}
  		else {
- 			ious = Global.iou_db_mgr.get_ious_unordered();
+ 			// Clear the list
+ 			ious.clear();
  		}
  		
  		// flip if they want the other direction
- 		if( !ascending ) ious = flipArray(ious);
+ 		if(!ascending) ious = flipArray(ious);
  		
  		return;
  	}

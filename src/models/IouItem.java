@@ -31,7 +31,7 @@ public class IouItem {
 	private Iou iou;
 	private IouListFragment parentFragment;
 
-	@SuppressLint("NewApi") public IouItem(Context context, String inName, String inDate, String inDesc, double inAmount, boolean money) {
+	@SuppressLint("NewApi") public IouItem(Context context, String inName, String inDate, String inDesc, double inAmount, boolean money, boolean outgoing) {
 		contact = inName;
 		date = inDate;
 		item_name = inDesc;
@@ -52,8 +52,8 @@ public class IouItem {
 		if(money) {
 			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setVisibility(View.GONE);
 
-			// Set color to red if amount is negative
-			if(amount < 0) {
+			// Set color to red if outgoing
+			if(outgoing) {
 				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setTextColor(Color.parseColor("#FF0000"));
 				String text = "($" + Integer.toString(amount*-1) + ")";
 				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setText(text);
@@ -104,10 +104,10 @@ public class IouItem {
 		if(temp.equals("Money")) {
 			((ImageView) layout.findViewById(R.id.singleItemThumbnail)).setVisibility(View.GONE);
 
-			// Set color to red if amount is negative
-			if(amount < 0) {
+			// Set color to red if outgoing
+			if(iou.outbound()) {
 				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setTextColor(Color.parseColor("#FF0000"));
-				String text = "($" + Integer.toString(amount*-1) + ")";
+				String text = "($" + Integer.toString(amount) + ")";
 				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setText(text);
 			}
 			else {

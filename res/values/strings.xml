@@ -16,7 +16,7 @@
     <string name="drawer_open">Open</string>
 	<string name="drawer_close">Close</string>
 	
-	<string name="no_ious">You have no transactions. Add one using the menu above.</string>
+	<string name="no_ious">No transactions to display. Change your filters or add a transaction using the menu above.</string>
 	<string name="no_contacts">You have not sent any transactions to your contacts. Send some from the \'Loans\' page.</string>
 	
 	<string name="filter">Sort By:</string>
