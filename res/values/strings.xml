@@ -88,7 +88,6 @@
         <item >Contacts</item>
         <item >Reminders</item>
         <item >Statistics</item>
-        <item >Settings</item>
         <item >About</item>
     </string-array>
     
@@ -106,23 +105,22 @@
     <string name="desc_list_item_icon">Item Icon</string>
     
 
-    <!-- color wheel picker -->
+    <!-- color picker -->
 	<string name="pref_category_visuals">Visuals</string>
-    <string name="color_background_title">Button Background Color</string>
-    <string name="color_background_summary">Change the color of the button background</string> <!-- black color by default, set by reference -->
-    <string name="color_text_title">Button Text Color</string>
-    <string name="color_text_summary">Change the color of the button text</string> <!-- not persistent color\nalpha slider added via code --> 
+    <string name="color_out_title">Outgoing Transaction Color</string>
+    <string name="color_out_summary">Change the color of outgoing transaction values</string>
+    <string name="color_in_title">Incoming Transaction Color</string>
+    <string name="color_in_summary">Change the color of incoming transaction values</string>
     
-    
-    <string name="color3_title">Color 3</string>
-    <string name="color3_summary">picker with alpha slider</string> 
-    <string name="color4_title">Color 4</string>
-    <string name="color4_summary">color set with HEX code in xml</string>   
-    
+    <string name="pref_category_misc">Reset</string>
+	<string name="reset_settings_title">Reset Defaults</string>
+	<string name="reset_settings_summary">Click To Reset Defaults</string>
     
 	<!-- Settings menu -->
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Press on Color to apply</string>
+    
+  
     
     <!-- About page -->
     <string name="github_link">https://github.com/ranokmai/wmm</string>

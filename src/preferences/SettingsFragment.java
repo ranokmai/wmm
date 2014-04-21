@@ -1,7 +1,9 @@
 package preferences;
 
+import models.Global;
 import preferences.ColorPickerPreference;
 
+import com.example.wmm.MainActivity;
 import com.example.wmm.R;
 
 import android.annotation.SuppressLint;
@@ -9,12 +11,16 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnKeyListener;
 
 /**
  * Extension of PreferenceFragment- sets up the settings menu
@@ -32,14 +38,16 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 	 * String used as key to access button background color shared preferences. 
 	 * Range: n/a, Resolution: n/a 
 	 */
-	private final String COLOR1_PREFERNCE_KEY = "color1Preference";
+	private final String COLOROUT_PREFERENCE_KEY = "colorOut";
 	
 	/**
 	 * String used as key to access button text color shared preferences. 
 	 * Range: n/a, Resolution: n/a 
 	 */
-	private final String COLOR2_PREFERNCE_KEY = "color2Preference";
+	private final String COLORIN_PREFERENCE_KEY = "colorIn";
 	
+	private ColorPickerPreference colorOutPref = null;
+	private ColorPickerPreference colorInPref = null;
 	
 	/**
 	 * Reference to SharedPreferences file used by Android. 
@@ -62,17 +70,28 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.layout.preferences);
         
-        ((ColorPickerPreference)findPreference("color2")).setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-
-			@Override
-			public boolean onPreferenceChange(Preference preference, Object newValue) {
-				preference.setSummary(ColorPickerPreference.convertToARGB(Integer.valueOf(String.valueOf(newValue))));
-				return true;
-			}
-
+        colorOutPref = (ColorPickerPreference) findPreference(COLOROUT_PREFERENCE_KEY);
+        colorInPref = (ColorPickerPreference) findPreference(COLORIN_PREFERENCE_KEY);
+        
+        colorOutPref.setColor( Global.colorOut);
+        colorInPref.setColor( Global.colorIn);
+        
+        Preference resetB = (Preference) findPreference("reset");
+        resetB.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference pref) { 
+                
+            	colorOutPref.onSetInitialValue(false, Global.outgoingCol);
+                colorInPref.onSetInitialValue(false, Global.incomingCol);
+                 
+     			colorOutPref.setColor(colorOutPref.getColor() );
+    			colorInPref.setColor(colorInPref.getColor() );
+    			
+                return true;
+            }
         });
-        ((ColorPickerPreference)findPreference("color2")).setAlphaSliderEnabled(true);
     }
+	
 	
 	/**
 	 * Called with every change of value to an item in the preferences. Records change in shared preferences
@@ -83,25 +102,35 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
 		
+		System.out.println("LOUIS Old value = " + Global.colorOut);
+		System.out.println("LOUIS Old value = " + Global.colorIn);
 		
-		if (key.equals(COLOR1_PREFERNCE_KEY))
-        {
-			ColorPickerPreference color1Pref = (ColorPickerPreference)findPreference(key);
-            
-            SharedPreferences prefs = parentSP; 
+		if (key.equals(COLOROUT_PREFERENCE_KEY))
+        {            
+			//force it to persist...
+			colorOutPref.setColor(colorOutPref.getColor() );
+			
+			SharedPreferences prefs = parentSP; 
             SharedPreferences.Editor editor = prefs.edit();
-            //editor.putString("color1Preference", color1Pref.);
+            editor.putInt("colorOut", colorOutPref.getColor());
             editor.commit();
+	            
+			Global.colorOut = this.colorOutPref.getColor();	
         }
-		else if (key.equals(COLOR2_PREFERNCE_KEY))
+		else if (key.equals(COLORIN_PREFERENCE_KEY))
         {
-			ColorPickerPreference color2Pref = (ColorPickerPreference)findPreference(key);
-            
-            SharedPreferences prefs = parentSP; 
+			colorInPref.setColor(colorInPref.getColor() );
+			SharedPreferences prefs = parentSP; 
             SharedPreferences.Editor editor = prefs.edit();
-            //editor.putLong("color2Preference", );
+            editor.putInt("colorIn", colorInPref.getColor());
             editor.commit();
+			Global.colorIn = this.colorInPref.getColor();
         }
+		
+		System.out.println("LOUIS New value = " + Global.colorOut);
+		System.out.println("LOUIS New value = " + Global.colorIn);
+		
+		Global.persist = true;
 		
 	}
 	

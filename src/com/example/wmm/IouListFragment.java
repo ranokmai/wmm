@@ -51,6 +51,8 @@ public class IouListFragment extends Fragment{
     private Spinner filters;
     private boolean ascending;
     
+    public View rootView;
+    
     private Iou selectedIou;
     
     @Override
@@ -59,7 +61,7 @@ public class IouListFragment extends Fragment{
     	incoming = outgoing = true;
     	ascending = true; 
     			
-    	View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+    	rootView = inflater.inflate(R.layout.fragment_main, container, false);
     	
     	filter_callback = new OnNavigationListener() {
 		  // Get the dropdown string list
@@ -189,6 +191,7 @@ public class IouListFragment extends Fragment{
 	
     // Update the main view with the Items in iouItems
  	public void updateListView(View rootView) {
+ 		
  		//make sure initialized
 		iouItems = new ArrayList<IouItem>();
 		View fragment_view;

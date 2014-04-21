@@ -6,18 +6,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import preferences.SettingsActivity;
 import models.ContactSummary;
 import preferences.SettingsFragment;
 import models.Global;
 import models.Iou;
 import models.IouDBManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -51,6 +54,21 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.navigation_drawer);
+		
+		/* failed settings 
+		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this); 
+		
+		int colorOutvalue = prefs.getInt("colorOut", -1);
+		if( colorOutvalue != 0  ){
+			Global.colorOut = colorOutvalue;
+		}
+		int colorInvalue = prefs.getInt("colorIn", -1);
+		if( colorInvalue != 0  ){
+			Global.colorIn = colorInvalue;
+		}
+		*/
+		
 		app_title = "Where's My Money?!";
 		navigation_title = app_title;
 		
@@ -74,8 +92,6 @@ public class MainActivity extends Activity {
 				navigation_icons.getResourceId(3, -1)));
 		navigation_items.add(new models.NavigationItem(navigation_titles[4],
 				navigation_icons.getResourceId(4, -1)));
-		navigation_items.add(new models.NavigationItem(navigation_titles[5],
-				navigation_icons.getResourceId(5, -1)));
 		navigation_icons.recycle();
 
 		// Populate navigation drawer
@@ -160,6 +176,7 @@ public class MainActivity extends Activity {
 		}
 	}
 
+
 	public void display_fragment(int position) {
 		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 		
@@ -190,12 +207,6 @@ public class MainActivity extends Activity {
         	getActionBar().setDisplayShowTitleEnabled(true);
         	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         	invalidateOptionsMenu();
-        	listFrag = new SettingsFragment();
-        	break;
-        case 5:
-        	getActionBar().setDisplayShowTitleEnabled(true);
-        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        	invalidateOptionsMenu();
         	listFrag = new AboutFragment();
         	break;
         	
@@ -206,8 +217,8 @@ public class MainActivity extends Activity {
     	// preference fragment functions differently than fragment 
         if (listFrag != null) {
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, listFrag).commit();
- 
+            fragmentManager.beginTransaction().replace(R.id.content_frame, listFrag).commit(); 	
+            
             // Update the title and close the drawer
             navigation_list.setItemChecked(position, true);
             navigation_list.setSelection(position);
@@ -225,6 +236,7 @@ public class MainActivity extends Activity {
             Log.e("MainActivity", "Error creating fragment from navigation drawer.");
         }
     }
+	
 	
 	public void deleteIouButtonListener(View v) {
 		if(iouListFragment != null)
@@ -258,7 +270,7 @@ public class MainActivity extends Activity {
         // If nav drawer is opened, hide the action items
         boolean drawerOpen = navigation_layout.isDrawerOpen(navigation_list);
         
-        menu.findItem(R.id.action_open_settings).setVisible(!drawerOpen);
+        menu.findItem(R.id.action_open_settings).setVisible(false);
         if (selected_fragment == 0 && !drawerOpen){
         	menu.findItem(R.id.action_new_iou).setVisible(true);
         } else {

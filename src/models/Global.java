@@ -10,6 +10,7 @@ import com.example.wmm.NewIouActivity;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Color;
 
 public class Global {
 	public static IouDBManager iou_db_mgr;
@@ -31,8 +32,16 @@ public class Global {
 	
 	public static Iou iou;
 	
+	public static boolean persist = false; 
+	
 	public static boolean fromnew = false;
 	public static NewIouActivity newIouAct = null;
+	
+	public static int colorOut = Color.parseColor("#e74c3c");
+	public static int colorIn = Color.parseColor("#27ae60");
+	
+	public static final int outgoingCol =  Color.parseColor("#e74c3c");
+	public static final int incomingCol =  Color.parseColor("#27ae60");
 	
     public enum Filters {
     	DATEDUE, 

@@ -71,7 +71,7 @@ public class ColorPickerPreference
 	}
 
 	@Override
-	protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
+	public void onSetInitialValue(boolean restoreValue, Object defaultValue) {
 		onColorChanged(restoreValue ? getPersistedInt(mValue) : (Integer) defaultValue);
 	}
 
@@ -146,6 +146,18 @@ public class ColorPickerPreference
 		} catch (NullPointerException e) {
 
 		}
+	}
+	
+	public void setColor( int color) {
+		mValue = color;
+		setPreviewColor(); 
+		try {
+			getOnPreferenceChangeListener().onPreferenceChange(this, color);
+		} catch (NullPointerException e) {
+
+		}
+		
+		onSetInitialValue( true, color);
 	}
 
 	public boolean onPreferenceClick(Preference preference) {
@@ -254,6 +266,10 @@ public class ColorPickerPreference
 		}
 
 		return Color.parseColor(argb);
+	}
+	
+	public int getColor() {
+		return mValue;
 	}
     
     @Override
