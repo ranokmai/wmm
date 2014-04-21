@@ -102,8 +102,6 @@ public class MainActivity extends Activity {
 				navigation_icons.getResourceId(2, -1)));
 		navigation_items.add(new models.NavigationItem(navigation_titles[3],
 				navigation_icons.getResourceId(3, -1)));
-		navigation_items.add(new models.NavigationItem(navigation_titles[4],
-				navigation_icons.getResourceId(4, -1)));
 		navigation_icons.recycle();
 
 		// Populate navigation drawer
@@ -271,14 +269,14 @@ public class MainActivity extends Activity {
         	invalidateOptionsMenu();
         	listFrag = new ContactsFragment();
             break;
-        case 3:
+        case 2:
         	getActionBar().setDisplayShowTitleEnabled(true);
         	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         	invalidateOptionsMenu();
         	listFrag = new StatisticsFragment();
         	statisticsFragment = (StatisticsFragment) listFrag;
             break;
-        case 4:
+        case 3:
         	getActionBar().setDisplayShowTitleEnabled(true);
         	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         	invalidateOptionsMenu();
