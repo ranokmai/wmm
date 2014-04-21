@@ -164,11 +164,10 @@ public class IouListFragment extends Fragment{
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         switch (requestCode) {
     		
 	    	case 1: // edit         
-	    		deleteSelectedIOU();        		
+	    		//deleteSelectedIOU();       		
 	    	case 0: // add
 	        	updateListView(null);
 	        	Global.newIouAct = null;

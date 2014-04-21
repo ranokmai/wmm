@@ -52,6 +52,7 @@ public class NewIouActivity extends Activity {
 
 	private boolean dateChanged;
 	private boolean realContact;
+	private boolean editing; 
 	private String pictureUrl;
 	
 	private EditText mTitle;
@@ -131,6 +132,7 @@ public class NewIouActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         Global.newIouAct = this;
+        editing = false;
         dateChanged = false;
         realContact = true; 
         pictureUrl = "";
@@ -295,6 +297,9 @@ public class NewIouActivity extends Activity {
 		
 		mTimeRemind = (TimePicker) findViewById(R.id.addIouTimePicker1);
 		
+		mDateRemind.setEnabled( false);
+		mTimeRemind.setEnabled( false);
+		
 		mHasReminder = (CheckBox) findViewById(R.id.addIouRemindMe);
 		mHasReminder.setOnCheckedChangeListener( new OnCheckedChangeListener() {
 			
@@ -348,6 +353,7 @@ public class NewIouActivity extends Activity {
 		Iou iou = Global.iou;
 			
 		if( iou == null) return;
+		editing = true;
 		
 		this.mTitle.setText( iou.item_name() ); 
 		this.mContacts.setSelection(1);
@@ -395,59 +401,122 @@ public class NewIouActivity extends Activity {
 		gc.setTime(iou.date_due());
 		if( iou.date_due().compareTo(Global.DATE_MAX) == 0 )
 			this.mIsDateDue.setChecked(false);
-		else 
+		else {
 			this.mDateDue.init(	gc.get(gc.YEAR), gc.get(gc.MONTH),
 								gc.get(gc.DAY_OF_MONTH), changeDate);
+			this.mIsDateDue.setChecked(true);
+		}
 		this.mNotes.setText(iou.notes());
 		
-		Global.iou = null;
 	}
 	
 	private boolean addNewIou(){
 
-		String name = this.mTitle.getText().toString();
-		String contact = this.mNamedContact.getText().toString();
-		boolean isContact = this.realContact;
-		String type = this.mTypes.getSelectedItem().toString();
-		boolean direction = (this.mDirections.getSelectedItemPosition() == 0);
-		String picture = this.pictureUrl; 
-		GregorianCalendar loanedDate = new GregorianCalendar( 
-											this.mDateLoaned.getYear(), 
-											this.mDateLoaned.getMonth(), 
-											this.mDateLoaned.getDayOfMonth());
-		GregorianCalendar dueDate = new GregorianCalendar( 
-											this.mDateDue.getYear(), 
-											this.mDateDue.getMonth(), 
-											this.mDateDue.getDayOfMonth());
-		Double value;
-		if( this.mValue.getText().toString().compareTo("") == 0) value = (double)0; 
-		else value = Double.parseDouble(this.mValue.getText().toString());
-		String notes = this.mNotes.getText().toString();
+		String name = "", contact = "", type = "", picture = "", notes = "";
+		boolean isContact = true, direction = false;
+		GregorianCalendar loanedDate, dueDate;
+		Double value = 0.0;
+		Iou iou;
 		
-		// three required fields for an IOU
-		if( name.compareTo("") == 0 || contact.compareTo("") == 0 || 
-									mContacts.getSelectedItemId() == 0  ){
+		if(editing) {
+			iou = Global.iou;
 			
-			new AlertDialog.Builder(this)
-			    .setTitle("Invalid IOU!")
-				.setMessage("A title and contact must be set for a new IOU")
-				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-		
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-				        
-					}
+			name = this.mTitle.getText().toString();
+			contact = this.mNamedContact.getText().toString();
+			type = this.mTypes.getSelectedItem().toString();
+			direction = (this.mDirections.getSelectedItemPosition() == 0);
+			picture = this.pictureUrl; 
+			loanedDate = new GregorianCalendar( 
+												this.mDateLoaned.getYear(), 
+												this.mDateLoaned.getMonth(), 
+												this.mDateLoaned.getDayOfMonth());
+			dueDate = new GregorianCalendar( 
+												this.mDateDue.getYear(), 
+												this.mDateDue.getMonth(), 
+												this.mDateDue.getDayOfMonth());
+	
+			if( this.mValue.getText().toString().compareTo("") == 0) value = (double)0; 
+			else value = Double.parseDouble(this.mValue.getText().toString());
+			notes = this.mNotes.getText().toString();
+			
+			// three required fields for an IOU
+			if( name.compareTo("") == 0 || contact.compareTo("") == 0 || 
+										mContacts.getSelectedItemId() == 0  ){
 				
-				}).create().show();
+				new AlertDialog.Builder(this)
+				    .setTitle("Invalid IOU!")
+					.setMessage("A title and contact must be set for a new IOU")
+					.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 			
-			return false; 
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+					        
+						}
+					
+					}).create().show();
+				
+				return false; 
+			}
+			
+			iou.update_value(value);
+			iou.update_contact_name(contact);
+			iou.update_item_name(name);
+			iou.update_is_a_contact(true);
+			iou.update_notes(notes);
+			iou.update_outbound(direction);
+			iou.update_pic_loc(picture);
+			iou.update_item_type(type);
+			iou.update_date_due(dueDate.getTime());
+			iou.update_date_borrowed(loanedDate.getTime());
+			
+			Global.iou_db_mgr.updateIou(iou);
+			
+			Global.iou = null;
+			editing = false; 
 		}
-		
-		
-		Iou iou= new Iou(name, contact, isContact, type, direction, 
-				loanedDate.getTime(), dueDate.getTime(), value, picture, notes);
-		
-		Global.iou_db_mgr.insertIou(iou);
+		else {
+			name = this.mTitle.getText().toString();
+			contact = this.mNamedContact.getText().toString();
+			type = this.mTypes.getSelectedItem().toString();
+			direction = (this.mDirections.getSelectedItemPosition() == 0);
+			picture = this.pictureUrl; 
+			loanedDate = new GregorianCalendar( 
+												this.mDateLoaned.getYear(), 
+												this.mDateLoaned.getMonth(), 
+												this.mDateLoaned.getDayOfMonth());
+			dueDate = new GregorianCalendar( 
+												this.mDateDue.getYear(), 
+												this.mDateDue.getMonth(), 
+												this.mDateDue.getDayOfMonth());
+	
+			if( this.mValue.getText().toString().compareTo("") == 0) value = (double)0; 
+			else value = Double.parseDouble(this.mValue.getText().toString());
+			notes = this.mNotes.getText().toString();
+			
+			// three required fields for an IOU
+			if( name.compareTo("") == 0 || contact.compareTo("") == 0 || 
+										mContacts.getSelectedItemId() == 0  ){
+				
+				new AlertDialog.Builder(this)
+				    .setTitle("Invalid IOU!")
+					.setMessage("A title and contact must be set for a new IOU")
+					.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+					        
+						}
+					
+					}).create().show();
+				
+				return false; 
+			}
+			
+			iou= new Iou(name, contact, isContact, type, direction, 
+					loanedDate.getTime(), dueDate.getTime(), value, picture, notes);
+			
+			Global.iou_db_mgr.insertIou(iou);
+		}
 		NewIouActivity.super.onBackPressed();
 		
 		return false;
