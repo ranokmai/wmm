@@ -64,7 +64,7 @@ public class IouItem {
 			// Set color to red if outgoing
 			if(outgoing) {
 				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setTextColor(Color.parseColor("#FF0000"));
-				String text = "($" + Integer.toString(amount*-1) + ")";
+				String text = "($" + Integer.toString(amount) + ")";
 				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setText(text);
 			}
 			else {
@@ -119,9 +119,9 @@ public class IouItem {
 
 		
 			// Set color to red if amount is negative
-			if(amount < 0) {
+			if(iou.outbound()) {
 				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setTextColor(Global.colorOut);
-				String text = "($" + Integer.toString(amount*-1) + ")";
+				String text = "($" + Integer.toString(amount) + ")";
 				((TextView) layout.findViewById(R.id.singleItemMoneyThumbnail)).setText(text);
 			}
 			else {

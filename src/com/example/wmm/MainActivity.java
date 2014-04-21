@@ -311,6 +311,12 @@ public class MainActivity extends Activity {
             Log.e("MainActivity", "Error creating fragment from navigation drawer.");
         }
     }
+	
+	public void archiveIouButtonListener(View v) {
+		if(iouListFragment != null){
+			iouListFragment.archiveSelectedIOU();
+		}
+	}
 
 	public void deleteIouButtonListener(View v) {
 		if(iouListFragment != null){
