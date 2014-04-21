@@ -201,7 +201,7 @@ public class IouListFragment extends Fragment{
 		
 		// Fill iouItems with db data
 		for (int i = 0; i < ious.size(); i++) {
-			iouItems.add(new IouItem(getActivity(), ious.get(i)));
+			iouItems.add(new IouItem(getActivity(), ious.get(i), true));
 		}
 		
         adapter = new IouListAdapter(iouItems);

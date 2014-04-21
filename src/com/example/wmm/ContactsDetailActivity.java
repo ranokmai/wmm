@@ -84,7 +84,7 @@ public class ContactsDetailActivity extends Activity {
 	 	loan_amount = (TextView) findViewById(R.id.detail_loan_amount);
 	 	loan_amount.setText("$"+af.format(total_loan_value));
 	 	items_lent = (TextView) findViewById(R.id.detail_items_lent);
-	 	items_lent.setText("+ "+Integer.toString(Global.iou_db_mgr.get_contact_num_outbound_item_ious(contact_name))+" items");
+	 	items_lent.setText("+ "+Integer.toString(Global.iou_db_mgr.get_contact_num_item_ious(contact_name))+" items");
 	
 	 	// Load the contact's IOUs
 	 	ArrayList<IouItem> iouItems = new ArrayList<IouItem>();
@@ -92,7 +92,7 @@ public class ContactsDetailActivity extends Activity {
 		
 		// Populate the IOU list
 		for (int i = 0; i < ious.size(); i++) {
-			iouItems.add(new IouItem(this, ious.get(i)));
+			iouItems.add(new IouItem(this, ious.get(i), false));
 		}
 		
 		IouListAdapter adapter = new IouListAdapter(iouItems);

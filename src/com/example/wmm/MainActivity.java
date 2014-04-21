@@ -291,8 +291,9 @@ public class MainActivity extends Activity {
 	}
 
 	public void deleteIouButtonListener(View v) {
-		if(iouListFragment != null)
+		if(iouListFragment != null){
 			iouListFragment.deleteSelectedIOU();
+		}
 	}
 
 	public void editIouButtonListener(View v){		

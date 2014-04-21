@@ -30,6 +30,7 @@ public class IouItem {
 	int amount;
 	private Iou iou;
 	private IouListFragment parentFragment;
+	private boolean can_expand;
 
 	@SuppressLint("NewApi") public IouItem(Context context, String inName, String inDate, String inDesc, double inAmount, boolean money, boolean outgoing) {
 		contact = inName;
@@ -77,8 +78,9 @@ public class IouItem {
 
 	}
 
-	public IouItem(Context context, final Iou iou) {
+	public IouItem(Context context, final Iou iou, boolean expandable){
 		contact = iou.contact_name();
+		can_expand = expandable;
 		date = Global.date_to_str(iou.date_due());
 		item_name = iou.item_name();
 
@@ -131,17 +133,18 @@ public class IouItem {
 	public Iou getIou() { return this.iou; }
 
 	public void toggleExpandIou(boolean toggleFlag) {
-		if(toggleFlag) {
-			layout.findViewById(R.id.archive_button).setVisibility(View.VISIBLE);
-			layout.findViewById(R.id.delete_button).setVisibility(View.VISIBLE);
-			layout.findViewById(R.id.edit_button).setVisibility(View.VISIBLE);
+		if (can_expand){
+			if(toggleFlag) {
+				layout.findViewById(R.id.archive_button).setVisibility(View.VISIBLE);
+				layout.findViewById(R.id.delete_button).setVisibility(View.VISIBLE);
+				layout.findViewById(R.id.edit_button).setVisibility(View.VISIBLE);
+			}
+			else {
+				layout.findViewById(R.id.archive_button).setVisibility(View.GONE);
+				layout.findViewById(R.id.delete_button).setVisibility(View.GONE);
+				layout.findViewById(R.id.edit_button).setVisibility(View.GONE);
+			}
 		}
-		else {
-			layout.findViewById(R.id.archive_button).setVisibility(View.GONE);
-			layout.findViewById(R.id.delete_button).setVisibility(View.GONE);
-			layout.findViewById(R.id.edit_button).setVisibility(View.GONE);
-		}
-
 	}
 
 	public RelativeLayout getView() { return layout;	}

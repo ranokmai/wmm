@@ -123,7 +123,7 @@ public class ContactsFragment extends Fragment {
 				Integer.toString(outstanding_ious.size()),
 				df.format(outstanding_ious.get(outstanding_ious.size()-1).date_borrowed()),
 				af.format(total_loan_value),
-				Integer.toString(Global.iou_db_mgr.get_contact_num_outbound_item_ious(contacts.get(curr_contact))),
+				Integer.toString(Global.iou_db_mgr.get_contact_num_item_ious(contacts.get(curr_contact))),
 				photo));
 		}
 		
