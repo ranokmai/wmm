@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
  
@@ -85,6 +86,7 @@ public class IouListFragment extends Fragment{
 		
 		final ToggleButton rboutgoing = (ToggleButton) rootView.findViewById(R.id.outgoing);
 		final ToggleButton rbincoming = (ToggleButton) rootView.findViewById(R.id.incoming);
+		final Switch sort_switch = (Switch) rootView.findViewById(R.id.sort_switch);
 		rboutgoing.setChecked(true);
 		rbincoming.setChecked(true);
 		
