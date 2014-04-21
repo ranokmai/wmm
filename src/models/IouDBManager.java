@@ -177,6 +177,18 @@ public class IouDBManager {
 		
 	}
 	
+	public ArrayList<Iou> get_ious_ordered_by_reminders() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious ORDER BY reminder ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	public ArrayList<Iou> get_ious_of_reminder_date(Date reminder_time) {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE reminder = ?", new String [] {Global.time_to_str(reminder_time)});
+		
+		return retrieve_ious(cursor);
+	}
+	
 	//retrieves all ious in order of the shortest time to due date
 	public ArrayList<Iou> get_ious_ordered_by_closest_due_date() {
 

@@ -112,9 +112,6 @@ public class MainActivity extends Activity {
 		// Database setup
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
-
-		//Global.iou_db_mgr.reset_db();
-
 		if (savedInstanceState == null) {
 			// on first time display view for first nav item
 			display_fragment(0);

@@ -296,9 +296,6 @@ public class NewIouActivity extends Activity {
 			@Override
 			public void onCheckedChanged(CompoundButton parent, boolean checked) {
 				mDateDue.setEnabled(checked);
-				if( checked ) mDateDue.setVisibility(View.VISIBLE);
-				else mDateDue.setVisibility(View.INVISIBLE);
-				
 				dateChanged = true;
 			}
 		 
@@ -413,23 +410,24 @@ public class NewIouActivity extends Activity {
 								gc.get(gc.DAY_OF_MONTH), changeDate);
 		
 		gc.setTime(iou.date_due());
-		if( iou.date_due().compareTo(Global.DATE_MAX) == 0 )
+		if( Global.date_to_str( iou.date_due() ).compareTo( Global.date_to_str( Global.DATE_MAX)) == 0 )
 			this.mIsDateDue.setChecked(false);
 		else {
 			this.mDateDue.init(	gc.get(gc.YEAR), gc.get(gc.MONTH),
 								gc.get(gc.DAY_OF_MONTH), changeDate);
 			this.mIsDateDue.setChecked(true);
 		}
+		
 		gc.setTime( iou.reminder());
-		if( iou.date_due().compareTo(Global.DATE_MAX) == 0 )
+		if(  Global.time_to_str( iou.reminder() ).compareTo( Global.time_to_str( Global.DATE_MAX)) == 0  )
 			this.mHasReminder.setChecked(false);
 		else {
 			this.mDateRemind.init(	gc.get(gc.YEAR), gc.get(gc.MONTH),
 									gc.get(gc.DAY_OF_MONTH), changeReminder);
 			this.mHasReminder.setChecked(true);
+			this.mTimeRemind.setCurrentHour(gc.get(gc.HOUR_OF_DAY));
+			this.mTimeRemind.setCurrentMinute(gc.get(gc.MINUTE));
 		}
-		this.mTimeRemind.setCurrentHour(gc.get(gc.HOUR_OF_DAY));
-		this.mTimeRemind.setCurrentMinute(gc.get(gc.MINUTE));
 		
 		this.mNotes.setText(iou.notes());
 		
@@ -452,17 +450,24 @@ public class NewIouActivity extends Activity {
 											this.mDateLoaned.getYear(), 
 											this.mDateLoaned.getMonth(), 
 											this.mDateLoaned.getDayOfMonth());
-		dueDate = new GregorianCalendar( 
-											this.mDateDue.getYear(), 
-											this.mDateDue.getMonth(), 
-											this.mDateDue.getDayOfMonth());
+		dueDate = new GregorianCalendar();
+		if( this.mIsDateDue.isChecked() )
+			dueDate.set(	this.mDateDue.getYear(), 
+							this.mDateDue.getMonth(), 
+							this.mDateDue.getDayOfMonth() );
+		else 
+			dueDate.setTime(Global.DATE_MAX);
 		
+										
 		reminderDate = new GregorianCalendar();
-		reminderDate.set( 	this.mDateRemind.getYear(), 
-							this.mDateRemind.getMonth(), 
-							this.mDateRemind.getDayOfMonth(),
-							this.mTimeRemind.getCurrentHour(), 
-							this.mTimeRemind.getCurrentMinute() );
+		if( this.mHasReminder.isChecked() )
+			reminderDate.set( 	this.mDateRemind.getYear(), 
+								this.mDateRemind.getMonth(), 
+								this.mDateRemind.getDayOfMonth(),
+								this.mTimeRemind.getCurrentHour(), 
+								this.mTimeRemind.getCurrentMinute() );
+		else 
+			reminderDate.setTime(Global.DATE_MAX);
 		
 		if( this.mValue.getText().toString().compareTo("") == 0) value = (double)0; 
 		else value = Double.parseDouble(this.mValue.getText().toString());

@@ -140,7 +140,7 @@ public class Iou {
 		iou.put(value, "0.0");
 		iou.put(pic_loc, new String());
 		iou.put(notes, new String());
-		iou.put(reminder, Global.date_to_str(Global.DATE_MAX));
+		iou.put(reminder, Global.time_to_str(Global.DATE_MAX));
 		
 	}
 	
@@ -255,7 +255,7 @@ public class Iou {
 	public void update_value(Double value_) {iou.remove(value); iou.put(value, value_.toString());}
 	public void update_pic_loc(String pic_loc_) {iou.remove(pic_loc); iou.put(pic_loc, pic_loc_);}
 	public void update_notes(String notes_) {iou.remove(notes); iou.put(notes, notes_);}
-	public void update_reminder(Date reminder_) {iou.remove(reminder); iou.put(reminder, Global.date_to_str(reminder_));}
+	public void update_reminder(Date reminder_) {iou.remove(reminder); iou.put(reminder, Global.time_to_str(reminder_));}
 	
 	public void print() {
 		
