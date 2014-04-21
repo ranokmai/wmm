@@ -642,7 +642,6 @@ public class IouDBManager {
 	
 	//retrieves archived ious in order of the loan date
 	public ArrayList<Iou> get_archived_ious_ordered_by_loan_date() {
-
 		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious ORDER BY date_borrowed ASC", null);
 		
 		return retrieve_ious(cursor);
@@ -703,6 +702,20 @@ public class IouDBManager {
 		
 		return retrieve_ious(cursor);
 	}
+	
+	public ArrayList<Iou> get_inbound_archived_ious_ordered_by_loan_date() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious WHERE outbound = 0 ORDER BY date_borrowed ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	public ArrayList<Iou> get_outbound_archived_ious_ordered_by_loan_date() {
+
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM archived_ious WHERE outbound = 1 ORDER BY date_borrowed ASC", null);
+		
+		return retrieve_ious(cursor);
+	}	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//IOU INSERT UPDATE DELETE

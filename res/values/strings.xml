@@ -25,6 +25,7 @@
         <item>Due Soon</item>
         <item>Sort By Title</item>
         <item>Sort By Value</item>
+        <item>Archived</item>
     </string-array>
     <string name="show_direction">Show:</string>
     <string name="outgoing">Outgoing</string>

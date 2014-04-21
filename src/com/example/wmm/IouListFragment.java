@@ -234,6 +234,9 @@ public class IouListFragment extends Fragment{
  			else if (selected_sort == 3) {// value
  				ious = Global.iou_db_mgr.get_ious_ordered_by_value_desc();
  			}
+ 			else if (selected_sort == 4) {// Archived
+ 				ious = Global.iou_db_mgr.get_archived_ious_ordered_by_loan_date();
+ 			}
  	 		else {
  	 			ious = Global.iou_db_mgr.get_ious_unordered();
  	 		}
@@ -251,6 +254,9 @@ public class IouListFragment extends Fragment{
  			else if(selected_sort == 3) {// value
  				ious = Global.iou_db_mgr.get_incoming_ious_ordered_by_value_desc();
  			}
+ 			else if(selected_sort == 4) {
+ 				ious = Global.iou_db_mgr.get_inbound_archived_ious_ordered_by_loan_date();
+ 			}
  	 		else {
  	 			ious = Global.iou_db_mgr.get_incoming_ious_unordered();
  	 		}
@@ -266,6 +272,9 @@ public class IouListFragment extends Fragment{
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_name();
  			}
  			else if (selected_sort == 3) {// value
+ 				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_value_desc();
+ 			}
+ 			else if (selected_sort == 4){
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_value_desc();
  			}
  	 		else {
