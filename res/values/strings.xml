@@ -87,7 +87,6 @@
     <string-array name="nav_drawer_items">
         <item >Loans</item>
         <item >Contacts</item>
-        <item >Reminders</item>
         <item >Statistics</item>
         <item >About</item>
     </string-array>
@@ -98,9 +97,7 @@
     <array name="nav_drawer_icons">
         <item>@drawable/ic_loans</item>
         <item>@drawable/ic_contacts</item>
-        <item>@drawable/ic_reminders</item>
         <item>@drawable/ic_statistics</item>
-        <item>@drawable/ic_settings</item>
         <item>@drawable/ic_about</item>
     </array>
     <string name="desc_list_item_icon">Item Icon</string>

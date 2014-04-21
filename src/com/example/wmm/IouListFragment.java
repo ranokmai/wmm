@@ -279,7 +279,7 @@ public class IouListFragment extends Fragment{
  				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_value_desc();
  			}
  			else if (selected_sort == 4){
- 				ious = Global.iou_db_mgr.get_outgoing_ious_ordered_by_value_desc();
+ 				ious = Global.iou_db_mgr.get_outbound_archived_ious_ordered_by_loan_date();
  			}
  	 		else {
  	 			ious = Global.iou_db_mgr.get_outgoing_ious_unordered();
