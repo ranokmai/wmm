@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
 	private NavigationDrawerAdapter navigation_adapter;
 	private ArrayList<models.NavigationItem> navigation_items;
 	private ActionBarDrawerToggle navigation_toggle;
-	public Fragment listFrag = null;
+	public Fragment listFrag;
 	private IouListFragment iouListFragment = null;
 	private int selected_fragment = 0;
 
@@ -149,32 +149,33 @@ public class MainActivity extends Activity {
 		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 		
         // update the main content by replacing fragments
+        Fragment fragment = null;
         selected_fragment = position;
         switch (position) {
         case 0:
         	getActionBar().setDisplayShowTitleEnabled(false);
         	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         	invalidateOptionsMenu();
-            listFrag = new IouListFragment();
+            fragment = new IouListFragment();
             iouListFragment = (IouListFragment) listFrag;
             break;
         case 1:
         	getActionBar().setDisplayShowTitleEnabled(true);
         	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         	invalidateOptionsMenu();
-        	listFrag = new ContactsFragment();
+            fragment = new ContactsFragment();
             break;
         case 4:
         	getActionBar().setDisplayShowTitleEnabled(true);
         	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         	invalidateOptionsMenu();
-        	listFrag = new SettingsFragment();
+        	fragment = new SettingsFragment();
         	break;
         case 5:
         	getActionBar().setDisplayShowTitleEnabled(true);
         	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         	invalidateOptionsMenu();
-        	listFrag = new AboutFragment();
+        	fragment = new AboutFragment();
         	break;
         	
         default:
@@ -182,9 +183,9 @@ public class MainActivity extends Activity {
         }    
         
     	// preference fragment functions differently than fragment 
-        if (listFrag != null) {
+        if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, listFrag).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
  
             // Update the title and close the drawer
             navigation_list.setItemChecked(position, true);
@@ -248,13 +249,7 @@ public class MainActivity extends Activity {
 		super.onConfigurationChanged(newConfig);
 		navigation_toggle.onConfigurationChanged(newConfig);
 	}
-	
-	@Override
-	protected void onPostResume() {
-	    super.onPostResume();
-	    
-	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (navigation_toggle.onOptionsItemSelected(item)) {
@@ -264,7 +259,8 @@ public class MainActivity extends Activity {
 		// Handle action bar actions click
         int itemId = item.getItemId();
         if(itemId == R.id.action_new_iou) {
-    		iouListFragment.addNewIou();
+    		Intent intent = new Intent(this, NewIouActivity.class);
+		    startActivityForResult(intent, 0);
     		return true;
         }
         else if(itemId == R.id.action_open_settings) {
