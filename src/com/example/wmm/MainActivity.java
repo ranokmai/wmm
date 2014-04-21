@@ -11,6 +11,7 @@ import preferences.SettingsFragment;
 import models.Global;
 import models.Iou;
 import models.IouDBManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -148,6 +149,27 @@ public class MainActivity extends Activity {
 
 		for (int i = 0; i < cs.size(); i++) {
 			cs.get(i).print();
+		}
+		
+		ArrayList<Iou> to_be_reminded = Global.iou_db_mgr.get_ious_with_reminders_before_and_of_date();
+		
+		for (int i = 0; i < to_be_reminded.size(); i++) {
+			String text_content = Global.text_content(to_be_reminded.get(i));
+
+			String contact_number = Global.contact_number(to_be_reminded.get(i).contact_name(), getApplicationContext());
+			
+			if (contact_number.equals("Unsaved")) {
+				
+			}
+			else {
+			    //popup dialog to ask if want to send sms reminder
+				
+				//if yes to send reminder
+				Uri uri = Uri.parse("smsto:" + contact_number); 
+			    Intent it = new Intent(Intent.ACTION_SENDTO, uri); 
+			    it.putExtra("sms_body", text_content); 
+			    startActivity(it); 
+			}
 		}
 
 	}
