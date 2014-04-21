@@ -93,7 +93,7 @@ public class Iou {
 	
 	public Iou(String item_name_, String contact_name_, boolean is_a_contact_, 
 			String item_type_, boolean outbound_, Date date_borrowed_, Date date_due_,
-			Double value_, String pic_loc_, String notes_) {
+			Double value_, String pic_loc_, String notes_, Date reminder_) {
 		
 		iou = new ContentValues();
 		
@@ -116,6 +116,7 @@ public class Iou {
 		iou.put(value, value_.toString());
 		iou.put(pic_loc, pic_loc_);
 		iou.put(notes, notes_);
+		iou.put(reminder, Global.time_to_str(reminder_));
 		
 	}
 	
@@ -135,6 +136,7 @@ public class Iou {
 		iou.put(value, "0.0");
 		iou.put(pic_loc, new String());
 		iou.put(notes, new String());
+		iou.put(reminder, Global.date_to_str(Global.DATE_MAX));
 		
 	}
 	
@@ -206,6 +208,21 @@ public class Iou {
 		
 	}
 	
+	public Date reminder() {
+		
+		DateFormat df = new SimpleDateFormat(Global.reminder_format, Locale.US);
+		Date r = Global.DATE_MAX;
+		
+		try {
+			r = df.parse(iou.getAsString(reminder));
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		return r;
+	}
+	
 	public Double value() {return Double.parseDouble(iou.getAsString(value));}
 	public String pic_loc() {return iou.getAsString(pic_loc);}
 	public String notes() {return iou.getAsString(notes);}
@@ -234,6 +251,7 @@ public class Iou {
 	public void update_value(Double value_) {iou.remove(value); iou.put(value, value_.toString());}
 	public void update_pic_loc(String pic_loc_) {iou.remove(pic_loc); iou.put(pic_loc, pic_loc_);}
 	public void update_notes(String notes_) {iou.remove(notes); iou.put(notes, notes_);}
+	public void update_reminder(Date reminder_) {iou.remove(reminder); iou.put(reminder, Global.date_to_str(reminder_));}
 	
 	public void print() {
 		
