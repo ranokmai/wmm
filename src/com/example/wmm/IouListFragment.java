@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import models.Global;
 import models.Global.Filters;
 import models.Iou;
+import models.IouDB_Error;
 import models.IouItem;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -31,6 +32,7 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
+import android.widget.ToggleButton;
  
 @SuppressLint("NewApi")
 public class IouListFragment extends Fragment{
@@ -81,11 +83,37 @@ public class IouListFragment extends Fragment{
 		spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		getActivity().getActionBar().setListNavigationCallbacks(spinneradapter, filter_callback);
 		
-		final RadioButton rboutgoing = (RadioButton) rootView.findViewById(R.id.outgoing);
-		final RadioButton rbincoming = (RadioButton) rootView.findViewById(R.id.incoming);
+		final ToggleButton rboutgoing = (ToggleButton) rootView.findViewById(R.id.outgoing);
+		final ToggleButton rbincoming = (ToggleButton) rootView.findViewById(R.id.incoming);
 		rboutgoing.setChecked(true);
 		rbincoming.setChecked(true);
-		rboutgoing.setOnCheckedChangeListener( new OnCheckedChangeListener() {
+		
+		rboutgoing.setOnClickListener( new OnClickListener() {		
+			@Override
+			public void onClick(View arg0) {
+		 	    outgoing = ((ToggleButton) arg0).isChecked();				
+			}
+		});
+		
+		rbincoming.setOnClickListener( new OnClickListener() {		
+			@Override
+			public void onClick(View arg0) {
+		 	    incoming = ((ToggleButton) arg0).isChecked();				
+			}
+		});
+		
+		rboutgoing.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		    	updateListView(null);
+		    }
+		});
+		rbincoming.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		    	updateListView(null);
+		    }
+		});
+		
+		/*rboutgoing.setOnCheckedChangeListener( new OnCheckedChangeListener() {
 
 			@Override
 			public void onCheckedChanged(CompoundButton parent, boolean checked) {
@@ -103,7 +131,7 @@ public class IouListFragment extends Fragment{
 				updateListView(null);
 			}
 			
-		});
+		});*/
 		
 		updateListView(rootView);
 		
@@ -111,7 +139,14 @@ public class IouListFragment extends Fragment{
     }
 
 	public void deleteSelectedIOU() {
-		models.Global.iou_db_mgr.deleteIou(selectedIou);
+		
+		try {
+			models.Global.iou_db_mgr.deleteIou(selectedIou);
+		}
+		catch (IouDB_Error e) {
+			Log.i("db_error", e.error);
+		}
+		
 		updateListView(null);
 		selectedIou = null;
 		
@@ -136,16 +171,19 @@ public class IouListFragment extends Fragment{
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (resultCode) {
-    	
-	    	case 1: // edit          		
+
+        switch (requestCode) {
+    		
+	    	case 1: // edit         
 	    		deleteSelectedIOU();        		
 	    	case 0: // add
 	        	updateListView(null);
+	        	Global.newIouAct = null;
         }
     }
     
-	public void addNewIou() {
+	public void addNewIou( ) {
+		
 		Intent intent = new Intent( getActivity(), NewIouActivity.class);
 	    startActivityForResult(intent, 0);
 	}

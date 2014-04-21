@@ -75,6 +75,7 @@ public class Iou {
 	private static String value = "value";
 	private static String pic_loc = "picture_loc";
 	private static String notes = "notes";
+	private static String reminder = "reminder";
 	
 	//ctors
 	public Iou() {

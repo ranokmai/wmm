@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.example.wmm.NewIouActivity;
+
+import android.app.Fragment;
 import android.content.Context;
 
 public class Global {
@@ -27,6 +30,9 @@ public class Global {
 	public static int DEC = 11;
 	
 	public static Iou iou;
+	
+	public static boolean fromnew = false;
+	public static NewIouActivity newIouAct = null;
 	
     public enum Filters {
     	DATEDUE, 
@@ -57,6 +63,7 @@ public class Global {
 
 	//for date formatting:
 	public static String date_format = "yyyy-MM-dd";
+	public static String reminder_format = "yyyy-MM-dd-HH:mm";
 	
 	public static Date str_to_date(String s)  {
 		
@@ -75,6 +82,26 @@ public class Global {
 	
 	public static String date_to_str(Date d) {
 		return new SimpleDateFormat(date_format, Locale.US).format(d);
+	}
+	
+	public static Date str_to_time(String s) {
+		
+		DateFormat df = new SimpleDateFormat(reminder_format, Locale.US);
+		Date r = new Date();
+		
+		try {
+			r = df.parse(s);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return r;
+		
+	}
+	
+	public static String time_to_str(Date d) {
+		return new SimpleDateFormat(reminder_format, Locale.US).format(d);
 	}
 	
 }

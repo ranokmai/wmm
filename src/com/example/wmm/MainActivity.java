@@ -1,6 +1,9 @@
 package com.example.wmm;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import models.ContactSummary;
@@ -41,6 +44,7 @@ public class MainActivity extends Activity {
 	private ActionBarDrawerToggle navigation_toggle;
 	public Fragment listFrag;
 	private IouListFragment iouListFragment = null;
+	private StatisticsFragment statisticsFragment = null;
 	private int selected_fragment = 0;
 
 	@Override
@@ -117,8 +121,16 @@ public class MainActivity extends Activity {
 
 		//IouDBManager.reset_db();
 		/*for(int i=0; i<5; i++) {
-
-			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 13.21, "", "night out");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
+			String dateInString = "01-04-2014";
+			Date date = null;
+			try {
+				date = sdf.parse(dateInString);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, date, new GregorianCalendar(2014,Global.APR,20).getTime(), 1000.21, "", "night out");
 			Iou test2 = new Iou("Drinks", "Jimmy Blanchard", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out");
 			Iou test3 = new Iou("GTA V", "Jimmy Blanchard", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 60.00, "", "GTA 5");
 			Iou test4 = new Iou("Great American Challenge", "Galen Gong", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 50.00, "", ":D");
@@ -164,6 +176,13 @@ public class MainActivity extends Activity {
         	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         	invalidateOptionsMenu();
             fragment = new ContactsFragment();
+            break;
+        case 3:
+        	getActionBar().setDisplayShowTitleEnabled(true);
+        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        	invalidateOptionsMenu();
+        	listFrag = new StatisticsFragment();
+        	statisticsFragment = (StatisticsFragment) listFrag;
             break;
         case 4:
         	getActionBar().setDisplayShowTitleEnabled(true);
@@ -213,6 +232,16 @@ public class MainActivity extends Activity {
 	public void editIouButtonListener(View v){		
 		if(iouListFragment != null)
 			iouListFragment.editSelectedIOU();
+	}
+	
+	public void lastMonthListener(View v){		
+		if(statisticsFragment != null)
+			statisticsFragment.setMonthChart();
+	}
+	
+	public void perContactListener(View v){		
+		if(statisticsFragment != null)
+			statisticsFragment.setContactChart();
 	}
 
 	@Override

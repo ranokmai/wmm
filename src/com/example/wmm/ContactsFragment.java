@@ -1,5 +1,8 @@
 package com.example.wmm;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
@@ -127,12 +130,19 @@ public class ContactsFragment extends Fragment {
         contacts_list.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// Switch to the selected activity
 				ContactItem selected_item = ((ContactListAdapter)parent.getAdapter()).getContactItem(position);
-				Intent intent = new Intent();
-				intent.setClassName("com.example.wmm", "com.example.wmm.ContactsDetailActivity");
-				intent.putExtra("ContactName", selected_item.name);
-			    startActivity(intent);
+				
+				if(Global.fromnew == false){
+					// Switch to the selected activity
+					
+					Intent intent = new Intent();
+					intent.setClassName("com.example.wmm", "com.example.wmm.ContactsDetailActivity");
+					intent.putExtra("ContactName", selected_item.name);
+				    startActivity(intent);
+				}
+				else {
+					Global.newIouAct.returnFromContacts( selected_item.name );
+				}
 			}
         });
     }

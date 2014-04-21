@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 
 import models.Global;
 import models.Iou;
+import models.IouDB_Error;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,15 +21,19 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -41,6 +46,8 @@ import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
+import android.widget.ViewSwitcher;
 
 @SuppressLint("NewApi")
 public class NewIouActivity extends Activity {
@@ -63,7 +70,10 @@ public class NewIouActivity extends Activity {
 	private DatePicker mDateDue; 
 	private Button mAccept;
 	private Button mCancel;
-	private CheckBox mIsDateDue;  
+	private CheckBox mIsDateDue;
+	private CheckBox mHasReminder;
+	private DatePicker mDateRemind;
+	private TimePicker mTimeRemind;
 	private EditText mNotes;
 
 	private String mCurrentPhotoPath;
@@ -79,6 +89,7 @@ public class NewIouActivity extends Activity {
 			mContacts.setVisibility(View.VISIBLE);
 			
 			mNamedContact.setText("");
+			mNamedContact.setEnabled(true);
 			
 			mContacts.setSelection(0);
 	   }
@@ -121,6 +132,7 @@ public class NewIouActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        Global.newIouAct = this;
         dateChanged = false;
         realContact = true; 
         pictureUrl = "";
@@ -130,6 +142,8 @@ public class NewIouActivity extends Activity {
         setContentView(R.layout.activity_new_iou);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
+        getWindow().setSoftInputMode(
+        	      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		///////////////////////////////////////////////////////
 		// Initialize all private memers in class and on screen
 		///////////////////////////////////////////////////////
@@ -160,19 +174,20 @@ public class NewIouActivity extends Activity {
 					mRemove.setVisibility(View.VISIBLE);
 					
 					if( position == 1){
-						realContact = true;
 						mNamedContact.requestFocus();
-					}
-					else if( position == 2){
-						
-						// goto contacts 
-			            FragmentManager fragmentManager = getFragmentManager();
-			            fragmentManager.beginTransaction().replace(R.id.content_frame, new ContactsFragment()).commit();
 						
 						realContact = false;
 					}
+					else if( position == 2){
+						
+						if( Global.iou == null ){
+							ViewSwitcher viewSwitcher =   (ViewSwitcher)findViewById(R.id.switchViews);
+					        viewSwitcher.showNext();
+					        Global.fromnew = true;
+						}
+						realContact = true;
+					}
 				}
-				
 			}
 
 			@Override
@@ -214,11 +229,6 @@ public class NewIouActivity extends Activity {
 				if( id > 0 ) {
 					mRemovePicture.setVisibility(View.VISIBLE);
 					mPicture.setVisibility(View.INVISIBLE);
-				}
-				
-				//TODO: Code to add a picture here...
-				if (!pictureUrl.isEmpty()) {
-					
 				}
 				
 				if (position == 1) {
@@ -264,7 +274,7 @@ public class NewIouActivity extends Activity {
 		 
 		mDateDue = (DatePicker) findViewById(R.id.addIouDatePicker2); 
 		mDateDue.init(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), changeDate);
-		mDateDue.setVisibility(View.INVISIBLE);
+		mDateDue.setEnabled(false);
 		
 		mIsDateDue = (CheckBox) findViewById(R.id.addIouDateDue);		 
 		mIsDateDue.setOnCheckedChangeListener( new OnCheckedChangeListener() {
@@ -280,6 +290,23 @@ public class NewIouActivity extends Activity {
 		 
 		});		 
 		mDateDue.setEnabled( mIsDateDue.isChecked() );
+		
+		
+		mDateRemind = (DatePicker) findViewById(R.id.addIouDatePicker3);
+		mDateRemind.init(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), changeDate);
+		
+		mTimeRemind = (TimePicker) findViewById(R.id.addIouTimePicker1);
+		
+		mHasReminder = (CheckBox) findViewById(R.id.addIouRemindMe);
+		mHasReminder.setOnCheckedChangeListener( new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged( CompoundButton parent, boolean checked){
+				mDateRemind.setEnabled( checked);
+				mTimeRemind.setEnabled( checked);
+			}
+
+		});
 		
 		mAccept = (Button)findViewById(R.id.addIouAccept);
 		mAccept.setOnClickListener( new OnClickListener() {
@@ -310,6 +337,14 @@ public class NewIouActivity extends Activity {
 	        
     }
 	
+	public void returnFromContacts( String name) {
+		ViewSwitcher viewSwitcher =   (ViewSwitcher)findViewById(R.id.switchViews);
+        viewSwitcher.showNext();
+        
+        mNamedContact.setText( name );
+        Global.fromnew = false; 
+	}
+	
 	public void editIou(){
 		
 		Iou iou = Global.iou;
@@ -317,10 +352,7 @@ public class NewIouActivity extends Activity {
 		if( iou == null) return;
 		
 		this.mTitle.setText( iou.item_name() ); 
-		if( iou.is_a_contact() )
-			this.mContacts.setSelection(1);
-		else 
-			this.mContacts.setSelection(2);
+		this.mContacts.setSelection(1);
 		this.mNamedContact.setText( iou.contact_name() );
 		if( iou.item_type().compareTo("Money") == 0 )
 			this.mTypes.setSelection(0);
@@ -332,7 +364,30 @@ public class NewIouActivity extends Activity {
 		else 
 			this.mDirections.setSelection(1);
 		this.mPicture.setSelection(0);
-		this.pictureUrl = iou.pic_loc();
+		
+		if( iou.pic_loc() != null ) {
+			this.pictureUrl = iou.pic_loc();	
+		}
+		else this.pictureUrl = "";
+		if (this.pictureUrl.length() != 0) {
+			
+			mCurrentPhotoPath = this.pictureUrl;
+			//setPic();
+			
+			int width = mImg.getMaxWidth();
+			int height = mImg.getMaxHeight();
+			
+			Uri pic = Uri.parse(iou.pic_loc());
+			this.mImg.setImageURI(pic);
+			
+			Bitmap unscaled_bm = ((BitmapDrawable)mImg.getDrawable()).getBitmap();
+			
+			Bitmap scaled_bm = Bitmap.createScaledBitmap(unscaled_bm, width, height, true);
+			
+			mImg.setImageBitmap(scaled_bm);
+			
+			this.mImg.setVisibility(View.VISIBLE);
+		}
 		
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(iou.date_borrowed());
@@ -347,7 +402,7 @@ public class NewIouActivity extends Activity {
 								gc.get(gc.DAY_OF_MONTH), changeDate);
 		this.mNotes.setText(iou.notes());
 		
-		getActionBar().setTitle("Where\'s My Money: Edit Transaction");
+		Global.iou = null;
 	}
 	
 	private boolean addNewIou(){
@@ -394,7 +449,12 @@ public class NewIouActivity extends Activity {
 		Iou iou= new Iou(name, contact, isContact, type, direction, 
 				loanedDate.getTime(), dueDate.getTime(), value, picture, notes);
 		
-		Global.iou_db_mgr.insertIou(iou);
+		try {
+			Global.iou_db_mgr.insertIou(iou); 
+		}
+		catch (IouDB_Error e) {
+			Log.i("db_error", e.error);
+		}
 		NewIouActivity.super.onBackPressed();
 		
 		return false;
@@ -567,12 +627,10 @@ public class NewIouActivity extends Activity {
 
 		/* There isn't enough memory to open up more than a couple camera photos */
 		/* So pre-scale the target bitmap into which the file is decoded */
-
-        ImageView mImageView = (ImageView) findViewById(R.id.addIouPictureViewer);
 		
 		/* Get the size of the ImageView */
-		int targetW = mImageView.getWidth();
-		int targetH = mImageView.getHeight();
+		int targetW = mImg.getWidth();
+		int targetH = mImg.getHeight();
 
 		/* Get the size of the image */
 		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -596,8 +654,8 @@ public class NewIouActivity extends Activity {
 		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
 		
 		/* Associate the Bitmap to the ImageView */
-		mImageView.setImageBitmap(bitmap);
-		mImageView.setVisibility(View.VISIBLE);
+		mImg.setImageBitmap(bitmap);
+		mImg.setVisibility(View.VISIBLE);
 	}
 
     /**
