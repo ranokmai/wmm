@@ -18,9 +18,12 @@ import android.preference.PreferenceManager;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -54,8 +57,10 @@ public class MainActivity extends Activity {
 	private IouListFragment iouListFragment = null;
 	private StatisticsFragment statisticsFragment = null;
 	private int selected_fragment = 0;
-	private String contact_number;
-	private String text_content;
+	private ArrayList<String> contact_number;
+	private ArrayList<String> text_content;
+	
+	private int cur_reminder = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -182,47 +187,55 @@ public class MainActivity extends Activity {
 			cs.get(i).print();
 		}
 		
-		ArrayList<Iou> to_be_reminded = Global.iou_db_mgr.get_ious_with_reminders_before_and_of_date();
+		ArrayList<Iou> to_be_reminded = Global.iou_db_mgr.get_incoming_ious_with_reminders_before_and_of_date();
 		
+		text_content = new ArrayList<String>();
+		contact_number = new ArrayList<String>();
 		
 		for (int i = 0; i < to_be_reminded.size(); i++) {
-			text_content = Global.text_content(to_be_reminded.get(i));
+			text_content.add(text_content(to_be_reminded.get(i)));
 
-			contact_number = Global.contact_number(to_be_reminded.get(i).contact_name(), getApplicationContext());
+			contact_number.add(Global.contact_number(to_be_reminded.get(i).contact_name(), getApplicationContext()));
 			
 			if (contact_number.equals("Unsaved")) {
 				
 			}
 			else {
 			    //popup dialog to ask if want to send sms reminder
-				final Dialog dialog = new Dialog(this);
-				dialog.setContentView(R.layout.reminder_dialogue);
+				AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+				//dialog.setContentView(R.layout.reminder_dialogue);
 				dialog.setTitle("Reminder Alert");
-				
-				TextView text = (TextView) dialog.findViewById(R.id.reminderText);
-				text.setText("Your reminder for " + to_be_reminded.get(i).item_name() + " has trigggered, would you like to send a text to " +
+			    
+				//TextView text = (TextView) dialog.findViewById(R.id.reminderText);
+				dialog.setMessage("Your reminder for " + to_be_reminded.get(i).item_name() + " has trigggered, would you like to send a text to " +
 				to_be_reminded.get(i).contact_name() + "?");
 				
-				Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-				dialogButton.setOnClickListener(new OnClickListener() {
+				//Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+				dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					@Override
-					public void onClick(View v) {
-						//if yes to send reminder
-						Uri uri = Uri.parse("smsto:" + contact_number); 
-					    Intent it = new Intent(Intent.ACTION_SENDTO, uri); 
-					    it.putExtra("sms_body", text_content); 
-					    startActivity(it); 
+					public void onClick(DialogInterface dialog, int whichButton) {
+						//if yes to send reminder 
+						send_text();
 						dialog.dismiss();
 					}
 				});
-				Button cancelButton = (Button) dialog.findViewById(R.id.dialogButtonCancel);
-				cancelButton.setOnClickListener(new OnClickListener() {
+				//Button cancelButton = (Button) dialog.findViewById(R.id.dialogButtonCancel);
+				dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
 					@Override
-					public void onClick(View v) {
+					public void onClick(DialogInterface dialog, int whichButton) {
 						dialog.dismiss();
 					}
 				});
-	 
+
+				dialog.setOnDismissListener(new OnDismissListener() {
+
+					@Override
+					public void onDismiss(DialogInterface arg0) {
+						cur_reminder++;
+					}
+					
+				});
+
 				dialog.show();
 				
 			}
@@ -396,5 +409,26 @@ public class MainActivity extends Activity {
 	public void setTitle(CharSequence title) {
 		app_title = title;
 		getActionBar().setTitle(app_title);
+	}
+	
+	public String text_content(Iou iou) {
+		String s = new String();
+		
+		if (iou.item_type() == "Item") {
+			s += "You borrowed " + iou.item_name() + " from me on " + iou.date_borrowed();
+			s += ". It is due on " + iou.date_due() + ". This is just a reminder that you still have it.";
+		}
+		else {
+			s += "You borrowed " + iou.item_name() + " from me on " + iou.date_borrowed();
+			s += ". It is due on " + iou.date_due() + ". This is just a reminder that you still owe me $" + iou.value();
+		}
+		return s;
+	}
+	
+	public void send_text() {
+		Uri uri = Uri.parse("smsto:" + contact_number.get(contact_number.size() - cur_reminder - 1)); 
+	    Intent it = new Intent(Intent.ACTION_SENDTO, uri); 
+	    it.putExtra("sms_body", text_content.get(contact_number.size() - cur_reminder - 1));
+	    startActivity(it); 
 	}
 }
