@@ -61,15 +61,6 @@ public class Global {
 	public static void setup_db_mgr(Context context) {
 		iou_db_mgr = new IouDBManager(context);
 	}
-
-	public static String text_content(Iou iou) {
-		String s = new String();
-		
-		s += "You borrowed " + iou.item_name() + " from me on " + iou.date_borrowed();
-		s += ". It is due on " + iou.date_due() + ". This is just a reminder that you still have it.";
-		
-		return s;
-	}
 	
 	public static String contact_number(String name, Context context) {
 		
