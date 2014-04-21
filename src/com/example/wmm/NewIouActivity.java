@@ -535,9 +535,6 @@ public class NewIouActivity extends Activity {
 				Log.i("db_error", e.error);
 			}
 		}
-		
-		//add reminder intent
-		//add_reminder(iou);
 	
 		NewIouActivity.super.onBackPressed();
 		return false;
@@ -750,16 +747,5 @@ public class NewIouActivity extends Activity {
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
-    }
-    
-    private void add_reminder(Iou iou) {
-	    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-	    Intent intent = new Intent(ACTION);
-	    PendingIntent alarmIntent = PendingIntent.getBroadcast(Global.main_context, 0, intent, 0);
-	    
-	    Calendar c = Calendar.getInstance();
-	    c.setTime(iou.reminder());
-	    
-	    alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), alarmIntent);
     }
 }
