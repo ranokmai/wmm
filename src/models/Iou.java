@@ -76,6 +76,7 @@ public class Iou {
 	private static String pic_loc = "picture_loc";
 	private static String notes = "notes";
 	private static String reminder = "reminder";
+	private static String sorted_name = "sorted_name";
 	
 	//ctors
 	public Iou() {
@@ -88,6 +89,7 @@ public class Iou {
 		iou.put(item_name, item_name_);
 		iou.put(contact_name,contact_name_);
 		iou.put(is_a_contact,is_a_contact_);
+		iou.put(sorted_name, item_name_.toLowerCase());
 		
 	}
 	
@@ -100,6 +102,7 @@ public class Iou {
 		iou.put(item_name, item_name_);
 		iou.put(contact_name,contact_name_);
 		iou.put(is_a_contact,is_a_contact_);
+		iou.put(sorted_name, item_name_.toLowerCase());
 		
 		if (ITEM_TYPES.contains(item_type_)) {
 			iou.put(item_type, item_type_);
@@ -126,6 +129,7 @@ public class Iou {
 		iou = new ContentValues();
 		
 		iou.put(item_name, new String());
+		iou.put(sorted_name, new String());
 		iou.put(contact_name, new String());
 		iou.put(is_a_contact, false);
 		iou.put(item_type, "None");
