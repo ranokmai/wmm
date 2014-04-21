@@ -117,6 +117,8 @@ public class MainActivity extends Activity {
 		};
 		navigation_layout.setDrawerListener(navigation_toggle);
 
+		Global.main_context = getApplicationContext();
+		
 		// Database setup
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
