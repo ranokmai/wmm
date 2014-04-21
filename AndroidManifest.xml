@@ -10,11 +10,9 @@
                   android:required="true" />
     <uses-feature android:name="android.hardware.camera"
                   android:required="true" />
-    
-    
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
     <application
@@ -55,6 +53,7 @@
 	            android:name="android.support.PARENT_ACTIVITY"
 	            android:value="com.example.wmm.MainActivity" />
     	</activity>
+    	<receiver android:name="com.example.android.receivers.AlarmReceiver" />
     </application>
 
 </manifest>

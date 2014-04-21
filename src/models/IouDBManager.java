@@ -177,6 +177,33 @@ public class IouDBManager {
 		
 	}
 	
+	public ArrayList<Iou> get_ious_ordered_by_reminders() {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious ORDER BY reminder ASC", null);
+		
+		return retrieve_ious(cursor);
+	}
+	
+	public ArrayList<Iou> get_ious_of_reminder_date(Date reminder_time) {
+		Cursor cursor = sqldb.rawQuery("SELECT * FROM ious WHERE reminder = ?", new String [] {Global.time_to_str(reminder_time)});
+		
+		return retrieve_ious(cursor);
+	}
+	
+	public ArrayList<Iou> get_ious_with_reminders_before_and_of_date() {
+		Date cur_date = new Date();
+		
+		ArrayList<Iou> ious = get_ious_ordered_by_reminders();
+		ArrayList<Iou> to_be_reminded = new ArrayList<Iou>();
+		
+		for (int i = 0; i < ious.size(); i++) {
+			if (ious.get(i).reminder().before(cur_date)) {
+				to_be_reminded.add(ious.get(i));
+			}
+		}
+		
+		return to_be_reminded;
+	}
+	
 	//retrieves all ious in order of the shortest time to due date
 	public ArrayList<Iou> get_ious_ordered_by_closest_due_date() {
 
@@ -400,6 +427,14 @@ public class IouDBManager {
 	}
 	
 	//get number of non-money loans to contact
+	public Integer get_contact_num_item_ious(String contact) {
+		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND item_type = 'Item'", new String[] {contact});
+		cursor.moveToNext();
+		int num = cursor.getInt(0);
+		return num;
+	}
+	
+	//get number of non-money outbound loans for contact
 	public Integer get_contact_num_outbound_item_ious(String contact) {
 		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 1 AND item_type = 'Item'", new String[] {contact});
 		cursor.moveToNext();
@@ -407,7 +442,7 @@ public class IouDBManager {
 		return num;
 	}
 	
-	//get number of non-money loans from contact
+	//get number of non-money inbound loans for contact
 	public Integer get_contact_num_inbound_item_ious(String contact) {
 		Cursor cursor = sqldb.rawQuery("SELECT COUNT(*) FROM ious WHERE contact = ? AND outbound = 0 AND item_type = 'Item'", new String[] {contact});
 		cursor.moveToNext();

@@ -14,9 +14,12 @@ import models.Iou;
 import models.IouDB_Error;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -83,7 +86,9 @@ public class NewIouActivity extends Activity {
 	
 	private static final int REQUEST_IMAGE_CAPTURE = 1;
 	private static final int REQUEST_GALLERY_IMAGE = 2;
-		
+	
+	public static final String ACTION = "com.example.android.receivers.NOTIFICATION_ALARM";
+	
 	private OnClickListener removeContact = new OnClickListener() {
 		@Override
 		public void onClick(View v) {

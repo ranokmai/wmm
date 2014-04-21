@@ -5,70 +5,69 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical" >
-    
-    <TextView
-        android:id="@+id/no_iou_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:text="@string/no_ious"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 	
     <RelativeLayout
         android:id="@+id/filter_region"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/no_iou_text" >
+        android:layout_marginTop="5dp" >
         
         <TextView
             android:id="@+id/incoming_label"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_toRightOf="@+id/filter2"
-		    android:text="@string/incoming"
-        	android:layout_marginLeft="5dp"
-		    android:textSize="15sp" 
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="15dp"
+            android:text="@string/incoming"
+            android:textSize="14sp" />
         
 		<ToggleButton
 		    android:id="@+id/incoming"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:layout_toRightOf="@+id/incoming_label"
-        	android:layout_marginLeft="5dp" />
-
-        <TextView
-            android:id="@+id/outgoing_label"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_toRightOf="@+id/incoming"
-		    android:layout_alignBaseline="@+id/incoming_label"
-		    android:layout_alignBottom="@+id/incoming_label"
-		    android:text="@string/outgoing"
-        	android:layout_marginLeft="5dp"
-		    android:textSize="15sp" 
-            />
+		    android:layout_below="@+id/incoming_label"
+		    android:layout_marginLeft="5dp"
+		    android:layout_marginRight="15dp" />
 
 		<ToggleButton
 		    android:id="@+id/outgoing"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
         	android:layout_marginLeft="5dp"
-		    android:layout_toRightOf="@+id/outgoing_label" />
+		    android:layout_below="@+id/outgoing_label"
+		    android:layout_toRightOf="@+id/incoming" />
 
-		<TextView
-		    android:id="@+id/filter2"
+		<Switch
+		    android:id="@+id/sort_switch"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:layout_alignBaseline="@+id/incoming_label"
-		    android:layout_alignBottom="@+id/incoming_label"
-		    android:layout_marginLeft="12dp"
-		    android:text="@string/show_direction"
-		    android:textSize="15sp" />
+		    android:layout_alignBaseline="@+id/outgoing"
+		    android:layout_alignBottom="@+id/outgoing"
+		    android:layout_marginLeft="27dp"
+		    android:layout_toRightOf="@+id/outgoing_label"
+		    android:textOff="DESC"
+		    android:textOn="ASC" />
+
+		<TextView
+		    android:id="@+id/textView1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_above="@+id/outgoing"
+		    android:layout_alignLeft="@+id/sort_switch"
+		    android:layout_marginLeft="26dp"
+		    android:text="Sort Order"
+		    android:textAppearance="?android:attr/textAppearanceSmall"
+		    android:textSize="14sp" />
+
+		<TextView
+		    android:id="@+id/outgoing_label"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_above="@+id/incoming"
+		    android:layout_alignLeft="@+id/outgoing"
+		    android:text="@string/outgoing"
+		    android:textSize="14sp" />
 		
 	</RelativeLayout>	
 	
@@ -76,18 +75,27 @@
 	    android:id="@+id/separator"
 	    android:layout_width="fill_parent"
 	    android:layout_height="1dp"
-	    android:layout_alignParentLeft="true"
 	    android:layout_below="@+id/filter_region"
 	    android:layout_marginBottom="2dp"
 	    android:layout_marginTop="0dp"
 	    android:background="@color/separator_color"
 	    android:paddingTop="50dp" />
+	
+	<TextView
+	    android:id="@+id/no_iou_text"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_margin="10dp"
+	    android:layout_marginTop="112dp"
+	    android:text="@string/no_ious"
+	    android:textAppearance="?android:attr/textAppearanceMedium"
+	    android:layout_below="@+id/separator" />
 
 	<ListView
 	    android:id="@+id/iou_list"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@+id/separator" >
+	    android:layout_below="@+id/no_iou_text" >
 	</ListView>
 	
 </RelativeLayout>
