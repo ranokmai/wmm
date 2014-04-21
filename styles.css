@@ -1,0 +1,124 @@
+/*
+Defines the styles for the Where's My Money promotional website.
+*/
+
+body {
+  font-family: Tahoma, Geneva, sans-serif;
+}
+
+/***** Page layout and containers *****/
+.content_container {
+  width: 960px;
+  margin: 0px auto 0px auto;
+}
+
+div.header {
+  font-family: 'Roboto', sans-serif;
+  background-color: white;
+  padding: 50px 0px 50px 0px;
+  color: #232323;
+}
+
+.section_manage {
+  background-color: #1ABC9C;
+  padding: 50px 0px 50px 0px;
+  color: white;
+}
+
+.section_create {
+  background-color: white;
+  padding: 50px 0px 50px 0px;
+  color: #232323;
+}
+
+.section_contacts {
+  background-color: #ECF0F1;
+  padding: 50px 0px 50px 0px;
+  color: #232323;
+}
+
+.section_stats {
+  background-color: #1ABC9C;
+  padding: 50px 0px 50px 0px;
+  color: white;
+}
+
+div.footer {
+  background-color: #333333;
+  padding: 50px 0px 50px 0px;
+  color: white;
+}
+
+/***** Text and links *****/
+p.tagline {
+  font-family: 'Roboto', sans-serif;
+}
+
+header.section_header {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 300;
+}
+
+div.header header {
+  font-weight: 300;
+  font-size: 28px;
+  text-align: center;
+}
+
+div.header p.tagline {
+  font-size: 16px; 
+  font-weight: 300;
+  text-align: center;
+  color: #494949;
+  margin: 40px 0px 0px 0px;
+}
+
+div.header p.description {
+  font-size: 16px;
+  text-align: left;
+  margin: 30px 0px 0px 0px;
+  font-weight: 300;
+}
+
+p.body_tagline {
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  margin: 25px 0px 25px 0px;
+}
+
+div.footer header {
+  font-size: 20px;
+  font-weight: 400;
+  font-family: 'Roboto', sans-serif;
+  margin: 0 0 15px 0;
+}
+
+div.footer p {
+  margin: 5px 0px 5px 0px;
+  font-size: 14px;
+}
+
+div.footer a:link {color: white;text-decoration:underline;}
+div.footer a:visited {color: white;text-decoration:underline;}
+div.footer a:hover {color: #1ABC9C;text-decoration:none;}
+div.footer a:active {color: #1ABC9C;text-decoration:none;}
+
+.content_container ul {
+  padding-left: 0px;
+}
+
+.content_container li {
+  font-family: 'Roboto', sans-serif;
+  margin: 25px 0px 25px 0px;
+  font-size: 18px;
+  font-weight: 300;
+  list-style-type: none;
+}
+
+.content_container li:before {
+  content: '\00BB';
+  margin: 0 10px 0px 0px
+}
