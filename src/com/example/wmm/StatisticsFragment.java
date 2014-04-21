@@ -135,7 +135,7 @@ public class StatisticsFragment extends Fragment {
     	// Create graph view and set display to be in integers
     	barGraphView = new BarGraphView (getActivity(), "Loans By Contact");
     	barGraphView.setHorizontalLabels(contactArray);
-    	barGraphView.getGraphViewStyle().setNumHorizontalLabels(numLabels);
+    	barGraphView.getGraphViewStyle().setNumHorizontalLabels(4);
     	barGraphView.getGraphViewStyle().setTextSize(11);
     	barGraphView.setScalable(true);
     	barGraphView.addSeries(barSeries); // data
