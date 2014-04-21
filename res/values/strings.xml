@@ -67,6 +67,8 @@
 	
 	<string name="new_iou_notes_hint">Click to add notes...</string>
 	
+	<string name="new_iou_remind_me">Set Reminder</string>
+	
 	<string name="new_iou_details">Details</string>
 	<string name="new_iou_reminders">Reminders</string>
 	<string name="new_iou_notes">Notes</string>

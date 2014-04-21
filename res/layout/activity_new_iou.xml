@@ -265,13 +265,43 @@
 				    android:layout_marginTop="3dp"
 				    android:text="@string/new_iou_reminders"
 				    android:textSize="16sp" />
+				
+				<CheckBox
+				    android:id="@+id/addIouRemindMe"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_alignParentLeft="true"
+				    android:layout_alignTop="@+id/addIouHeader2"
+				    android:layout_marginTop="30dp"
+				    android:text="@string/new_iou_remind_me"
+				    />
 		         
+				<DatePicker
+				    android:id="@+id/addIouDatePicker3"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_alignParentRight="true"
+				    android:calendarViewShown="false"
+				    android:layout_alignTop="@+id/addIouHeader2"
+				    android:layout_marginTop="25dp"
+				    android:scaleX="0.6"
+				    android:scaleY="0.6" />
+				
+				<TimePicker
+				    android:id="@+id/addIouTimePicker1"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_alignParentLeft="true"
+				    android:layout_alignTop="@+id/addIouHeader2"
+				    android:layout_marginTop="25dp"
+				    android:scaleX="0.6"
+				    android:scaleY="0.6" />
+				
 				<View
 				    android:id="@+id/addIouSeparator3"
 				    android:layout_width="fill_parent"
 				    android:layout_height="1dp"
-				    android:layout_below="@+id/addIouHeader2"
-				    android:layout_marginTop="21dp"
+				    android:layout_below="@+id/addIouDatePicker3"
 				    android:background="@android:color/darker_gray"
 				    android:paddingTop="30dp" />
 				

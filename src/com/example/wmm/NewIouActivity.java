@@ -44,6 +44,7 @@ import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.ViewSwitcher;
 
 @SuppressLint("NewApi")
@@ -67,7 +68,10 @@ public class NewIouActivity extends Activity {
 	private DatePicker mDateDue; 
 	private Button mAccept;
 	private Button mCancel;
-	private CheckBox mIsDateDue;  
+	private CheckBox mIsDateDue;
+	private CheckBox mHasReminder;
+	private DatePicker mDateRemind;
+	private TimePicker mTimeRemind;
 	private EditText mNotes;
 
 	private String mCurrentPhotoPath;
@@ -268,7 +272,7 @@ public class NewIouActivity extends Activity {
 		 
 		mDateDue = (DatePicker) findViewById(R.id.addIouDatePicker2); 
 		mDateDue.init(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), changeDate);
-		mDateDue.setVisibility(View.INVISIBLE);
+		mDateDue.setEnabled(false);
 		
 		mIsDateDue = (CheckBox) findViewById(R.id.addIouDateDue);		 
 		mIsDateDue.setOnCheckedChangeListener( new OnCheckedChangeListener() {
@@ -284,6 +288,23 @@ public class NewIouActivity extends Activity {
 		 
 		});		 
 		mDateDue.setEnabled( mIsDateDue.isChecked() );
+		
+		
+		mDateRemind = (DatePicker) findViewById(R.id.addIouDatePicker3);
+		mDateRemind.init(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), changeDate);
+		
+		mTimeRemind = (TimePicker) findViewById(R.id.addIouTimePicker1);
+		
+		mHasReminder = (CheckBox) findViewById(R.id.addIouRemindMe);
+		mHasReminder.setOnCheckedChangeListener( new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged( CompoundButton parent, boolean checked){
+				mDateRemind.setEnabled( checked);
+				mTimeRemind.setEnabled( checked);
+			}
+
+		});
 		
 		mAccept = (Button)findViewById(R.id.addIouAccept);
 		mAccept.setOnClickListener( new OnClickListener() {
