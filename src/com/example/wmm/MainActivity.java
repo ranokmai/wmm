@@ -145,11 +145,12 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, date1, new GregorianCalendar(2014,Global.APR,20).getTime(), 10.21, "", "night out", new GregorianCalendar(2014,Global.APR,21).getTime());
-			Iou test5 = new Iou("Camera", "Louis", true, "Item", true, date1, new GregorianCalendar(2014,Global.APR,20).getTime(), 5.00, "", "photo shoot", new GregorianCalendar(2014,Global.APR,21).getTime());
-			Iou test2 = new Iou("Drinks", "Jimmy Blanchard", true, "Money", true, date2, new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out", new GregorianCalendar(2014,Global.APR,21).getTime());
-			Iou test3 = new Iou("GTA V", "Connor Lawrence", true, "Money", true, date3, new GregorianCalendar(2014,Global.APR,25).getTime(), 60.00, "", "GTA 5", new GregorianCalendar(2014,Global.APR,21).getTime());
-			Iou test4 = new Iou("Bidet", "Galen Gong", true, "Money", true, date4, new GregorianCalendar(2014,Global.APR,25).getTime(), -50.00, "", ":D", new GregorianCalendar(2014,Global.APR,21).getTime());
+			
+			Iou test1 = new Iou("Drinks", "Louis", true, "Money", false, date1, new GregorianCalendar(2014,Global.APR,20).getTime(), 10.21, "", "night out", new GregorianCalendar(2014,Global.APR,21).getTime());
+			Iou test5 = new Iou("Camera", "Louis", true, "Item", false, date1, new GregorianCalendar(2014,Global.APR,20).getTime(), 5.00, "", "photo shoot", new GregorianCalendar(2014,Global.APR,21).getTime());
+			Iou test2 = new Iou("Drinks", "Jimmy Blanchard", true, "Money", false, date2, new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out", new GregorianCalendar(2014,Global.APR,21).getTime());
+			Iou test3 = new Iou("GTA V", "Connor Lawrence", true, "Money", false, date3, new GregorianCalendar(2014,Global.APR,25).getTime(), 60.00, "", "GTA 5", new GregorianCalendar(2014,Global.APR,21).getTime());
+			Iou test4 = new Iou("Bidet", "Galen Gong", true, "Money", true, date4, new GregorianCalendar(2014,Global.APR,25).getTime(), 50.00, "", ":D", new GregorianCalendar(2014,Global.APR,21).getTime());
 	
 			Global.iou_db_mgr.insertIou(test1);
 			Global.iou_db_mgr.insertIou(test2);
@@ -180,10 +181,10 @@ public class MainActivity extends Activity {
 			    //popup dialog to ask if want to send sms reminder
 				final Dialog dialog = new Dialog(this);
 				dialog.setContentView(R.layout.reminder_dialogue);
-				dialog.setTitle("Title...");
+				dialog.setTitle("Reminder Alert");
 				
 				TextView text = (TextView) dialog.findViewById(R.id.reminderText);
-				text.setText("Your reminder for " + to_be_reminded.get(i).item_name() + "has trigggered, would you like to send a text to" +
+				text.setText("Your reminder for " + to_be_reminded.get(i).item_name() + " has trigggered, would you like to send a text to " +
 				to_be_reminded.get(i).contact_name() + "?");
 				
 				Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);

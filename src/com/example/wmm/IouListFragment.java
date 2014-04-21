@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
  
@@ -85,53 +86,33 @@ public class IouListFragment extends Fragment{
 		
 		final ToggleButton rboutgoing = (ToggleButton) rootView.findViewById(R.id.outgoing);
 		final ToggleButton rbincoming = (ToggleButton) rootView.findViewById(R.id.incoming);
+		final Switch sort_switch = (Switch) rootView.findViewById(R.id.sort_switch);
 		rboutgoing.setChecked(true);
 		rbincoming.setChecked(true);
+		
+		sort_switch.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0){
+				ascending = !ascending;
+				updateListView(null);
+			}
+		});
 		
 		rboutgoing.setOnClickListener( new OnClickListener() {		
 			@Override
 			public void onClick(View arg0) {
-		 	    outgoing = ((ToggleButton) arg0).isChecked();				
+		 	    outgoing = !outgoing;
+		 	    updateListView(null);
 			}
 		});
 		
 		rbincoming.setOnClickListener( new OnClickListener() {		
 			@Override
 			public void onClick(View arg0) {
-		 	    incoming = ((ToggleButton) arg0).isChecked();				
+		 	    incoming = !incoming;
+		 	    updateListView(null);
 			}
 		});
-		
-		rboutgoing.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		    	updateListView(null);
-		    }
-		});
-		rbincoming.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		    	updateListView(null);
-		    }
-		});
-		
-		/*rboutgoing.setOnCheckedChangeListener( new OnCheckedChangeListener() {
-
-			@Override
-			public void onCheckedChanged(CompoundButton parent, boolean checked) {
-				outgoing = checked;
-				updateListView(null);
-				
-			}
-			
-		});
-		rbincoming.setOnCheckedChangeListener( new OnCheckedChangeListener() {
-
-			@Override
-			public void onCheckedChanged(CompoundButton parent, boolean checked) {
-				incoming = checked;
-				updateListView(null);
-			}
-			
-		});*/
 		
 		updateListView(rootView);
 		
@@ -206,16 +187,16 @@ public class IouListFragment extends Fragment{
 			TextView no_iou_text = (TextView) fragment_view.findViewById(R.id.no_iou_text);
 			no_iou_text.setVisibility(View.VISIBLE);
 			RelativeLayout filter_panel = (RelativeLayout) fragment_view.findViewById(R.id.filter_region);
-			filter_panel.setVisibility(View.GONE);
-			View seperator = (View) fragment_view.findViewById(R.id.separator);
-			seperator.setVisibility(View.GONE);
+			//filter_panel.setVisibility(View.GONE);
+			//View seperator = (View) fragment_view.findViewById(R.id.separator);
+			//seperator.setVisibility(View.GONE);
 		} else {
 			TextView no_iou_text = (TextView) fragment_view.findViewById(R.id.no_iou_text);
 			no_iou_text.setVisibility(View.GONE);
 			RelativeLayout filter_panel = (RelativeLayout) fragment_view.findViewById(R.id.filter_region);
-			filter_panel.setVisibility(View.VISIBLE);
-			View seperator = (View) fragment_view.findViewById(R.id.separator);
-			seperator.setVisibility(View.VISIBLE);
+			//filter_panel.setVisibility(View.VISIBLE);
+			//View seperator = (View) fragment_view.findViewById(R.id.separator);
+			//seperator.setVisibility(View.VISIBLE);
 		}
 		
 		// Fill iouItems with db data
@@ -241,8 +222,6 @@ public class IouListFragment extends Fragment{
  	
  	private void populateIous(){
  		if( this.incoming && this.outgoing ){
- 			//add current iou items according to filter
- 			 			
  			if(selected_sort == 0) { // loaned
  				ious = Global.iou_db_mgr.get_ious_ordered_by_earliest_loan_date();
  			}
@@ -294,11 +273,12 @@ public class IouListFragment extends Fragment{
  	 		}
  		}
  		else {
- 			ious = Global.iou_db_mgr.get_ious_unordered();
+ 			// Clear the list
+ 			ious.clear();
  		}
  		
  		// flip if they want the other direction
- 		if( !ascending ) ious = flipArray(ious);
+ 		if(!ascending) ious = flipArray(ious);
  		
  		return;
  	}
