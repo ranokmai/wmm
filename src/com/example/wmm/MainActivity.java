@@ -18,7 +18,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -54,7 +53,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.navigation_drawer);
 		app_title = "Where's My Money?!";
 		navigation_title = app_title;
-		
+
 		// Setup the navigation drawer
 		navigation_titles = getResources().getStringArray(R.array.nav_drawer_items);
 		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
@@ -84,65 +83,72 @@ public class MainActivity extends Activity {
 				navigation_items);
 		navigation_list.setAdapter(navigation_adapter);
 		navigation_list.setOnItemClickListener(new SlideMenuClickListener());
-        navigation_toggle = new ActionBarDrawerToggle(this, navigation_layout,
-        		R.drawable.ic_drawer,
-                R.string.app_name,
-                R.string.app_name
-        		){
-            public void onDrawerClosed(View view){
-            	if (selected_fragment == 0){
-            		getActionBar().setDisplayShowTitleEnabled(false);
-                	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-                    invalidateOptionsMenu();
-            	} else {
-            		getActionBar().setDisplayShowTitleEnabled(true);
-                	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-                	setTitle(navigation_titles[selected_fragment]);
-                    invalidateOptionsMenu();
-            	}
-            }
- 
-            public void onDrawerOpened(View drawerView){
-            	getActionBar().setDisplayShowTitleEnabled(true);
-            	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-                getActionBar().setTitle(navigation_title);
-                invalidateOptionsMenu();
-            }
-        };
-        navigation_layout.setDrawerListener(navigation_toggle);
-		
+		navigation_toggle = new ActionBarDrawerToggle(this, navigation_layout,
+				R.drawable.ic_drawer,
+				R.string.app_name,
+				R.string.app_name
+				){
+			public void onDrawerClosed(View view){
+				if (selected_fragment == 0){
+					getActionBar().setDisplayShowTitleEnabled(false);
+					getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+					invalidateOptionsMenu();
+				} else {
+					getActionBar().setDisplayShowTitleEnabled(true);
+					getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+					setTitle(navigation_titles[selected_fragment]);
+					invalidateOptionsMenu();
+				}
+			}
+
+			public void onDrawerOpened(View drawerView){
+				getActionBar().setDisplayShowTitleEnabled(true);
+				getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+				getActionBar().setTitle(navigation_title);
+				invalidateOptionsMenu();
+			}
+		};
+		navigation_layout.setDrawerListener(navigation_toggle);
+
 		// Database setup
 		Global.setup_db_mgr(getApplicationContext());
 		Iou.init_item_types();
-		
-		// Reset the database for startup
-		//Global.iou_db_mgr.reset_db();
-
 		if (savedInstanceState == null) {
 			// on first time display view for first nav item
 			display_fragment(0);
 		}
 
-		//IouDBManager.reset_db();
-		for(int i=0; i<5; i++) {
+		IouDBManager.reset_db();
+		for(int i=0; i<1; i++) {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
 			String dateInString = "01-04-2014";
-			Date date = null;
+			Date date1 = null;
+			Date date2 = null;
+			Date date3 = null;
+			Date date4 = null;
 			try {
-				date = sdf.parse(dateInString);
+				date1 = sdf.parse(dateInString);
+				dateInString = "10-04-2014";
+				date2 = sdf.parse(dateInString);
+				dateInString = "15-04-2014";
+				date3 = sdf.parse(dateInString);
+				dateInString = "21-04-2014";
+				date4 = sdf.parse(dateInString);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-//			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, date, new GregorianCalendar(2014,Global.APR,20).getTime(), 1000.21, "", "night out", new GregorianCalendar(2014,Global.APR,21).getTime());
-//			Iou test2 = new Iou("Drinks", "Jimmy Blanchard", true, "Money", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out", new GregorianCalendar(2014,Global.APR,21).getTime());
-//			Iou test3 = new Iou("GTA V", "Jimmy Blanchard", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 60.00, "", "GTA 5", new GregorianCalendar(2014,Global.APR,21).getTime());
-//			Iou test4 = new Iou("Great American Challenge", "Galen Gong", true, "Item", true, new GregorianCalendar().getTime(), new GregorianCalendar(2014,Global.APR,25).getTime(), 50.00, "", ":D", new GregorianCalendar(2014,Global.APR,21).getTime());
-//
-//			Global.iou_db_mgr.insertIou(test1);
-//			Global.iou_db_mgr.insertIou(test2);
-//			Global.iou_db_mgr.insertIou(test3);
-//			Global.iou_db_mgr.insertIou(test4);
+			Iou test1 = new Iou("Drinks", "Louis", true, "Money", true, date1, new GregorianCalendar(2014,Global.APR,20).getTime(), 10.21, "", "night out", new GregorianCalendar(2014,Global.APR,21).getTime());
+			Iou test5 = new Iou("Camera", "Louis", true, "Item", true, date1, new GregorianCalendar(2014,Global.APR,20).getTime(), 5.00, "", "photo shoot", new GregorianCalendar(2014,Global.APR,21).getTime());
+			Iou test2 = new Iou("Drinks", "Jimmy Blanchard", true, "Money", true, date2, new GregorianCalendar(2014,Global.APR,20).getTime(), 15.00, "", "night out", new GregorianCalendar(2014,Global.APR,21).getTime());
+			Iou test3 = new Iou("GTA V", "Connor Lawrence", true, "Money", true, date3, new GregorianCalendar(2014,Global.APR,25).getTime(), 60.00, "", "GTA 5", new GregorianCalendar(2014,Global.APR,21).getTime());
+			Iou test4 = new Iou("Bidet", "Galen Gong", true, "Money", true, date4, new GregorianCalendar(2014,Global.APR,25).getTime(), -50.00, "", ":D", new GregorianCalendar(2014,Global.APR,21).getTime());
+	
+			Global.iou_db_mgr.insertIou(test1);
+			Global.iou_db_mgr.insertIou(test2);
+			Global.iou_db_mgr.insertIou(test3);
+			Global.iou_db_mgr.insertIou(test4);
+			Global.iou_db_mgr.insertIou(test5);
 		}
 
 		ArrayList<ContactSummary> cs = Global.iou_db_mgr.get_contact_summaries();
@@ -184,85 +190,85 @@ public class MainActivity extends Activity {
 
 	public void display_fragment(int position) {
 		navigation_icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
-		
-        // update the main content by replacing fragments
-        selected_fragment = position;
-        switch (position) {
-        case 0:
-        	getActionBar().setDisplayShowTitleEnabled(false);
-        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        	invalidateOptionsMenu();
-            listFrag = new IouListFragment();
-            iouListFragment = (IouListFragment) listFrag;
-            break;
-        case 1:
-        	getActionBar().setDisplayShowTitleEnabled(true);
-        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        	invalidateOptionsMenu();
-        	listFrag = new ContactsFragment();
-            break;
-        case 3:
-        	getActionBar().setDisplayShowTitleEnabled(true);
-        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        	invalidateOptionsMenu();
-        	listFrag = new StatisticsFragment();
-        	statisticsFragment = (StatisticsFragment) listFrag;
-            break;
-        case 4:
-        	getActionBar().setDisplayShowTitleEnabled(true);
-        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        	invalidateOptionsMenu();
-        	listFrag = new SettingsFragment();
-        	break;
-        case 5:
-        	getActionBar().setDisplayShowTitleEnabled(true);
-        	getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        	invalidateOptionsMenu();
-        	listFrag = new AboutFragment();
-        	break;
-        	
-        default:
-            break;
-        }    
-        
-    	// preference fragment functions differently than fragment 
-        if (listFrag != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, listFrag).commit();
- 
-            // Update the title and close the drawer
-            navigation_list.setItemChecked(position, true);
-            navigation_list.setSelection(position);
-            
-            if (position == 0){
-            	getActionBar().setIcon(R.drawable.ic_logo);
-            } else {
-            	setTitle(navigation_titles[position]);
-            	getActionBar().setIcon(navigation_icons.getResourceId(position, -1));
-            }
-            
-            navigation_layout.closeDrawer(navigation_list);
-        } else {
-            // error in creating fragment
-            Log.e("MainActivity", "Error creating fragment from navigation drawer.");
-        }
-    }
-	
+
+		// update the main content by replacing fragments
+		selected_fragment = position;
+		switch (position) {
+		case 0:
+			getActionBar().setDisplayShowTitleEnabled(false);
+			getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+			invalidateOptionsMenu();
+			listFrag = new IouListFragment();
+			iouListFragment = (IouListFragment) listFrag;
+			break;
+		case 1:
+			getActionBar().setDisplayShowTitleEnabled(true);
+			getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			invalidateOptionsMenu();
+			listFrag = new ContactsFragment();
+			break;
+		case 3:
+			getActionBar().setDisplayShowTitleEnabled(true);
+			getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			invalidateOptionsMenu();
+			listFrag = new StatisticsFragment();
+			statisticsFragment = (StatisticsFragment) listFrag;
+			break;
+		case 4:
+			getActionBar().setDisplayShowTitleEnabled(true);
+			getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			invalidateOptionsMenu();
+			listFrag = new SettingsFragment();
+			break;
+		case 5:
+			getActionBar().setDisplayShowTitleEnabled(true);
+			getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			invalidateOptionsMenu();
+			listFrag = new AboutFragment();
+			break;
+
+		default:
+			break;
+		}    
+
+		// preference fragment functions differently than fragment 
+		if (listFrag != null) {
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.content_frame, listFrag).commit();
+
+			// Update the title and close the drawer
+			navigation_list.setItemChecked(position, true);
+			navigation_list.setSelection(position);
+
+			if (position == 0){
+				getActionBar().setIcon(R.drawable.ic_logo);
+			} else {
+				setTitle(navigation_titles[position]);
+				getActionBar().setIcon(navigation_icons.getResourceId(position, -1));
+			}
+
+			navigation_layout.closeDrawer(navigation_list);
+		} else {
+			// error in creating fragment
+			Log.e("MainActivity", "Error creating fragment from navigation drawer.");
+		}
+	}
+
 	public void deleteIouButtonListener(View v) {
 		if(iouListFragment != null)
 			iouListFragment.deleteSelectedIOU();
 	}
-	
+
 	public void editIouButtonListener(View v){		
 		if(iouListFragment != null)
 			iouListFragment.editSelectedIOU();
 	}
-	
+
 	public void lastMonthListener(View v){		
 		if(statisticsFragment != null)
 			statisticsFragment.setMonthChart();
 	}
-	
+
 	public void perContactListener(View v){		
 		if(statisticsFragment != null)
 			statisticsFragment.setContactChart();
@@ -276,20 +282,20 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If nav drawer is opened, hide the action items
-        boolean drawerOpen = navigation_layout.isDrawerOpen(navigation_list);
-        
-        menu.findItem(R.id.action_open_settings).setVisible(!drawerOpen);
-        if (selected_fragment == 0 && !drawerOpen){
-        	menu.findItem(R.id.action_new_iou).setVisible(true);
-        } else {
-        	menu.findItem(R.id.action_new_iou).setVisible(false);
-        }
-        
-        return super.onPrepareOptionsMenu(menu);
-    }
-	
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// If nav drawer is opened, hide the action items
+		boolean drawerOpen = navigation_layout.isDrawerOpen(navigation_list);
+
+		menu.findItem(R.id.action_open_settings).setVisible(!drawerOpen);
+		if (selected_fragment == 0 && !drawerOpen){
+			menu.findItem(R.id.action_new_iou).setVisible(true);
+		} else {
+			menu.findItem(R.id.action_new_iou).setVisible(false);
+		}
+
+		return super.onPrepareOptionsMenu(menu);
+	}
+
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -302,13 +308,13 @@ public class MainActivity extends Activity {
 		super.onConfigurationChanged(newConfig);
 		navigation_toggle.onConfigurationChanged(newConfig);
 	}
-	
+
 	@Override
 	protected void onPostResume() {
-	    super.onPostResume();
-	    
+		super.onPostResume();
+
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (navigation_toggle.onOptionsItemSelected(item)) {
@@ -316,28 +322,28 @@ public class MainActivity extends Activity {
 		}
 
 		// Handle action bar actions click
-        int itemId = item.getItemId();
-        if(itemId == R.id.action_new_iou) {
-    		iouListFragment.addNewIou();
-    		return true;
-        }
-        else if(itemId == R.id.action_open_settings) {
-    		Fragment fragment = new SettingsFragment();
-    		FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
- 
-            // Update the title and close the drawer
-            navigation_list.setItemChecked(4, true);
-            navigation_list.setSelection(4);
-            setTitle(navigation_titles[4]);
-            getActionBar().setIcon(navigation_icons.getResourceId(4, -1));
-            navigation_layout.closeDrawer(navigation_list);
-    		
-    		return true;
-        }
-        else {
-    		return super.onOptionsItemSelected(item);
-        }
+		int itemId = item.getItemId();
+		if(itemId == R.id.action_new_iou) {
+			iouListFragment.addNewIou();
+			return true;
+		}
+		else if(itemId == R.id.action_open_settings) {
+			Fragment fragment = new SettingsFragment();
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+			// Update the title and close the drawer
+			navigation_list.setItemChecked(4, true);
+			navigation_list.setSelection(4);
+			setTitle(navigation_titles[4]);
+			getActionBar().setIcon(navigation_icons.getResourceId(4, -1));
+			navigation_layout.closeDrawer(navigation_list);
+
+			return true;
+		}
+		else {
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
